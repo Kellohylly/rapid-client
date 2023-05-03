@@ -1,22 +1,24 @@
 package net.minecraft.entity;
 
-import client.rapid.event.EventType;
-import client.rapid.event.events.player.EventJump;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
-
-import client.rapid.Wrapper;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Maps;
+
+import client.rapid.Wrapper;
+import client.rapid.event.EventType;
+import client.rapid.event.events.player.EventJump;
+import client.rapid.util.module.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
@@ -1044,7 +1046,7 @@ public abstract class EntityLivingBase extends Entity {
    }
 
    protected void jump() {
-      float yaw = this.rotationYaw;
+      float yaw = this == Minecraft.getMinecraft().thePlayer ? RotationUtil.yaw : this.rotationYaw;
       EventJump eventjump = new EventJump(yaw);
       eventjump.setType(EventType.PRE);
       yaw = eventjump.getYaw();
@@ -1299,9 +1301,12 @@ public abstract class EntityLivingBase extends Entity {
    }
 
    protected float func_110146_f(float p_110146_1_, float p_110146_2_) {
+       float yaw = this.rotationYaw;
+       if (this == Minecraft.getMinecraft().thePlayer)
+           yaw = RotationUtil.yaw;
       float f = MathHelper.wrapAngleTo180_float(p_110146_1_ - this.renderYawOffset);
       this.renderYawOffset += f * 0.3F;
-      float f1 = MathHelper.wrapAngleTo180_float(this.rotationYaw - this.renderYawOffset);
+      float f1 = MathHelper.wrapAngleTo180_float(yaw - this.renderYawOffset);
       boolean flag = f1 < -90.0F || f1 >= 90.0F;
       if(f1 < -75.0F) {
          f1 = -75.0F;
@@ -1311,7 +1316,7 @@ public abstract class EntityLivingBase extends Entity {
          f1 = 75.0F;
       }
 
-      this.renderYawOffset = this.rotationYaw - f1;
+      this.renderYawOffset = yaw - f1;
       if(f1 * f1 > 2500.0F) {
          this.renderYawOffset += f1 * 0.2F;
       }

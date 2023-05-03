@@ -8,6 +8,7 @@ import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventSlowdown;
 import client.rapid.event.events.player.EventUpdate;
+import client.rapid.util.module.RotationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -57,6 +58,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovementInput;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 
@@ -115,7 +117,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
          eventUpdate.setType(EventType.PRE);
          Event.dispatch(eventUpdate);
          if(this.isRiding()) {
-            this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+            this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(RotationUtil.yaw, RotationUtil.pitch, this.onGround));
             this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
          } else {
             this.onUpdateWalkingPlayer();
@@ -134,13 +136,25 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 	   super.moveEntity(eventMove.getX(), eventMove.getY(), eventMove.getZ());
 	   
 	   eventMove.setType(EventType.POST);
-	   Event.dispatch(eventMove);
+		Event.dispatch(eventMove);
+	}
+
+	@Override
+	public Vec3 getLookVec() {
+		return this.getVectorForRotation(RotationUtil.pitch, RotationUtil.yaw);
+	}
+
+	/**
+	 * interpolated look vector
+	 */
+	public Vec3 getLook(float partialTicks) {
+		return this.getVectorForRotation(RotationUtil.pitch, RotationUtil.yaw);
 	}
 
    public void onUpdateWalkingPlayer() {
       boolean flag = this.isSprinting();
 
-      EventMotion eventMotion = new EventMotion(this.rotationYaw, this.rotationPitch, this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround);
+      EventMotion eventMotion = new EventMotion(RotationUtil.yaw, RotationUtil.pitch, this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround);
       eventMotion.setType(EventType.PRE);
       Event.dispatch(eventMotion);
       

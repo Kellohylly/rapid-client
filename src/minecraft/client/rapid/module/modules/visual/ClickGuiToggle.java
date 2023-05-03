@@ -11,7 +11,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 @ModuleInfo(getName = "Click Gui", getCategory = Category.VISUAL)
 public class ClickGuiToggle extends Module {	
-	private final Setting mode = new Setting("Mode", this, "Dropdown", "Normal");
+	private final Setting mode = new Setting("Mode", this, "Normal", "Dropdown");
 	private final Setting theme = new Setting("Theme", this, "Rapid", "Nord", "Material");
 	private final Setting outline = new Setting("Outline", this, true);
 	private final Setting categoryIcons = new Setting("Category Icons", this, true);

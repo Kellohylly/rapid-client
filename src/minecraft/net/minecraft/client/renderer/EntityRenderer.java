@@ -1,13 +1,5 @@
 package net.minecraft.client.renderer;
 
-import com.google.common.base.Predicates;
-import com.google.gson.JsonSyntaxException;
-
-import client.rapid.Wrapper;
-import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRenderWorld;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
@@ -16,6 +8,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
+import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.glu.Project;
+
+import com.google.common.base.Predicates;
+import com.google.gson.JsonSyntaxException;
+
+import client.rapid.Client;
+import client.rapid.Wrapper;
+import client.rapid.event.EventType;
+import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventRenderWorld;
+import client.rapid.event.events.player.EventRotate;
+import client.rapid.event.events.player.EventRotation;
+import client.rapid.util.module.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -79,15 +92,6 @@ import optfine.RandomMobs;
 import optfine.Reflector;
 import optfine.RenderPlayerOF;
 import optfine.TextureUtils;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.glu.GLU;
-import org.lwjgl.util.glu.Project;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -1200,27 +1204,36 @@ public class EntityRenderer implements IResourceManagerReloadListener
             float f3 = (float)this.mc.mouseHelper.deltaY * f1;
             byte b0 = 1;
 
-            if (this.mc.gameSettings.invertMouse)
-            {
-                b0 = -1;
-            }
 
-            if (this.mc.gameSettings.smoothCamera)
-            {
-                this.smoothCamYaw += f2;
-                this.smoothCamPitch += f3;
-                float f4 = p_181560_1_ - this.smoothCamPartialTicks;
-                this.smoothCamPartialTicks = p_181560_1_;
-                f2 = this.smoothCamFilterX * f4;
-                f3 = this.smoothCamFilterY * f4;
-                this.mc.thePlayer.setAngles(f2, f3 * (float)b0);
+            final EventRotate rotateEvent = new EventRotate(this.mc.thePlayer.rotationYaw, this.mc.thePlayer.rotationPitch, this.mc.mouseHelper.deltaX, this.mc.mouseHelper.deltaY, false);
+            rotateEvent.dispatch(rotateEvent);
+            
+            if (!rotateEvent.isStopRotate()) {
+                if (this.mc.gameSettings.invertMouse) {
+                    b0 = -1;
+                }
+
+                if (this.mc.gameSettings.smoothCamera) {
+                    this.smoothCamYaw += f2;
+                    this.smoothCamPitch += f3;
+                    float f4 = p_181560_1_ - this.smoothCamPartialTicks;
+                    this.smoothCamPartialTicks = p_181560_1_;
+                    f2 = this.smoothCamFilterX * f4;
+                    f3 = this.smoothCamFilterY * f4;
+                    this.mc.thePlayer.setAngles(f2, f3 * (float) b0);
+                } else {
+                    this.smoothCamYaw = 0.0F;
+                    this.smoothCamPitch = 0.0F;
+                    this.mc.thePlayer.setAngles(f2, f3 * (float) b0);
+                }
             }
-            else
-            {
-                this.smoothCamYaw = 0.0F;
-                this.smoothCamPitch = 0.0F;
-                this.mc.thePlayer.setAngles(f2, f3 * (float)b0);
-            }
+            
+            final EventRotation rotationEvent = new EventRotation(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
+            rotationEvent.dispatch(rotationEvent);
+            RotationUtil.prevYaw = RotationUtil.yaw;
+            RotationUtil.prevPitch = RotationUtil.pitch;
+            RotationUtil.yaw = rotationEvent.getYaw();
+            RotationUtil.pitch = rotationEvent.getPitch();
         }
 
         this.mc.mcProfiler.endSection();

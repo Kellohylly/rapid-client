@@ -1,8 +1,12 @@
 package client.rapid.module.modules.combat;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import client.rapid.event.events.Event;
-import client.rapid.event.events.player.*;
-import client.rapid.event.events.player.EventJump;
+import client.rapid.event.events.player.EventMotion;
+import client.rapid.event.events.player.EventRotation;
+import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -23,8 +27,6 @@ import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 
-import java.util.*;
-
 @ModuleInfo(getName = "Kill Aura", getCategory = Category.COMBAT)
 public class KillAura extends Module {
     private final Setting minimumCps = new Setting("Max CPS", this, 12, 1, 20, false);
@@ -38,7 +40,6 @@ public class KillAura extends Module {
 
     private final Setting rotate = new Setting("Rotate", this, "None", "Instant", "Fixed");
     private final Setting viewLock = new Setting("View Lock", this, false);
-    private final Setting movefix = new Setting("Move Fix", this, false);
     private final Setting rayCast = new Setting("Ray Cast", this, true);
     private final Setting useGcd = new Setting("Use GCD", this, false);
     private final Setting shakeX = new Setting("Random X", this, 0, 0, 5, false);
@@ -67,7 +68,7 @@ public class KillAura extends Module {
     private int index;
 
     public KillAura() {
-        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, movefix, rayCast, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
+        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
     }
 
     @Override
@@ -91,11 +92,16 @@ public class KillAura extends Module {
             updateIndex();
 
             target = !targets.isEmpty() ? targets.get(index) : null;
-
-            if(target != null) {
-                float[] rots = RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue());
-                rotations[0] = RotationUtil.updateRotation(rotations[0], rots[0], (float) MathUtil.randomNumber(minTurn.getValue(), maxTurn.getValue()));
-                rotations[1] = RotationUtil.updateRotation(rotations[1], rots[1], (float) MathUtil.randomNumber(minTurn.getValue(), maxTurn.getValue()));
+        }
+        if(e instanceof EventRotation) {
+            if (target != null) {
+                if(!rotate.getMode().equals("None")) {
+                    if(rotate.getMode().equals("Instant")) {
+                        doRotations((EventRotation) e, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
+                    } else {
+                    	doRotations((EventRotation) e, rotations);
+                	}
+                }
             }
         }
         if (e instanceof EventMotion) {
@@ -103,14 +109,6 @@ public class KillAura extends Module {
                 setTag(mode.getMode());
 
                 if (target != null) {
-
-                    if(!rotate.getMode().equals("None")) {
-                        if(rotate.getMode().equals("Instant"))
-                            doRotations((EventMotion) e, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
-                        else
-                            doRotations((EventMotion) e, rotations);
-
-                    }
                     doPreAutoBlock();
 
                     MovingObjectPosition cast = RaycastUtil.getMouseOver((float) reach.getValue());
@@ -122,13 +120,6 @@ public class KillAura extends Module {
             }
             if (e.isPost() && target != null && autoBlock.getMode().equals("Packet") && MathUtil.isinpercentage(autoblockperc.getValue()))
                 AuraUtil.block();
-        }
-        // TODO: add for Instant rotations
-        if (e instanceof EventStrafe && target != null && movefix.isEnabled())
-            ((EventStrafe) e).setYaw(rotations[0]);
-
-        if (e instanceof EventJump && target != null && movefix.isEnabled() && mc.thePlayer.onGround) {
-            ((EventJump) e).setYaw(rotations[0]);
         }
     }
 
@@ -199,32 +190,39 @@ public class KillAura extends Module {
         return f > 180F ? 360F - f : f;
     }
 
-    private void doRotations(EventMotion event, float[] rots) {
-        final float fuckVulcan = mc.gameSettings.mouseSensitivity * 0.6F,
-        gcd = fuckVulcan * fuckVulcan * fuckVulcan * 1.2F;
+    public float[] applyMouseFix(float newYaw, float newPitch) {
+        final float sensitivity = Math.max(0.001F, mc.gameSettings.mouseSensitivity);
+        final int deltaYaw = (int) ((newYaw - RotationUtil.yaw) / ((sensitivity * (sensitivity >= 0.5 ? sensitivity : 1) / 2)));
+        final int deltaPitch = (int) ((newPitch - RotationUtil.pitch) / ((sensitivity * (sensitivity >= 0.5 ? sensitivity : 1) / 2))) * -1;
+        final float f = sensitivity * 0.6F + 0.2F;
+        final float f1 = f * f * f * 8.0F;
+        final float f2 = (float) deltaYaw * f1;
+        final float f3 = (float) deltaPitch * f1;
 
-        rots[0] = RotationUtil.updateRotation(mc.thePlayer.rotationYaw, rots[0]);
-        rots[1] = RotationUtil.updateRotation(mc.thePlayer.rotationPitch, rots[1]);
+        final float endYaw = (float) ((double) RotationUtil.yaw + (double) f2 * 0.15);
+        float endPitch = (float) ((double) RotationUtil.pitch - (double) f3 * 0.15);
+        endPitch = MathHelper.clamp_float(endPitch, -90, 90);
+        return new float[]{endYaw, endPitch};
+    }
+    
+    private void doRotations(EventRotation event, float[] rots) {
+    	if(this.useGcd.isEnabled()) {
+    		rots = this.applyMouseFix(rots[0], rots[1]);
+    	}
+    	
+    	rots[0] = RotationUtil.updateRotation(RotationUtil.yaw, rots[0]);
+        rots[1] = RotationUtil.updateRotation(RotationUtil.pitch, rots[1]);
 
         if (viewLock.isEnabled()) {
             mc.thePlayer.rotationYaw = rots[0];
-            mc.thePlayer.rotationPitch = rots[1] - 12;
-
-            if (useGcd.isEnabled()) {
-                mc.thePlayer.rotationYaw -= (mc.thePlayer.rotationYaw % gcd);
-                mc.thePlayer.rotationPitch -= (mc.thePlayer.rotationPitch % gcd);
-            }
+            mc.thePlayer.rotationPitch = rots[1];
         } else {
             event.setYaw(rots[0]);
-            event.setPitch(rots[1] - 12);
+            event.setPitch(rots[1]);
 
-            if (useGcd.isEnabled()) {
-                event.yaw -= (event.getYaw() % gcd);
-                event.pitch -= (event.getPitch() % gcd);
-            }
-            mc.thePlayer.rotationYawHead = event.yaw;
-            mc.thePlayer.renderYawOffset = event.yaw;
-            mc.thePlayer.rotationPitchHead = event.pitch;
+            mc.thePlayer.rotationYawHead = event.getYaw();
+            mc.thePlayer.renderYawOffset = event.getYaw();
+            mc.thePlayer.rotationPitchHead = event.getPitch();
         }
     }
 
