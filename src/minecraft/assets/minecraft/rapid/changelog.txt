@@ -1,0 +1,6 @@
+- Removed Transaction and ZeroInAir from Velocity.
+- Removed percentage settings from Kill Aura.
+
++ Added Vulcan and Ground Only Mode in Velocity.
++ Added Aimbot Module.
++ Added Vulcan Ground to Speed.
