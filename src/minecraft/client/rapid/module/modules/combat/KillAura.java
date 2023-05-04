@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.event.events.player.EventUpdate;
@@ -42,6 +43,7 @@ public class KillAura extends Module {
     private final Setting rotate = new Setting("Rotate", this, "None", "Instant", "Fixed");
     private final Setting viewLock = new Setting("View Lock", this, false);
     private final Setting rayCast = new Setting("Ray Cast", this, true);
+    private final Setting autoDisable = new Setting("Auto Disable", this, true);
     private final Setting useGcd = new Setting("Use GCD", this, false);
     private final Setting shakeX = new Setting("Random X", this, 0, 0, 5, false);
     private final Setting shakeY = new Setting("Random Y", this, 0, 0, 5, false);
@@ -68,7 +70,7 @@ public class KillAura extends Module {
     private int index;
 
     public KillAura() {
-        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
+        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, autoDisable, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
     }
 
     @Override
@@ -114,6 +116,18 @@ public class KillAura extends Module {
             }
             if (e.isPost() && target != null && autoBlock.getMode().equals("Packet") && MathUtil.isinpercentage(autoblockperc.getValue()))
                 AuraUtil.block();
+        }
+
+        // Auto Disable
+
+        if(autoDisable.isEnabled()) {
+            if(e instanceof EventUpdate && e.isPre()) {
+                if(mc.thePlayer.getHealth() <= 0)
+                    setEnabled(false);
+            }
+            if (e instanceof EventWorldLoad) {
+                setEnabled(false);
+            }
         }
     }
 
