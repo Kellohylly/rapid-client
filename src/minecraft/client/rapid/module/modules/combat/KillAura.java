@@ -1,8 +1,12 @@
 package client.rapid.module.modules.combat;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import client.rapid.event.events.Event;
-import client.rapid.event.events.player.*;
-import client.rapid.event.events.player.EventJump;
+import client.rapid.event.events.player.EventMotion;
+import client.rapid.event.events.player.EventRotation;
+import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -13,6 +17,7 @@ import client.rapid.util.RaycastUtil;
 import client.rapid.util.TimerUtil;
 import client.rapid.util.module.AuraUtil;
 import client.rapid.util.module.RotationUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -22,8 +27,6 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
-
-import java.util.*;
 
 @ModuleInfo(getName = "Kill Aura", getCategory = Category.COMBAT)
 public class KillAura extends Module {
@@ -38,7 +41,6 @@ public class KillAura extends Module {
 
     private final Setting rotate = new Setting("Rotate", this, "None", "Instant", "Fixed");
     private final Setting viewLock = new Setting("View Lock", this, false);
-    private final Setting movefix = new Setting("Move Fix", this, false);
     private final Setting rayCast = new Setting("Ray Cast", this, true);
     private final Setting useGcd = new Setting("Use GCD", this, false);
     private final Setting shakeX = new Setting("Random X", this, 0, 0, 5, false);
@@ -62,18 +64,15 @@ public class KillAura extends Module {
 
     public static EntityLivingBase target;
     private final TimerUtil timer = new TimerUtil(), switchTimer = new TimerUtil();
-    private final float[] rotations = new float[2];
 
     private int index;
 
     public KillAura() {
-        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, movefix, rayCast, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
+        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
     }
 
     @Override
     public void onEnable() {
-        rotations[0] = mc.thePlayer.rotationYaw;
-        rotations[1] = mc.thePlayer.rotationPitch;
         targets.clear();
     }
 
@@ -91,11 +90,12 @@ public class KillAura extends Module {
             updateIndex();
 
             target = !targets.isEmpty() ? targets.get(index) : null;
-
-            if(target != null) {
-                float[] rots = RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue());
-                rotations[0] = RotationUtil.updateRotation(rotations[0], rots[0], (float) MathUtil.randomNumber(minTurn.getValue(), maxTurn.getValue()));
-                rotations[1] = RotationUtil.updateRotation(rotations[1], rots[1], (float) MathUtil.randomNumber(minTurn.getValue(), maxTurn.getValue()));
+        }
+        if(e instanceof EventRotation) {
+            if (target != null) {
+                if(!rotate.getMode().equals("None")) {
+                    doRotations((EventRotation) e, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
+                }
             }
         }
         if (e instanceof EventMotion) {
@@ -103,14 +103,6 @@ public class KillAura extends Module {
                 setTag(mode.getMode());
 
                 if (target != null) {
-
-                    if(!rotate.getMode().equals("None")) {
-                        if(rotate.getMode().equals("Instant"))
-                            doRotations((EventMotion) e, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
-                        else
-                            doRotations((EventMotion) e, rotations);
-
-                    }
                     doPreAutoBlock();
 
                     MovingObjectPosition cast = RaycastUtil.getMouseOver((float) reach.getValue());
@@ -122,13 +114,6 @@ public class KillAura extends Module {
             }
             if (e.isPost() && target != null && autoBlock.getMode().equals("Packet") && MathUtil.isinpercentage(autoblockperc.getValue()))
                 AuraUtil.block();
-        }
-        // TODO: add for Instant rotations
-        if (e instanceof EventStrafe && target != null && movefix.isEnabled())
-            ((EventStrafe) e).setYaw(rotations[0]);
-
-        if (e instanceof EventJump && target != null && movefix.isEnabled() && mc.thePlayer.onGround) {
-            ((EventJump) e).setYaw(rotations[0]);
         }
     }
 
@@ -199,32 +184,59 @@ public class KillAura extends Module {
         return f > 180F ? 360F - f : f;
     }
 
-    private void doRotations(EventMotion event, float[] rots) {
-        final float fuckVulcan = mc.gameSettings.mouseSensitivity * 0.6F,
-        gcd = fuckVulcan * fuckVulcan * fuckVulcan * 1.2F;
+    public float[] applyMouseFix(float newYaw, float newPitch) {
+        final float curYaw = RotationUtil.yaw;
+        final float curPitch = RotationUtil.pitch;
+        
+        final float f = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
+        final float gcd = f * f * f * 1.2F;
+        
+        final float deltaYaw = newYaw - curYaw;
+        final float deltaPitch = newPitch - curPitch;
+        final float fixedDeltaYaw = deltaYaw - (deltaYaw % gcd);
+        final float fixedDeltaPitch = deltaPitch - (deltaPitch % gcd);
+        
+        final float fixedYaw = curYaw + fixedDeltaYaw;
+        final float fixedPitch = curPitch + fixedDeltaPitch;
+        return new float[] {fixedYaw, fixedPitch};
+    }
+    
+    public float[] smoothenRotations(float[] rots) {
+        final float curYaw = RotationUtil.yaw;
+        final float curPitch = RotationUtil.pitch;
+        
+        final int fps = (int) (Minecraft.getDebugFPS() / 20.0F);
+        final float rotationStep = (float) MathUtil.randomNumber(this.maxTurn.getValue(), this.minTurn.getValue());
+        
+        final float advancedDeltaYaw = (((rots[0] - curYaw) + 540) % 360) - 180;
+        final float advancedDeltaPitch = rots[1] - curPitch;
 
-        rots[0] = RotationUtil.updateRotation(mc.thePlayer.rotationYaw, rots[0]);
-        rots[1] = RotationUtil.updateRotation(mc.thePlayer.rotationPitch, rots[1]);
+        final float advancedDistanceYaw = MathHelper.clamp_float(advancedDeltaYaw, -rotationStep, rotationStep) / fps * 4;
+        final float advancedDistancePitch = MathHelper.clamp_float(advancedDeltaPitch, -rotationStep, rotationStep) / fps * 4;
 
+        return new float[] {curYaw + advancedDistanceYaw, curPitch + advancedDistancePitch};
+    }
+    
+    private void doRotations(EventRotation event, float[] rots) {
+    	if(this.useGcd.isEnabled()) {
+    		rots = this.applyMouseFix(rots[0], rots[1]);
+    	}
+    	
+    	rots[0] = RotationUtil.updateRotation(RotationUtil.yaw, rots[0]);
+        rots[1] = RotationUtil.updateRotation(RotationUtil.pitch, rots[1]);
+        
+        rots = this.smoothenRotations(rots);
+        
         if (viewLock.isEnabled()) {
             mc.thePlayer.rotationYaw = rots[0];
-            mc.thePlayer.rotationPitch = rots[1] - 12;
-
-            if (useGcd.isEnabled()) {
-                mc.thePlayer.rotationYaw -= (mc.thePlayer.rotationYaw % gcd);
-                mc.thePlayer.rotationPitch -= (mc.thePlayer.rotationPitch % gcd);
-            }
+            mc.thePlayer.rotationPitch = rots[1];
         } else {
             event.setYaw(rots[0]);
-            event.setPitch(rots[1] - 12);
+            event.setPitch(rots[1]);
 
-            if (useGcd.isEnabled()) {
-                event.yaw -= (event.getYaw() % gcd);
-                event.pitch -= (event.getPitch() % gcd);
-            }
-            mc.thePlayer.rotationYawHead = event.yaw;
-            mc.thePlayer.renderYawOffset = event.yaw;
-            mc.thePlayer.rotationPitchHead = event.pitch;
+            mc.thePlayer.rotationYawHead = event.getYaw();
+            mc.thePlayer.renderYawOffset = event.getYaw();
+            mc.thePlayer.rotationPitchHead = event.getPitch();
         }
     }
 

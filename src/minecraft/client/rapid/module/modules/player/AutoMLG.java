@@ -2,6 +2,7 @@ package client.rapid.module.modules.player;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.player.EventMotion;
+import client.rapid.event.events.player.EventRotation;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -31,6 +32,8 @@ public class AutoMLG extends Module {
 
     private final TimerUtil timer = new TimerUtil();
 
+    private float[] rotations = new float[2];
+    
     public AutoMLG() {
         add(fallDistance, waterBucket, pickupWater, boat, leaveBoat);
     }
@@ -58,8 +61,8 @@ public class AutoMLG extends Module {
                         BlockPos blockPos = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY + y, mc.thePlayer.posZ);
 
                         if (!mc.theWorld.isAirBlock(blockPos)) {
-                            event.setPitch(RotationUtil.getScaffoldRotations(blockPos, EnumFacing.NORTH)[1]);
-                            mc.thePlayer.rotationPitchHead = event.pitch;
+                        	rotations = (RotationUtil.getScaffoldRotations(blockPos, EnumFacing.NORTH));
+                            mc.thePlayer.rotationPitchHead = rotations[0];
 
                             for (int i = 0; i < 9; i++) {
                                 ItemStack stack = mc.thePlayer.inventory.getStackInSlot(i);
@@ -84,7 +87,6 @@ public class AutoMLG extends Module {
                 }
             } else {
                 if(placedPos != null && pickupWater.isEnabled()) {
-                    event.setPitch(90);
                     mc.thePlayer.rotationPitchHead = event.pitch;
 
                     for (int i = 0; i < 9; i++) {
@@ -109,5 +111,22 @@ public class AutoMLG extends Module {
                     timer.reset();
             }
         }
+        if(e instanceof EventRotation) {
+        	EventRotation rotationEvent = (EventRotation)e;
+        	
+            if(mc.thePlayer.fallDistance >= fallDistance.getValue()) {
+                if(mc.thePlayer.fallDistance >= fallDistance.getValue()) {
+                    if(waterBucket.isEnabled()) {
+                    	rotationEvent.setPitch(rotations[1]);
+                    	rotationEvent.setYaw(rotations[0]);
+                    }
+                }
+            } else {
+                if(placedPos != null && pickupWater.isEnabled()) {
+                	rotationEvent.setPitch(90);
+                }
+            }
+        }
+        rotations = new float[2];
     }
 }

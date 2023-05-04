@@ -1,6 +1,7 @@
 package client.rapid.event.events.player;
 
 import client.rapid.event.events.Event;
+import client.rapid.util.module.RotationUtil;
 
 public class EventMotion extends Event {
 	public float yaw, pitch;
@@ -21,7 +22,7 @@ public class EventMotion extends Event {
 	}
 	
 	public void setYaw(float yaw) {
-		this.yaw = yaw;
+		RotationUtil.yaw = yaw;
 	}
 	
 	public float getPitch() {
@@ -29,7 +30,7 @@ public class EventMotion extends Event {
 	}
 	
 	public void setPitch(float pitch) {
-		this.pitch = pitch;
+		RotationUtil.pitch = pitch;
 	}
 	
 	public double getX() {

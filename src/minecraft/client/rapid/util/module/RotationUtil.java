@@ -6,6 +6,8 @@ import net.minecraft.util.*;
 
 public class RotationUtil extends MinecraftUtil {
 
+    public static float prevYaw, prevPitch, yaw, pitch;
+	
     public static float[] getScaffoldRotations(BlockPos blockPos, EnumFacing enumFacing) {
         double d = (double) blockPos.getX() + 0.5 - mc.thePlayer.posX + (double) enumFacing.getFrontOffsetX() / 2.0,
         d2 = (double) blockPos.getZ() + 0.5 - mc.thePlayer.posZ + (double) enumFacing.getFrontOffsetZ() / 2.0,
