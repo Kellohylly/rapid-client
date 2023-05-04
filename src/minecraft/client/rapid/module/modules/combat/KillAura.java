@@ -17,6 +17,7 @@ import client.rapid.util.RaycastUtil;
 import client.rapid.util.TimerUtil;
 import client.rapid.util.module.AuraUtil;
 import client.rapid.util.module.RotationUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -63,7 +64,6 @@ public class KillAura extends Module {
 
     public static EntityLivingBase target;
     private final TimerUtil timer = new TimerUtil(), switchTimer = new TimerUtil();
-    private final float[] rotations = new float[2];
 
     private int index;
 
@@ -73,8 +73,6 @@ public class KillAura extends Module {
 
     @Override
     public void onEnable() {
-        rotations[0] = mc.thePlayer.rotationYaw;
-        rotations[1] = mc.thePlayer.rotationPitch;
         targets.clear();
     }
 
@@ -96,11 +94,7 @@ public class KillAura extends Module {
         if(e instanceof EventRotation) {
             if (target != null) {
                 if(!rotate.getMode().equals("None")) {
-                    if(rotate.getMode().equals("Instant")) {
-                        doRotations((EventRotation) e, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
-                    } else {
-                    	doRotations((EventRotation) e, rotations);
-                	}
+                    doRotations((EventRotation) e, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
                 }
             }
         }
@@ -191,18 +185,36 @@ public class KillAura extends Module {
     }
 
     public float[] applyMouseFix(float newYaw, float newPitch) {
-        final float sensitivity = Math.max(0.001F, mc.gameSettings.mouseSensitivity);
-        final int deltaYaw = (int) ((newYaw - RotationUtil.yaw) / ((sensitivity * (sensitivity >= 0.5 ? sensitivity : 1) / 2)));
-        final int deltaPitch = (int) ((newPitch - RotationUtil.pitch) / ((sensitivity * (sensitivity >= 0.5 ? sensitivity : 1) / 2))) * -1;
-        final float f = sensitivity * 0.6F + 0.2F;
-        final float f1 = f * f * f * 8.0F;
-        final float f2 = (float) deltaYaw * f1;
-        final float f3 = (float) deltaPitch * f1;
+        final float curYaw = RotationUtil.yaw;
+        final float curPitch = RotationUtil.pitch;
+        
+        final float f = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
+        final float gcd = f * f * f * 1.2F;
+        
+        final float deltaYaw = newYaw - curYaw;
+        final float deltaPitch = newPitch - curPitch;
+        final float fixedDeltaYaw = deltaYaw - (deltaYaw % gcd);
+        final float fixedDeltaPitch = deltaPitch - (deltaPitch % gcd);
+        
+        final float fixedYaw = curYaw + fixedDeltaYaw;
+        final float fixedPitch = curPitch + fixedDeltaPitch;
+        return new float[] {fixedYaw, fixedPitch};
+    }
+    
+    public float[] smoothenRotations(float[] rots) {
+        final float curYaw = RotationUtil.yaw;
+        final float curPitch = RotationUtil.pitch;
+        
+        final int fps = (int) (Minecraft.getDebugFPS() / 20.0F);
+        final float rotationStep = (float) MathUtil.randomNumber(this.maxTurn.getValue(), this.minTurn.getValue());
+        
+        final float advancedDeltaYaw = (((rots[0] - curYaw) + 540) % 360) - 180;
+        final float advancedDeltaPitch = rots[1] - curPitch;
 
-        final float endYaw = (float) ((double) RotationUtil.yaw + (double) f2 * 0.15);
-        float endPitch = (float) ((double) RotationUtil.pitch - (double) f3 * 0.15);
-        endPitch = MathHelper.clamp_float(endPitch, -90, 90);
-        return new float[]{endYaw, endPitch};
+        final float advancedDistanceYaw = MathHelper.clamp_float(advancedDeltaYaw, -rotationStep, rotationStep) / fps * 4;
+        final float advancedDistancePitch = MathHelper.clamp_float(advancedDeltaPitch, -rotationStep, rotationStep) / fps * 4;
+
+        return new float[] {curYaw + advancedDistanceYaw, curPitch + advancedDistancePitch};
     }
     
     private void doRotations(EventRotation event, float[] rots) {
@@ -212,7 +224,9 @@ public class KillAura extends Module {
     	
     	rots[0] = RotationUtil.updateRotation(RotationUtil.yaw, rots[0]);
         rots[1] = RotationUtil.updateRotation(RotationUtil.pitch, rots[1]);
-
+        
+        rots = this.smoothenRotations(rots);
+        
         if (viewLock.isEnabled()) {
             mc.thePlayer.rotationYaw = rots[0];
             mc.thePlayer.rotationPitch = rots[1];
