@@ -199,7 +199,6 @@ public class Scaffold extends Draggable {
 					mc.gameSettings.keyBindSprint.pressed = false;
 				} else {
 					mc.gameSettings.keyBindSprint.pressed = true;
-a
 				}
 
 				blockPos = new BlockPos(mc.thePlayer.posX, funnyY - 1.0D, mc.thePlayer.posZ);
