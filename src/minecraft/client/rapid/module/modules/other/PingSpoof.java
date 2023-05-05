@@ -40,19 +40,17 @@ public class PingSpoof extends Module {
         if(e instanceof EventPacket && e.isPre()) {
             EventPacket event = (EventPacket)e;
 
-            if(event.getPacket() instanceof C00PacketKeepAlive || event.getPacket() instanceof C0FPacketConfirmTransaction) {
+            if(event.getPacket() instanceof C00PacketKeepAlive) {
                 packets.add(event.getPacket());
                 event.cancel();
             }
-        }
-        if(e instanceof EventUpdate && e.isPre()) {
             if(packets.size() > 500) {
                 for(int i = 1; i < packets.size(); i++) {
                     packets.remove(i);
                 }
             }
-            if(timer.sleep((int)delay.getValue()) && packets.size() >= 1) {
-                PacketUtil.sendPacket(packets.get(0));
+            if(timer.sleep((int)delay.getValue()) && !packets.isEmpty()) {
+                PacketUtil.sendPacketSilent(packets.get(0));
                 packets.remove(0);
             }
         }

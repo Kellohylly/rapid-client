@@ -171,18 +171,18 @@ public class KillAura extends Module {
             if (entity instanceof EntityVillager && !villagers.isEnabled())
                 return false;
 
-            if (entity.isOnSameTeam(mc.thePlayer) && teams.isEnabled())
-                return false;
-
-            if (entity.isInvisible() && !invisibles.isEnabled())
-                return false;
-
-            if (!isInFieldOfView(entity, fov.getValue()))
-                return false;
-
-            if (isEnabled("Anti Bot") && AntiBot.getBots().contains(entity))
-                return false;
         }
+        if (entity.isInvisible() && !invisibles.isEnabled())
+            return false;
+
+        if (!isInFieldOfView(entity, fov.getValue()))
+            return false;
+
+        if (isEnabled("Anti Bot") && AntiBot.getBots().contains(entity))
+            return false;
+
+        if (entity.isOnSameTeam(mc.thePlayer) && teams.isEnabled())
+            return false;
 
         return entity != mc.thePlayer && !(entity.getDistanceToEntity(mc.thePlayer) > reach.getValue() && mc.thePlayer.isEntityAlive());
     }

@@ -1,7 +1,10 @@
 package client.rapid.module.modules.movement;
 
+import client.rapid.Client;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.game.EventSettingChange;
+import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventCollide;
 import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventUpdate;
@@ -20,11 +23,11 @@ import org.lwjgl.util.vector.Vector2f;
 
 @ModuleInfo(getName = "Flight", getCategory = Category.MOVEMENT)
 public class Flight extends Module {
-	private final Setting
-	mode = new Setting("Mode", this, "Creative", "Vanilla", "Old NCP", "Collide", "Verus"),
-	damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait"),
-	speed = new Setting("Speed", this, 2, 0.2, 10, false),
-	fast = new Setting("Fast", this, false);
+	private final Setting mode = new Setting("Mode", this, "Creative", "Vanilla", "Old NCP", "Collide", "Verus");
+	private final Setting damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait");
+	private final Setting speed = new Setting("Speed", this, 2, 0.2, 10, false);
+	private final Setting fast = new Setting("Fast", this, false);
+	private final Setting autoDisable = new Setting("Auto Disable", this, true);
 
 	private Vec3 vec3;
 	private Vector2f vec2f;
@@ -36,7 +39,7 @@ public class Flight extends Module {
 	private final TimerUtil timer = new TimerUtil();
 
 	public Flight() {
-		add(mode, damage, speed, fast);
+		add(mode, damage, speed, fast, autoDisable);
 	}
 
 	@Override
@@ -85,7 +88,13 @@ public class Flight extends Module {
 		if(e instanceof EventUpdate && e.isPre()) {
 			if (mc.thePlayer.hurtTime != 0)
 				damaged = true;
+
+			if(autoDisable.isEnabled() && mc.thePlayer.getHealth() <= 0)
+				setEnabled(false);
 		}
+		if(e instanceof EventWorldLoad && e.isPre() && autoDisable.isEnabled())
+			setEnabled(false);
+
 		if(!damaged && !damage.getMode().equals("None")) {
 			if(e instanceof EventUpdate && e.isPre()) {
 				setMoveSpeed(0);
@@ -192,12 +201,15 @@ public class Flight extends Module {
 						setMoveSpeed(speed.getValue());
 						canFly = true;
 						timer.reset();
-					} else
+					} else if(damaged)
 						setMoveSpeed(speed.getValue());
 
 					if(canFly && timer.reached(575)) {
-						if(mc.thePlayer.onGround)
+						if(mc.thePlayer.onGround) {
 							mc.thePlayer.jump();
+							launchY = mc.thePlayer.posY;
+
+						}
 					}
 					if(canFly && timer.reached(1200))
 						setMoveSpeed(getBaseMoveSpeed());

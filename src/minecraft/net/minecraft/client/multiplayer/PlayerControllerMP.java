@@ -1,5 +1,8 @@
 package net.minecraft.client.multiplayer;
 
+import client.rapid.Client;
+import client.rapid.Wrapper;
+import client.rapid.module.modules.player.Scaffold;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -257,6 +260,7 @@ public class PlayerControllerMP {
    }
 
    public boolean onPlayerRightClick(EntityPlayerSP player, WorldClient worldIn, ItemStack heldStack, BlockPos hitPos, EnumFacing side, Vec3 hitVec) {
+      ((Scaffold)Wrapper.getModuleManager().getModule("Scaffold")).rotated = true;
       this.syncCurrentPlayItem();
       float f = (float)(hitVec.xCoord - (double)hitPos.getX());
       float f1 = (float)(hitVec.yCoord - (double)hitPos.getY());

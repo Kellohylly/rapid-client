@@ -2,12 +2,14 @@ package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
+import client.rapid.util.TimerUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
 @ModuleInfo(getName = "Long Jump", getCategory = Category.MOVEMENT)
@@ -22,6 +24,8 @@ public class LongJump extends Module {
 	private double moveSpeed;
 	private boolean jumped, canJump, damaged;
 	private int ticks;
+
+	private final TimerUtil glideTime = new TimerUtil();
 
 	public LongJump() {
 		add(mode, damage, speed, height, slowdown, autoDisable);
@@ -57,7 +61,13 @@ public class LongJump extends Module {
 		if(e instanceof EventUpdate && e.isPre()) {
 			if(mc.thePlayer.hurtTime != 0)
 				damaged = true;
+
+			if(autoDisable.isEnabled() && mc.thePlayer.getHealth() <= 0)
+				setEnabled(false);
 		}
+		if(e instanceof EventWorldLoad && e.isPre() && autoDisable.isEnabled())
+			setEnabled(false);
+
 		if(!damaged && !damage.getMode().equals("None")) {
 			if(e instanceof EventUpdate && e.isPre()) {
 				setMoveSpeed(0);
@@ -80,7 +90,7 @@ public class LongJump extends Module {
 			}
 			return;
 		}
-		if(e instanceof EventPacket && mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 4 && ((EventPacket) e).getPacket() instanceof C03PacketPlayer && !isEnabled("No Fall")) {
+		if(e instanceof EventPacket && mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 3 && ((EventPacket) e).getPacket() instanceof C03PacketPlayer && !isEnabled("No Fall")) {
 			C03PacketPlayer packet = ((EventPacket) e).getPacket();
 			mc.thePlayer.fallDistance = 0;
 			mc.thePlayer.motionY = -0.1;
@@ -172,22 +182,20 @@ public class LongJump extends Module {
 					if(mc.thePlayer.fallDistance > 0) {
 						jumped = true;
 						if (mc.thePlayer.fallDistance >= 0.1 && moveSpeed < 3) {
-							mc.thePlayer.sendChatMessage(".vclip " + height.getValue());
+							mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + height.getValue(), mc.thePlayer.posZ);
 							moveSpeed += 1;
 						}
 
 						if(!mc.thePlayer.onGround) {
-							if (mc.thePlayer.ticksExisted % 2 == 0)
+							if(glideTime.sleep(146))
 								mc.thePlayer.motionY = -0.1476;
-							else {
+							else
 								mc.thePlayer.motionY = -0.0975;
-
-							}
 						}
 						if(isEnabled("Disabler") && getMode("Disabler", "Mode").equals("Vulcan Strafe"))
 							setMoveSpeed(getBaseMoveSpeed() + 0.0449);
 					}
-					break;
+						break;
 			}
 		}
 	}
