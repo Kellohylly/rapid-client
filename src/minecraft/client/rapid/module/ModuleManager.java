@@ -16,20 +16,7 @@ import client.rapid.module.modules.combat.Regen;
 import client.rapid.module.modules.combat.TargetStrafe;
 import client.rapid.module.modules.combat.Velocity;
 import client.rapid.module.modules.combat.WTap;
-import client.rapid.module.modules.movement.CorrectMovement;
-import client.rapid.module.modules.movement.CustomSpeed;
-import client.rapid.module.modules.movement.FastLadder;
-import client.rapid.module.modules.movement.Flight;
-import client.rapid.module.modules.movement.HighJump;
-import client.rapid.module.modules.movement.InventoryMove;
-import client.rapid.module.modules.movement.Jesus;
-import client.rapid.module.modules.movement.LongJump;
-import client.rapid.module.modules.movement.NoSlow;
-import client.rapid.module.modules.movement.Speed;
-import client.rapid.module.modules.movement.Spider;
-import client.rapid.module.modules.movement.Sprint;
-import client.rapid.module.modules.movement.Step;
-import client.rapid.module.modules.movement.Strafe;
+import client.rapid.module.modules.movement.*;
 import client.rapid.module.modules.other.ChatFilter;
 import client.rapid.module.modules.other.Disabler;
 import client.rapid.module.modules.other.FastBow;
@@ -107,6 +94,7 @@ public class ModuleManager {
 			new Flight(),
 			new Strafe(),
 			new Sprint(),
+			new Phase(),
 			new Speed(),
 			new Step(),
 
