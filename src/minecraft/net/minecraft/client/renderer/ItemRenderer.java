@@ -281,7 +281,7 @@ public class ItemRenderer {
       GlStateManager.enableRescaleNormal();
       GlStateManager.pushMatrix();
       if(this.itemToRender != null) {
-         boolean fakeBlock = KillAura.target != null && (Wrapper.getSettingsManager().getSettingByName("Kill Aura", "AutoBlock").getMode().equals("Fake") || Wrapper.getSettingsManager().getSettingByName("Kill Aura", "AutoBlock").getMode().equals("NCP Sync"));
+         boolean fakeBlock = KillAura.target != null && (Wrapper.getSettingsManager().getSettingByName("Kill Aura", "AutoBlock").getMode().equals("Fake") || Wrapper.getSettingsManager().getSettingByName("Kill Aura", "AutoBlock").getMode().equals("NCP"));
 
          if(this.itemToRender.getItem() == Items.filled_map) {
             this.renderItemMap(abstractclientplayer, f2, f, f1);

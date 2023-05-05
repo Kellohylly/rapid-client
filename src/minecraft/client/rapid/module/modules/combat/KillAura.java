@@ -114,12 +114,16 @@ public class KillAura extends Module {
                     doClick();
                 }
             }
-            if (e.isPost() && target != null && autoBlock.getMode().equals("Packet") && MathUtil.isinpercentage(autoblockperc.getValue()))
-                AuraUtil.block();
+            if (e.isPost() && target != null && MathUtil.isinpercentage(autoblockperc.getValue())) {
+                if(autoBlock.getMode().equals("Packet"))
+                    AuraUtil.block();
+
+                else if(autoBlock.getMode().equals("NCP"))
+                    PacketUtil.sendPacketSilent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+            }
         }
 
         // Auto Disable
-
         if(autoDisable.isEnabled()) {
             if(e instanceof EventUpdate && e.isPre()) {
                 if(mc.thePlayer.getHealth() <= 0)
@@ -260,11 +264,6 @@ public class KillAura extends Module {
                 if (!(target.hurtTime > 8) && timer.sleep(200)) {
                     mc.thePlayer.swingItem();
                     mc.playerController.attackEntity(mc.thePlayer, target);
-                } else {
-                    if(mc.thePlayer.swingProgress == 0) {
-                        if(autoBlock.getMode().equals("NCP Sync")) // since ncp flags c07 now
-                           PacketUtil.sendPacketSilent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                    }
                 }
                 break;
             case "Normal":
