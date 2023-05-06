@@ -6,9 +6,24 @@ import net.minecraft.util.*;
 
 import java.util.List;
 
-// Big thanks to ExterminateYT for this
 public class RaycastUtil extends MinecraftUtil {
 
+    // Thanks to white_cola for this
+    public static boolean overBlock(final EnumFacing enumFacing, final BlockPos pos, final boolean strict) {
+        final MovingObjectPosition movingObjectPosition = RaycastUtil.getMouseOver(4.5f);
+
+        if (movingObjectPosition == null)
+            return false;
+
+        final Vec3 hitVec = movingObjectPosition.hitVec;
+
+        if (hitVec == null)
+            return false;
+
+        return movingObjectPosition.getBlockPos() != null && movingObjectPosition.getBlockPos().equals(pos) && (!strict || movingObjectPosition.sideHit == enumFacing);
+    }
+
+    // Big thanks to ExterminateYT for this
     public static MovingObjectPosition getMouseOver(final float range) {
         final Entity entity = mc.getRenderViewEntity();
         if (entity != null && mc.theWorld != null) {

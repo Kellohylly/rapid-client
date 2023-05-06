@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
-import client.rapid.util.Logger;
+import client.rapid.util.console.Logger;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import client.rapid.event.events.Event;

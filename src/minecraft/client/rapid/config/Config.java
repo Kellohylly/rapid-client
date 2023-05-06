@@ -5,9 +5,8 @@ import java.util.ArrayList;
 
 import client.rapid.Wrapper;
 import client.rapid.module.*;
-import client.rapid.module.modules.visual.Hud;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.Logger;
+import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 
 public class Config {

@@ -1,4 +1,4 @@
-package client.rapid.util;
+package client.rapid.util.console;
 
 import org.apache.logging.log4j.LogManager;
 

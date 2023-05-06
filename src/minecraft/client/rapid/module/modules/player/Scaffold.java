@@ -12,6 +12,7 @@ import client.rapid.module.settings.Setting;
 import client.rapid.util.*;
 import client.rapid.util.TimerUtil;
 import client.rapid.util.block.BlockData;
+import client.rapid.util.block.BlockUtil;
 import client.rapid.util.module.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.Gui;
@@ -35,6 +36,7 @@ public class Scaffold extends Draggable {
 	private final Setting safewalk = new Setting("Safewalk", this, "None", "Simple", "Legit");
 	private final Setting tower = new Setting("Tower", this, "None", "NCP", "Slow");
 	private final Setting sprint = new Setting("Sprint", this, "None", "Normal", "No Packet");
+	private final Setting spoof = new Setting("Spoof", this, "None", "Switch");
 	private final Setting delay = new Setting("Delay", this, 0, 0, 500, true);
 	private final Setting boost = new Setting("Speed Boost", this, 0, 0, 1, false);
 	private final Setting placeOnEnd = new Setting("Place on end", this, true);
@@ -52,6 +54,8 @@ public class Scaffold extends Draggable {
 
 	private float yaw, pitch;
 
+	private int oldSlot;
+
 	private final List<Block> invalid = Arrays.asList(
 			Blocks.air,
 			Blocks.water,
@@ -64,14 +68,15 @@ public class Scaffold extends Draggable {
 			Blocks.enchanting_table,
 			Blocks.furnace,
 			Blocks.noteblock,
-			Blocks.torch
+			Blocks.torch,
+			Blocks.redstone_torch
 	);
 
 	TimerUtil timer = new TimerUtil();
 
 	public Scaffold() {
 		super(200, 200, 80, 20);
-		add(mode, rotations, safewalk, tower, sprint, delay, boost, placeOnEnd, rayCast, strict, eagle, keepY, swing, autoDisable);
+		add(mode, rotations, safewalk, tower, sprint, spoof, delay, boost, placeOnEnd, rayCast, strict, eagle, keepY, swing, autoDisable);
 	}
 
 	@Override
@@ -79,6 +84,8 @@ public class Scaffold extends Draggable {
 		rotated = false;
 		yaw = mc.thePlayer.rotationYaw;
 		pitch = mc.thePlayer.rotationPitch;
+
+		oldSlot = mc.thePlayer.inventory.currentItem;
 	}
 
 	@Override
@@ -86,6 +93,8 @@ public class Scaffold extends Draggable {
 		funnyY = MathHelper.floor_double(mc.thePlayer.posY);
 		sneak(false);
 		rotated = false;
+
+		mc.thePlayer.inventory.currentItem = oldSlot;
 	}
 
 	@Override
@@ -158,7 +167,7 @@ public class Scaffold extends Draggable {
 						if (placeOnEnd.isEnabled() && !mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.getEntityBoundingBox().offset(0.0, -0.001D, 0.0)).isEmpty())
 							return;
 
-						if(rayCast.isEnabled() && !overBlock(blockData.getFace(), blockData.getPosition(), strict.isEnabled()))
+						if(rayCast.isEnabled() && !RaycastUtil.overBlock(blockData.getFace(), blockData.getPosition(), strict.isEnabled()))
 							return;
 
 						if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.inventory.getCurrentItem(), blockData.getPosition(), blockData.getFace(), dataToVec(blockData))) {
@@ -197,14 +206,27 @@ public class Scaffold extends Draggable {
 				if (sprint.getMode().equals("None") && mc.thePlayer.isSprinting()) {
 					mc.thePlayer.setSprinting(false);
 					mc.gameSettings.keyBindSprint.pressed = false;
-				} else {
+				} else if(!sprint.getMode().equals("None")) {
 					mc.gameSettings.keyBindSprint.pressed = true;
 				}
 
 				blockPos = new BlockPos(mc.thePlayer.posX, funnyY - 1.0D, mc.thePlayer.posZ);
-				blockData = ScaffoldUtil.getBlockData(blockPos, invalid);
+				blockData = BlockUtil.getBlockData(blockPos, invalid);
 
 				if (blockData != null) {
+
+					// Spoof
+					if(spoof.getMode().equals("Switch")) {
+						if((mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || mc.thePlayer.getHeldItem() == null) {
+							for (int i = 0; i < 9; i++) {
+								ItemStack stack = mc.thePlayer.inventory.getStackInSlot(i);
+
+								if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock) {
+									mc.thePlayer.inventory.currentItem = i;
+								}
+							}
+						}
+					}
 					if (mc.theWorld.getBlockState(blockPos).getBlock() == Blocks.air && PlayerUtil.hasBlockEquipped() && mc.gameSettings.keyBindJump.isKeyDown() && !isMoving()) {
 						mc.thePlayer.motionX = 0;
 						mc.thePlayer.motionZ = 0;
@@ -222,7 +244,7 @@ public class Scaffold extends Draggable {
 						if (placeOnEnd.isEnabled() && !mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.getEntityBoundingBox().offset(0.0, -0.001D, 0.0)).isEmpty())
 							return;
 
-						if(rayCast.isEnabled() && !overBlock(blockData.getFace(), blockData.getPosition(), strict.isEnabled()))
+						if(rayCast.isEnabled() && !RaycastUtil.overBlock(blockData.getFace(), blockData.getPosition(), strict.isEnabled()))
 							return;
 
 						if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.inventory.getCurrentItem(), blockData.getPosition(), blockData.getFace(), dataToVec(blockData))) {
@@ -263,17 +285,6 @@ public class Scaffold extends Draggable {
 		y += (double) face.getFrontOffsetY() / 2;
 
 		return new Vec3(x, y, z);
-	}
-
-	public boolean overBlock(final EnumFacing enumFacing, final BlockPos pos, final boolean strict) {
-		final MovingObjectPosition movingObjectPosition = RaycastUtil.getMouseOver(4.5f);
-
-		if (movingObjectPosition == null) return false;
-
-		final Vec3 hitVec = movingObjectPosition.hitVec;
-		if (hitVec == null) return false;
-
-		return movingObjectPosition.getBlockPos() != null && movingObjectPosition.getBlockPos().equals(pos) && (!strict || movingObjectPosition.sideHit == enumFacing);
 	}
 
 }

@@ -2,8 +2,11 @@
 - Removed raycast % from Kill Aura.
 
 / Fixed Kill Aura rotations, GCD and MoveFix.
+/ Recoded and Improved Bed Breaker.
 
 + Added Vulcan and Ground Only Mode in Velocity.
-+ Added Aimbot Module.
 + Added Vulcan Ground to Speed.
-+ Added Auto Disable Module
++ Added Auto Disable to Flight, Speed, Kill Aura and Scaffold.
++ Added Spoof for Scaffold.
++ Added Phase Module.
++ Added Aimbot Module.

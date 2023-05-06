@@ -2,7 +2,7 @@ package client.rapid.util.font;
 
 import java.awt.Font;
 
-import client.rapid.util.Logger;
+import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 

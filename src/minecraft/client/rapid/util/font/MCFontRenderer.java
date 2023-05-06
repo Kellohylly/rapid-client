@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.opengl.GL11;
 
-import client.rapid.util.Logger;
+import client.rapid.util.console.Logger;
 
 public class MCFontRenderer extends CFont {
 	protected CFont.CharData[] boldChars = new CFont.CharData[256], italicChars = new CFont.CharData[256], boldItalicChars = new CFont.CharData[256];

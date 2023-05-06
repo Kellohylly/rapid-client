@@ -2,10 +2,8 @@ package client.rapid.config;
 
 import client.rapid.Wrapper;
 import client.rapid.module.Draggable;
-import client.rapid.module.Module;
 import client.rapid.module.modules.visual.Hud;
-import client.rapid.module.settings.Setting;
-import client.rapid.util.Logger;
+import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 
 import java.io.*;

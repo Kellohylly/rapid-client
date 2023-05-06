@@ -3,7 +3,7 @@ package client.rapid.module.settings;
 import java.util.ArrayList;
 
 import client.rapid.module.Module;
-import client.rapid.util.Logger;
+import client.rapid.util.console.Logger;
 
 public class SettingsManager {
 	private final ArrayList<Setting> settings = new ArrayList<>();

@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import client.rapid.Client;
+import client.rapid.util.console.Logger;
 
 public class ClientUtil {
 
