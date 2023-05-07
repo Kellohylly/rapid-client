@@ -49,7 +49,7 @@ public class Notification {
     public void render(int x, int y) {
         Minecraft mc = MinecraftUtil.mc;
 
-        boolean mcFont = Wrapper.getSettingsManager().getSettingByName("HUD", "Minecraft Font").isEnabled();
+        boolean mcFont = Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled();
         double offset;
         int width = mcFont ? mc.fontRendererObj.getStringWidth(message) + 35 : font.getStringWidth(message) + 35;
 

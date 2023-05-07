@@ -70,7 +70,7 @@ public class Module {
 		this.key = key;
 		
 		if(Client.getInstance() != null && mc.thePlayer != null)
-			Client.getInstance().getKeyConfig().save();
+			Wrapper.getKeyConfig().save();
 	}
 
 	public boolean isEnabled() {
@@ -160,8 +160,8 @@ public class Module {
     }
     
     protected static void save() {
-		if(Client.getInstance().getConfig() != null && Minecraft.getMinecraft().thePlayer != null)
-			Client.getInstance().getConfig().save();
+		if(Wrapper.getConfig() != null && Minecraft.getMinecraft().thePlayer != null)
+			Wrapper.getConfig().save();
     }
 	
 }

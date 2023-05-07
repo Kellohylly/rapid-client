@@ -3,6 +3,7 @@ package client.rapid.command.commands;
 import java.io.File;
 import java.util.StringJoiner;
 
+import client.rapid.Wrapper;
 import org.apache.commons.io.FilenameUtils;
 
 import client.rapid.Client;
@@ -28,7 +29,7 @@ public class ConfigCommand extends Command {
 					configName.add(args[i]);
 				
 				if(new File(dir + File.separator + configName + ".conf").exists()) {
-					Client.getInstance().getConfig().load(new File(dir + File.separator + configName + ".conf"));
+					Wrapper.getConfig().load(new File(dir + File.separator + configName + ".conf"));
 					PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Loaded config!");
 				}
 				else {

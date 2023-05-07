@@ -8,20 +8,11 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
-import client.rapid.util.block.BlockData;
 import client.rapid.util.block.BlockUtil;
 import client.rapid.util.module.RotationUtil;
-import client.rapid.util.module.ScaffoldUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBed;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.*;
 import net.minecraft.util.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @ModuleInfo(getName = "Bed Breaker", getCategory = Category.PLAYER)
 public class BedBreaker extends Module {

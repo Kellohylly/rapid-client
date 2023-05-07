@@ -4,16 +4,40 @@ import client.rapid.command.CommandManager;
 import client.rapid.config.*;
 import client.rapid.module.ModuleManager;
 import client.rapid.module.settings.SettingsManager;
+import client.rapid.rpc.RichPresence;
 
 public class Wrapper {
-	private static final CommandManager commandManager = new CommandManager();
-	
+	private static CommandManager commandManager;
+	private static SettingsManager settingsManager;
+	private static ModuleManager moduleManager;
+
+	private static Config config;
+	private static DragConfig dragConfig;
+	private static KeyConfig keyConfig;
+
+	private static RichPresence richPresence;
+
+	public static void init() {
+		Wrapper.settingsManager = new SettingsManager();
+		Wrapper.moduleManager = new ModuleManager();
+		Wrapper.config = new Config();
+		Wrapper.dragConfig = new DragConfig();
+		Wrapper.keyConfig = new KeyConfig();
+		Wrapper.commandManager = new CommandManager();
+		Wrapper.richPresence = new RichPresence();
+		config.generate();
+	}
+
+	public static void stop() {
+		Wrapper.richPresence.stop();
+	}
+
 	public static SettingsManager getSettingsManager() {
-		return Client.getInstance().getSettingsManager();
+		return settingsManager;
 	}
 	
 	public static ModuleManager getModuleManager() {
-		return Client.getInstance().getModuleManager();
+		return moduleManager;
 	}
 
 	public static CommandManager getCommandManager() {
@@ -21,10 +45,18 @@ public class Wrapper {
 	}
 	
 	public static Config getConfig() {
-		return Client.getInstance().getConfig();
+		return config;
 	}
 
 	public static DragConfig getDragConfig() {
-		return Client.getInstance().getDragConfig();
+		return dragConfig;
+	}
+
+	public static KeyConfig getKeyConfig() {
+		return keyConfig;
+	}
+
+	public static RichPresence getRichPresence() {
+		return richPresence;
 	}
 }

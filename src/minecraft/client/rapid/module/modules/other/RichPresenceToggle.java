@@ -1,6 +1,6 @@
 package client.rapid.module.modules.other;
 
-import client.rapid.Client;
+import client.rapid.Wrapper;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -10,11 +10,12 @@ public class RichPresenceToggle extends Module {
 
     @Override
     public void onEnable() {
-        Client.getInstance().getRichPresence().init();
+        Wrapper.getRichPresence().init();
     }
 
     @Override
     public void onDisable() {
-        Client.getInstance().getRichPresence().stop();
+        Wrapper.getRichPresence().stop();
     }
+
 }

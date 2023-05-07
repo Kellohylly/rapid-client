@@ -16,6 +16,7 @@ import client.rapid.module.modules.combat.Regen;
 import client.rapid.module.modules.combat.TargetStrafe;
 import client.rapid.module.modules.combat.Velocity;
 import client.rapid.module.modules.combat.WTap;
+import client.rapid.module.modules.hud.*;
 import client.rapid.module.modules.movement.*;
 import client.rapid.module.modules.other.ChatFilter;
 import client.rapid.module.modules.other.Disabler;
@@ -28,40 +29,19 @@ import client.rapid.module.modules.other.PingSpoof;
 import client.rapid.module.modules.other.RichPresenceToggle;
 import client.rapid.module.modules.other.Spammer;
 import client.rapid.module.modules.other.Timer;
-import client.rapid.module.modules.player.AntiVoid;
-import client.rapid.module.modules.player.AutoMLG;
-import client.rapid.module.modules.player.AutoRespawn;
-import client.rapid.module.modules.player.BedBreaker;
-import client.rapid.module.modules.player.ChestAura;
-import client.rapid.module.modules.player.ChestStealer;
-import client.rapid.module.modules.player.FastEat;
-import client.rapid.module.modules.player.FastMine;
-import client.rapid.module.modules.player.InventoryManager;
-import client.rapid.module.modules.player.KillInsults;
-import client.rapid.module.modules.player.NoFall;
-import client.rapid.module.modules.player.NoRotate;
-import client.rapid.module.modules.player.NoWeb;
-import client.rapid.module.modules.player.Perspective;
-import client.rapid.module.modules.player.SafeWalk;
-import client.rapid.module.modules.player.Scaffold;
-import client.rapid.module.modules.player.SpinBot;
+import client.rapid.module.modules.player.*;
 import client.rapid.module.modules.visual.Animations;
 import client.rapid.module.modules.visual.Cape;
 import client.rapid.module.modules.visual.ClickGuiToggle;
 import client.rapid.module.modules.visual.Crosshair;
 import client.rapid.module.modules.visual.ESP;
 import client.rapid.module.modules.visual.FullBright;
-import client.rapid.module.modules.visual.Hud;
+import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.modules.visual.NameProtect;
 import client.rapid.module.modules.visual.NameTags;
 import client.rapid.module.modules.visual.NoRender;
-import client.rapid.module.modules.visual.Notifications;
-import client.rapid.module.modules.visual.Scoreboard;
-import client.rapid.module.modules.visual.SessionInfo;
 import client.rapid.module.modules.visual.TimeChanger;
 import client.rapid.module.modules.visual.XRay;
-import client.rapid.module.modules.visual.draggables.Effects;
-import client.rapid.module.modules.visual.draggables.TargetHud;
 
 public class ModuleManager {
 	private final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
@@ -123,6 +103,7 @@ public class ModuleManager {
 			new AntiVoid(),
 			new SafeWalk(),
 			new FastMine(),
+			new Scaffold(),
 			new AutoMLG(),
 			new SpinBot(),
 			new FastEat(),
@@ -145,14 +126,16 @@ public class ModuleManager {
 		);
 
 		addAll(draggables,
+			new HudSettings(),
 			new TargetHud(),
-			new Hud(),
-			new Scaffold(),
+			new Watermark(),
+			new BlockCounter(),
 			new Effects(),
 			new Notifications(),
 			new SessionInfo(),
-			new Scoreboard()
-		);
+			new Scoreboard(),
+			new EnabledModules()
+				);
 		
 		for(Draggable d : draggables)
 			addAll(modules, d);

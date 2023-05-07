@@ -1,4 +1,4 @@
-package client.rapid.module.modules.visual;
+package client.rapid.module.modules.hud;
 
 import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
@@ -7,13 +7,14 @@ import client.rapid.event.events.game.EventRender;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.visual.Watermark;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.network.play.server.S02PacketChat;
 
-@ModuleInfo(getName = "Session Info", getCategory = Category.VISUAL)
+@ModuleInfo(getName = "Session Info", getCategory = Category.HUD)
 public class SessionInfo extends Draggable {
     float range = 0.00F;
     MCFontRenderer font = Fonts.normal2;
@@ -52,7 +53,7 @@ public class SessionInfo extends Draggable {
         }
         if (e instanceof EventRender && e.isPre()) {
             Gui.drawRect(x, y, x + width, y + height, 0x90000000);
-            Gui.drawRect(x, y, x + width, y + 1, ((Hud)Wrapper.getModuleManager().getModule("HUD")).getColor(0));
+            Gui.drawRect(x, y, x + width, y + 1, ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0));
 
             GlStateManager.pushMatrix();
             GlStateManager.scale(1.5, 1.5, 1.5);

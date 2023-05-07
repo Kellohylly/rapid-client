@@ -28,7 +28,7 @@ public class AltManager extends GuiScreen {
         this.username = new GuiTextField(var3, this.mc.fontRendererObj, width / 2 - 70, height / 2 + 16, 140, 20);
         this.password = new PasswordField(this.mc.fontRendererObj, width / 2 - 70, height / 2 + 40, 140, 20);
         username.setFocused(true);
-		Client.getInstance().getRichPresence().update("In Alt Manager", "");
+		Wrapper.getRichPresence().update("In Alt Manager", "");
 		super.initGui();
 	}
 	

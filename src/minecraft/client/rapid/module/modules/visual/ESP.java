@@ -8,6 +8,7 @@ import client.rapid.event.events.game.EventRenderWorld;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.hud.HudSettings;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.visual.RenderUtil;
 import net.minecraft.entity.Entity;
@@ -36,7 +37,7 @@ public class ESP extends Module {
 	@Override
 	public void onEvent(Event e) {
 		if(e instanceof EventRenderWorld && e.isPre()) {
-            Hud hud = (Hud)Wrapper.getModuleManager().getModule("HUD");
+            HudSettings hud = (HudSettings)Wrapper.getModuleManager().getModule("Hud Settings");
 
             for (Entity entity : mc.theWorld.loadedEntityList) {
 				if(canESP(entity))

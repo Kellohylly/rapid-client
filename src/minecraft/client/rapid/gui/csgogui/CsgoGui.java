@@ -6,7 +6,8 @@ import client.rapid.gui.csgogui.component.Comp;
 import client.rapid.gui.csgogui.component.components.*;
 import client.rapid.module.Module;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.visual.Hud;
+import client.rapid.module.modules.hud.HudSettings;
+import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
@@ -20,7 +21,6 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class CsgoGui extends GuiScreen {
     public double posX, posY, width2, height2, dragX, dragY;
@@ -71,37 +71,37 @@ public class CsgoGui extends GuiScreen {
             Gui.drawRect(0, 0, width, height, 0x84000000);
 
         if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled())
-            Gui.drawRect(posX - 2.5, posY - 18.5, width2 + 2.5, height2 + 2.5, ((Hud)Wrapper.getModuleManager().getModule("HUD")).getColor(0));
+            Gui.drawRect(posX - 2.5, posY - 18.5, width2 + 2.5, height2 + 4.5, ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0));
 
-        Gui.drawRect(posX - 2, posY - 18, width2 + 2, height2 + 2, backgroundDark);
-        Gui.drawRect(posX + 252, posY, width2, height2, background);
+        Gui.drawRect(posX - 2, posY - 18, width2 + 2, height2 + 4, backgroundDark);
+        Gui.drawRect(posX + 252, posY, width2, height2 + 2, background);
 
-        font.drawCenteredString("R&fapid", (float)posX + 25, (float)posY - 13, ((Hud)Wrapper.getModuleManager().getModule("HUD")).getColor(0));
-        font.drawCenteredString(selectedCategory.getName(), (float)posX + 150, (float)posY - 13, -1);
+        font.drawCenteredString("R&fapid", (float)posX + 21, (float)posY - 13, ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0));
+        font.drawCenteredString(selectedCategory.getName(), (float)posX + 144, (float)posY - 13, -1);
         font.drawCenteredString(selectedModule != null ? selectedModule.getName() : "", (float)posX + 325, (float)posY - 13, -1);
 
         int i = 0;
         int wheel = Mouse.getDWheel();
         for(Category c : Category.values()) {
-            int size = 50;
+            int size = 42;
 
-            Gui.drawRect(posX, posY + i, posX + size, posY + 10 + i + size - 10, c.equals(selectedCategory) ? ((Hud) Wrapper.getModuleManager().getModule("HUD")).getColor(0) : background);
+            Gui.drawRect(posX, posY + i, posX + size, posY + 10 + i + size - 10, c.equals(selectedCategory) ? ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0) : background);
 
-            if(c == Category.PLAYER)
-                icon1.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + size / 2, (float)posY + i + 17, -1);
+            if(c == Category.PLAYER || c == Category.HUD)
+                icon1.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
             else
-                icon2.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + size / 2, (float)posY + i + 17, -1);
+                icon2.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
             i+= size;
         }
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        glScissor(posX, posY, width2 - posX, height2 - posY);
+        glScissor(posX, posY, width2 - posX, height2 - posY + 2);
 
         i = 0;
         for(Module m : Wrapper.getModuleManager().getModulesInCategory(selectedCategory)) {
-            Gui.drawRect(posX + 52, posY + i + heightt, posX + 250, posY + i + heightt + 23, background);
-            font.drawString(m.getName() + (m.getKey() == 0 ? (binding && m == bindingModule ? " &7Listening..." : "") : " &7[" + (binding && m == bindingModule ? "Listening...]" : Keyboard.getKeyName(m.getKey()) + "]")), (float)posX + 60, (float)posY + (float)heightt + 8 + i, m.isEnabled() ? ((Hud) Wrapper.getModuleManager().getModule("HUD")).getColor(i) : -1);
+            Gui.drawRect(posX + 44, posY + i + heightt, posX + 250, posY + i + heightt + 23, background);
+            font.drawString(m.getName() + (m.getKey() == 0 ? (binding && m == bindingModule ? " &7Listening..." : "") : " &7[" + (binding && m == bindingModule ? "Listening...]" : Keyboard.getKeyName(m.getKey()) + "]")), (float)posX + 50, (float)posY + (float)heightt + 8 + i, m.isEnabled() ? ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(i) : -1);
 
             if(isInside(mouseX, mouseY, posX + 52, posY, posX + 250, height2)) {
                 if (wheel < 0) {
@@ -126,7 +126,7 @@ public class CsgoGui extends GuiScreen {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();
 
-        Gui.drawRect(4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4, isInside(mouseX, mouseY, 4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4) ? ((Hud)Wrapper.getModuleManager().getModule("Hud")).getColor(0) : 0xFF0F0F0F);
+        Gui.drawRect(4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4, isInside(mouseX, mouseY, 4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4) ? ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0) : 0xFF0F0F0F);
         Gui.drawRect(5, height - 25, 15 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 5, 0xFF1F1F1F);
         mc.fontRendererObj.drawString("Draggable Hud", 10, height - 19, -1);
     }
@@ -155,24 +155,23 @@ public class CsgoGui extends GuiScreen {
 
         int i = 0;
         for (Category category : Category.values()) {
-            if (isInside(mouseX, mouseY, posX, posY + i, posX + 50, posY + 10 + i + 40) && mouseButton == 0) {
+            if (isInside(mouseX, mouseY, posX, posY + i, posX + 42, posY + 10 + i + 40) && mouseButton == 0) {
                 if(selectedCategory != category)
                     heightt = 0;
 
                 selectedCategory = category;
             }
-            i += 50;
+            i += 42;
         }
         i = 0;
         for(Module m : Wrapper.getModuleManager().getModulesInCategory(selectedCategory)) {
-            if(isInside(mouseX, mouseY, posX + 52, posY + i + heightt, posX + 250, posY + i + heightt + 23)) {
-                if(isInside(mouseX, mouseY, posX + 52, posY, posX + 250, height2)) {
-                    if(mouseButton == 0)
+            if(isInside(mouseX, mouseY, posX + 44, posY + i + heightt, posX + 250, posY + i + heightt + 23)) {
+                if(isInside(mouseX, mouseY, posX + 44, posY, posX + 250, height2 + 2)) {
+                    if(mouseButton == 0) {
                         m.toggle();
-                else if(mouseButton == 2) {
-                    bindingModule = m;
-                    binding = true;
-                    System.out.println("nice");
+                    } else if(mouseButton == 2) {
+                        bindingModule = m;
+                        binding = true;
                 } else if(mouseButton == 1) {
                     int sOffset = 3;
                     comps.clear();

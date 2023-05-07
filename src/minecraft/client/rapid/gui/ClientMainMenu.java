@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import client.rapid.Client;
+import client.rapid.Wrapper;
 import client.rapid.gui.alt.AltManager;
 import client.rapid.util.ClientUtil;
 import client.rapid.util.font.Fonts;
@@ -36,7 +37,7 @@ public class ClientMainMenu extends GuiScreen {
 		buttonList.add(new GuiButton(2, width / 2 - 70, height / 2 + 38, 140, 18, "Alt Manager"));
 		buttonList.add(new GuiButton(3, width / 2 - 70, height / 2 + 56, 140, 18, "Settings"));
 		buttonList.add(new GuiButton(4, width / 2 - 70, height / 2 + 75, 140, 18, "Quit"));
-		Client.getInstance().getRichPresence().update("In Menu", "");
+		Wrapper.getRichPresence().update("In Menu", "");
 		backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background",  new DynamicTexture(256, 256));
 		outdated = !ClientUtil.isLatest();
 		super.initGui();

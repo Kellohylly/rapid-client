@@ -4,7 +4,8 @@ import client.rapid.Wrapper;
 import client.rapid.gui.csgogui.CsgoGui;
 import client.rapid.gui.csgogui.component.Comp;
 import client.rapid.module.Module;
-import client.rapid.module.modules.visual.Hud;
+import client.rapid.module.modules.hud.HudSettings;
+import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.gui.Gui;
 
@@ -26,7 +27,7 @@ public class CsgoCheckbox extends Comp {
         Gui.drawRect((int)(parent.posX + x + 107), (int)(parent.posY + y + 4) + scrollY, (int)(parent.posX + x + 120), (int)(parent.posY + y + 17) + scrollY, CsgoGui.backgroundDark);
 
         if(setting.isEnabled())
-            Gui.drawRect((int)(parent.posX + x + 109), (int)(parent.posY + y + 6) + scrollY, (int)(parent.posX + x + 118), (int)(parent.posY + y + 15) + scrollY, ((Hud) Wrapper.getModuleManager().getModule("HUD")).getColor((long)y));
+            Gui.drawRect((int)(parent.posX + x + 109), (int)(parent.posY + y + 6) + scrollY, (int)(parent.posX + x + 118), (int)(parent.posY + y + 15) + scrollY, ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor((long)y));
 
     }
 

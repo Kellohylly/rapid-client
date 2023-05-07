@@ -1,4 +1,4 @@
-package client.rapid.module.modules.visual;
+package client.rapid.module.modules.hud;
 
 import client.rapid.Wrapper;
 import client.rapid.module.Draggable;
@@ -18,7 +18,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@ModuleInfo(getName = "Scoreboard", getCategory = Category.VISUAL)
+@ModuleInfo(getName = "Scoreboard", getCategory = Category.HUD)
 public class Scoreboard extends Draggable {
 
     public Scoreboard() {
@@ -77,7 +77,7 @@ public class Scoreboard extends Draggable {
             String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
             int l = k1 - k * mc.fontRendererObj.FONT_HEIGHT;
             int i1 = x + width - b0 + 2;
-            Gui.drawRect(j - 2, l, i1, l + mc.fontRendererObj.FONT_HEIGHT, new Color(0, 0, 0, (int) Wrapper.getSettingsManager().getSettingByName("HUD", "Opacity").getValue()).getRGB());
+            Gui.drawRect(j - 2, l, i1, l + mc.fontRendererObj.FONT_HEIGHT, new Color(0, 0, 0, (int) Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Opacity").getValue()).getRGB());
             mc.fontRendererObj.drawString(s1, j, l, 553648127);
             mc.fontRendererObj.drawString(s2, i1 - mc.fontRendererObj.getStringWidth(s2), l, 553648127);
 

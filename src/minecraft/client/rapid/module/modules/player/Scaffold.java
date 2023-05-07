@@ -1,13 +1,10 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.*;
 import client.rapid.event.events.player.*;
-import client.rapid.gui.GuiPosition;
 import client.rapid.module.*;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.visual.Hud;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.*;
 import client.rapid.util.TimerUtil;
@@ -15,22 +12,19 @@ import client.rapid.util.block.BlockData;
 import client.rapid.util.block.BlockUtil;
 import client.rapid.util.module.*;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
 import net.minecraft.network.play.client.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
-import org.lwjgl.util.vector.Vector2f;
 
-import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
 @ModuleInfo(getName = "Scaffold", getCategory = Category.PLAYER)
-public class Scaffold extends Draggable {
+public class Scaffold extends Module {
 	private final Setting mode = new Setting("Mode", this, "Pre", "Post");
 	private final Setting rotations = new Setting("Rotations", this, "None", "Normal", "Keep");
 	private final Setting safewalk = new Setting("Safewalk", this, "None", "Simple", "Legit");
@@ -56,7 +50,7 @@ public class Scaffold extends Draggable {
 
 	private int oldSlot;
 
-	private final List<Block> invalid = Arrays.asList(
+	public static final List<Block> invalid = Arrays.asList(
 			Blocks.air,
 			Blocks.water,
 			Blocks.lava,
@@ -75,7 +69,6 @@ public class Scaffold extends Draggable {
 	TimerUtil timer = new TimerUtil();
 
 	public Scaffold() {
-		super(200, 200, 80, 20);
 		add(mode, rotations, safewalk, tower, sprint, spoof, delay, boost, placeOnEnd, rayCast, strict, eagle, keepY, swing, autoDisable);
 	}
 
@@ -98,13 +91,6 @@ public class Scaffold extends Draggable {
 	}
 
 	@Override
-	public void drawDummy(int mouseX, int mouseY) {
-		Gui.drawRect(x, y, x + width, y + height, 0x90000000);
-		mc.fontRendererObj.drawString("Block Count", x + width / 2 - mc.fontRendererObj.getStringWidth("Block Count") / 2, y + height / 2 - mc.fontRendererObj.FONT_HEIGHT / 2, -1);
-		super.drawDummy(mouseX, mouseY);
-	}
-
-	@Override
 	public void onEvent(Event e) {
 		setTag(mode.getMode());
 
@@ -116,27 +102,6 @@ public class Scaffold extends Draggable {
 
 			if(event.getPacket() instanceof C0BPacketEntityAction)
 				event.cancel();
-		}
-
-		if(e instanceof EventRender && e.isPre()) {
-			int blockCount = 0;
-			for (int i = 0; i < 45; ++i) {
-				if (!mc.thePlayer.inventoryContainer.getSlot(i).getHasStack())
-					continue;
-
-				ItemStack stack = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
-				Item item = stack.getItem();
-				if (!(stack.getItem() instanceof ItemBlock) || invalid.contains(((ItemBlock) item).getBlock()))
-					continue;
-
-				blockCount += stack.stackSize;
-			}
-			if (!(mc.currentScreen instanceof GuiPosition)) {
-				Hud hud = (Hud) Wrapper.getModuleManager().getModule("HUD");
-				Gui.drawRect(x - 1, y - 1, x + width + 1, y + height + 1, hud.getColor(0));
-				Gui.drawRect(x, y, x + width, y + height, new Color(0xFF0F0F13).brighter().getRGB());
-				mc.fontRendererObj.drawString(blockCount + " Blocks", x + width / 2 - mc.fontRendererObj.getStringWidth(blockCount + " Blocks") / 2, y + height / 2 - mc.fontRendererObj.FONT_HEIGHT / 2, -1);
-			}
 		}
 
 		if(e instanceof EventRotation) {

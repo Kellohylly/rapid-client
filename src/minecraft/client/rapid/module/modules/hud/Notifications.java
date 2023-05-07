@@ -1,4 +1,4 @@
-package client.rapid.module.modules.visual;
+package client.rapid.module.modules.hud;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventRender;
@@ -12,7 +12,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
-@ModuleInfo(getName = "Notifications", getCategory = Category.VISUAL)
+@ModuleInfo(getName = "Notifications", getCategory = Category.HUD)
 public class Notifications extends Draggable {
 
     public Notifications() {

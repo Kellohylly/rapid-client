@@ -2,7 +2,7 @@ package client.rapid.config;
 
 import client.rapid.Wrapper;
 import client.rapid.module.Draggable;
-import client.rapid.module.modules.visual.Hud;
+import client.rapid.module.modules.visual.Watermark;
 import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 
@@ -36,7 +36,7 @@ public class DragConfig {
 		for(Draggable d : Wrapper.getModuleManager().getDraggables())
 			saves.add("ModuleDrag" + sep + d.getName().replace(" ", "-") + sep + d.getX() + sep + d.getY());
 
-		saves.add("WatermarkText" + sep + Hud.text.replace(" ", "ag]68j$"));
+		saves.add("WatermarkText" + sep + Watermark.text.replace(" ", "ag]68j$"));
 
 		try {
 			PrintWriter pw = new PrintWriter(data);
@@ -80,7 +80,7 @@ public class DragConfig {
 			}
 
 			if(line.startsWith("WatermarkText"))
-				Hud.setWatermark(args[1].replace("ag]68j$", " "));
+				Watermark.setWatermark(args[1].replace("ag]68j$", " "));
 		}
 	}
 

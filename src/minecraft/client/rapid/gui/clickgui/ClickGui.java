@@ -9,7 +9,8 @@ import client.rapid.gui.GuiPosition;
 import client.rapid.gui.clickgui.component.Component;
 import client.rapid.gui.clickgui.component.Frame;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.visual.Hud;
+import client.rapid.module.modules.hud.HudSettings;
+import client.rapid.module.modules.visual.Watermark;
 import net.minecraft.client.gui.*;
 
 public class ClickGui extends GuiScreen {
@@ -20,7 +21,7 @@ public class ClickGui extends GuiScreen {
 
 	private GuiPosition position;
 	
-	public static Hud hud = ((Hud)Wrapper.getModuleManager().getModule("HUD"));
+	public static HudSettings hud = ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings"));
 	
 	public ClickGui() {
 		frames = new ArrayList<>();

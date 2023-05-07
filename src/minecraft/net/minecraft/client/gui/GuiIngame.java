@@ -337,7 +337,7 @@ public class GuiIngame extends Gui
         		this.renderScoreboard(scoreobjective1, scaledresolution);*/
 
             if(Wrapper.getModuleManager().getModule("Scoreboard").isEnabled()) {
-                ((client.rapid.module.modules.visual.Scoreboard)Wrapper.getModuleManager().getModule("Scoreboard")).renderScoreboard(scoreobjective1, scaledresolution);
+                ((client.rapid.module.modules.hud.Scoreboard)Wrapper.getModuleManager().getModule("Scoreboard")).renderScoreboard(scoreobjective1, scaledresolution);
             }
         }
 

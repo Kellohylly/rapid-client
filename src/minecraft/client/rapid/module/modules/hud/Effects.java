@@ -1,4 +1,4 @@
-package client.rapid.module.modules.visual.draggables;
+package client.rapid.module.modules.hud;
 
 import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
@@ -7,7 +7,6 @@ import client.rapid.gui.GuiPosition;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.visual.Hud;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -17,12 +16,9 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 
-@ModuleInfo(getName = "Effects", getCategory = Category.VISUAL)
+@ModuleInfo(getName = "Effects", getCategory = Category.HUD)
 public class Effects extends Draggable {
     MCFontRenderer font = Fonts.normal2;
 
@@ -31,9 +27,9 @@ public class Effects extends Draggable {
     }
 
     public void drawDummy(int mouseX, int mouseY) {
-        font.drawCenteredStringWithShadow("Regeneration &70:00", x + width + 2 - font.getStringWidth("Regeneration 0:00") / 2 - 4, y + 30, 13458603);
-        font.drawCenteredStringWithShadow("Swiftness II &70:00", x + width + 2 - font.getStringWidth("Swiftness II 0:00") / 2 - 4, y + 20, 8171462);
-        font.drawCenteredStringWithShadow("Absorption &70:00", x + width + 2 - font.getStringWidth("Absorption 0:00") / 2 - 4, y + 10, 2445989);
+        font.drawCenteredStringWithShadow("Regeneration &70:00", x + width + 2 - (float) font.getStringWidth("Regeneration 0:00") / 2 - 4, y + 30, 13458603);
+        font.drawCenteredStringWithShadow("Swiftness II &70:00", x + width + 2 - (float) font.getStringWidth("Swiftness II 0:00") / 2 - 4, y + 20, 8171462);
+        font.drawCenteredStringWithShadow("Absorption &70:00", x + width + 2 - (float) font.getStringWidth("Absorption 0:00") / 2 - 4, y + 10, 2445989);
         super.drawDummy(mouseX, mouseY);
     }
 
@@ -61,7 +57,7 @@ public class Effects extends Draggable {
 
 
                     String text = s1 + EnumChatFormatting.GRAY + " " + Potion.getDurationString(potioneffect);
-                    if(Wrapper.getSettingsManager().getSettingByName("HUD", "Minecraft Font").isEnabled())
+                    if(Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled())
                         Gui.drawCenteredString(mc.fontRendererObj, text, x + width + 2 - mc.fontRendererObj.getStringWidth(text) / 2 - 5, y + 14 + i2, potion.getLiquidColor());
                     else
                         font.drawCenteredStringWithShadow(text, x + width + 2 - font.getStringWidth(text) / 2 + 5, y + 14 + i2, potion.getLiquidColor());

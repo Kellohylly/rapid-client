@@ -1,4 +1,4 @@
-package client.rapid.module.modules.visual.draggables;
+package client.rapid.module.modules.hud;
 
 import java.awt.Color;
 
@@ -9,7 +9,7 @@ import client.rapid.gui.GuiPosition;
 import client.rapid.module.*;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.combat.KillAura;
-import client.rapid.module.modules.visual.Hud;
+import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.font.*;
 import net.minecraft.client.gui.Gui;
@@ -19,7 +19,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 
-@ModuleInfo(getName = "Target HUD", getCategory = Category.VISUAL)
+@ModuleInfo(getName = "Target HUD", getCategory = Category.HUD)
 public class TargetHud extends Draggable {
 	private final Setting mode = new Setting("Mode", this, "Old", "New");
 	MCFontRenderer font = Fonts.normal2;
@@ -43,7 +43,7 @@ public class TargetHud extends Draggable {
 				if (!(target instanceof EntityPlayer || target instanceof EntityVillager || target instanceof EntityZombie))
 					return;
 
-				Hud hud = (Hud) Wrapper.getModuleManager().getModule("HUD");
+				HudSettings hud = (HudSettings) Wrapper.getModuleManager().getModule("Hud Settings");
 
 				switch (mode.getMode()) {
 					case "Old":
@@ -71,7 +71,7 @@ public class TargetHud extends Draggable {
 
 						Gui.drawRect(x + 30, y + 16, x + 30 + (double) target.getHealth() * 4.7f, y + 30, color);
 
-						if (Wrapper.getSettingsManager().getSettingByName("HUD", "Minecraft Font").isEnabled()) {
+						if (Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled()) {
 							mc.fontRendererObj.drawStringWithShadow(target.getName(), x + 30, y + 4, -1);
 							mc.fontRendererObj.drawStringWithShadow(String.format("%.1f", target.getHealth() / 2), x + 30 + (target.getMaxHealth() * 4.7f) / 2 - mc.fontRendererObj.getStringWidth(String.format("%.1f", target.getHealth() / 2)) / 2, y + 19f, -1);
 

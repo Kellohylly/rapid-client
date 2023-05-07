@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import client.rapid.Wrapper;
 import client.rapid.gui.clickgui.ClickGui;
 import client.rapid.module.Module;
-import client.rapid.module.modules.visual.Hud;
+import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -59,7 +59,7 @@ public class Button extends Component {
 	
 	public void renderComponent() {
 		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled())
-			Gui.drawRect(parent.getX() - 1.5, this.parent.getY() + this.offset, parent.getX() + parent.getWidth() + 1.5, this.parent.getY() + 13.5 + this.offset, ((Hud)Wrapper.getModuleManager().getModule("HUD")).getColor(offset));
+			Gui.drawRect(parent.getX() - 1.5, this.parent.getY() + this.offset, parent.getX() + parent.getWidth() + 1.5, this.parent.getY() + 13.5 + this.offset, ClickGui.hud.getColor(offset));
 	
 		Gui.drawRect(parent.getX() - 1, this.parent.getY() + this.offset, parent.getX() + parent.getWidth() + 1, this.parent.getY() + 13 + this.offset, 0xFF0D0E11);
 		Gui.drawRect(parent.getX(), this.parent.getY() + this.offset, parent.getX() + parent.getWidth(), this.parent.getY() + 12 + this.offset, this.hovered ? (mod.isEnabled() ? new Color(ClickGui.hud.getColor(offset / 2)).darker().getRGB() : 0xFF0D0E11) : (mod.isEnabled() ? ClickGui.hud.getColor(offset / 2) : new Color(0xFF0F0F13).brighter().getRGB()));
