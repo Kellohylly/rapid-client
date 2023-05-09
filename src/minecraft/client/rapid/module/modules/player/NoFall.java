@@ -41,13 +41,14 @@ public class NoFall extends Module {
 		        if(event.getPacket() instanceof C03PacketPlayer && !event.isIncoming()) {
 		        	C03PacketPlayer packet = event.getPacket();
 
+					if(isEnabled("Long Jump") && getMode("Long Jump", "Mode").equals("Vulcan"))
+						return;
+
 					if(mc.thePlayer.fallDistance >= distance.getValue()) {
-						mc.thePlayer.fallDistance = 0;
 						if(!mc.thePlayer.onGround) {
-							if (mc.thePlayer.ticksExisted % 2 == 0)
-								mc.thePlayer.motionY = -0.155;
-							else
-								mc.thePlayer.motionY = -0.1;
+							mc.thePlayer.fallDistance = -0.1f;
+							mc.thePlayer.motionY = -0.1;
+							setMoveSpeed(0.3);
 						}
 						packet.setOnGround(!packet.isOnGround());
 					}

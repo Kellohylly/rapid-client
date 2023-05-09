@@ -23,7 +23,7 @@ public class LongJump extends Module {
 	
 	private double moveSpeed;
 	private boolean jumped, canJump, damaged;
-	private int ticks;
+	private int ticks, jumps;
 
 	private final TimerUtil glideTime = new TimerUtil();
 
@@ -40,7 +40,9 @@ public class LongJump extends Module {
 
 		damaged = mc.thePlayer.hurtTime != 0;
 		canJump = false;
+		jumped = false;
 		ticks = 0;
+		jumps = 0;
 	}
 
 	@Override
@@ -52,6 +54,7 @@ public class LongJump extends Module {
 		mc.thePlayer.speedInAir = 0.02f;
 		ticks = 0;
 		damaged = false;
+		jumps = 0;
 	}
 
 	@Override
@@ -90,13 +93,13 @@ public class LongJump extends Module {
 			}
 			return;
 		}
-		if(e instanceof EventPacket && mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 3 && ((EventPacket) e).getPacket() instanceof C03PacketPlayer && !isEnabled("No Fall")) {
+		/*if(e instanceof EventPacket && mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 3 && ((EventPacket) e).getPacket() instanceof C03PacketPlayer && !isEnabled("No Fall")) {
 			C03PacketPlayer packet = ((EventPacket) e).getPacket();
 			mc.thePlayer.fallDistance = 0;
 			mc.thePlayer.motionY = -0.1;
 			packet.setOnGround(!packet.isOnGround());
 
-		}
+		}*/
 		if(e instanceof EventUpdate && e.isPre()) {
 			switch(mode.getMode()) {
 			case "Vanilla":
@@ -171,31 +174,32 @@ public class LongJump extends Module {
 					setMoveSpeed(moveSpeed);
 					break;
 				case "Vulcan":
-					if(mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0) {
-						if(jumped && autoDisable.isEnabled())
+					if(mc.thePlayer.onGround) {
+						if(jumped && autoDisable.isEnabled()) {
 							setEnabled(false);
-						else {
-							moveSpeed = 0;
-							mc.thePlayer.jump();
+						} else {
+							if(!jumped) {
+								mc.thePlayer.jump();
+							}
 						}
-					}
-					if(mc.thePlayer.fallDistance > 0) {
-						jumped = true;
-						if (mc.thePlayer.fallDistance >= 0.1 && moveSpeed < 3) {
-							mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + height.getValue(), mc.thePlayer.posZ);
-							moveSpeed += 1;
-						}
+					} else if(mc.thePlayer.fallDistance > 0){
+						if(!jumped && jumps < 3) {
+								mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + (jumps == 0 ? 10 : height.getValue()), mc.thePlayer.posZ);
+							jumps += 1;
 
-						if(!mc.thePlayer.onGround) {
+							if(jumps >= 3)
+								jumped = true;
+						} else {
 							if(glideTime.sleep(146))
 								mc.thePlayer.motionY = -0.1476;
 							else
 								mc.thePlayer.motionY = -0.0975;
-						}
-						if(isEnabled("Disabler") && getMode("Disabler", "Mode").equals("Vulcan Strafe"))
-							setMoveSpeed(getBaseMoveSpeed() + 0.0449);
+
+							if(isEnabled("Disabler") && getMode("Disabler", "Mode").equals("Vulcan Strafe"))
+								setMoveSpeed(getBaseMoveSpeed() + 0.0449);
 					}
-						break;
+				}
+				break;
 			}
 		}
 	}

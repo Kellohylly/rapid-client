@@ -94,6 +94,14 @@ public class Scaffold extends Module {
 	public void onEvent(Event e) {
 		setTag(mode.getMode());
 
+		if(autoDisable.isEnabled()) {
+			if(mc.thePlayer.getHealth() <= 0)
+				setEnabled(false);
+
+			if(e instanceof EventWorldLoad)
+				setEnabled(false);
+
+		}
 		if(e instanceof EventSafewalk && e.isPre() && safewalk.getMode().equals("Simple") && !placeOnEnd.isEnabled())
 			e.cancel();
 

@@ -293,10 +293,10 @@ public class KillAura extends Module {
                 case "Packet":
                     AuraUtil.blockPacket();
                     break;
-                case "NCP Sync": // thanks Kellohylly for giving me an idea using C09.
+                /*case "NCP Sync": // thanks Kellohylly for giving me an idea using C09.
                     PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 1));
                     PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-                    break;
+                    break;*/
             }
         }
     }

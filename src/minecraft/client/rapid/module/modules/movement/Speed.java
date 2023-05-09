@@ -143,19 +143,27 @@ public class Speed extends Module {
 				break;
 			case "Vulcan":
 				if(isMovingOnGround()) {
+					double moveSpeed = 0;
 					mc.thePlayer.jump();
 					mc.timer.timerSpeed = 1.15f;
 					if(mc.thePlayer.moveForward != 0 && mc.thePlayer.moveStrafing == 0)
-						setMoveSpeed(0.522);
+						moveSpeed = 0.522;
 					else if(mc.thePlayer.moveStrafing != 0)
-						setMoveSpeed(0.46);
-
+						moveSpeed = 0.46;
 					else
-						setMoveSpeed(getBaseMoveSpeed() * 1.8);
+						moveSpeed = getBaseMoveSpeed() * 1.8;
+
+					if (PlayerUtil.hasEffect(Potion.moveSpeed))
+						moveSpeed *= 1.0 + 0.09 * (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1);
+
+					if(PlayerUtil.hasEffect(Potion.moveSlowdown))
+						moveSpeed *= 0.9f;
+
+					setMoveSpeed(moveSpeed);
 				} else {
 					mc.timer.timerSpeed = 1f;
 
-					if(getMoveSpeed() > 0.331)
+					if(getMoveSpeed() > 0.332)
 						setMoveSpeed(0.331);
 
 					if(ticks == 4)

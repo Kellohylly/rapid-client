@@ -100,7 +100,7 @@ public class ModuleManager {
 			new Perspective(),
 			new ChestAura(),
 			new NoRotate(),
-			new AntiVoid(),
+			new AntiFall(),
 			new SafeWalk(),
 			new FastMine(),
 			new Scaffold(),
@@ -134,8 +134,9 @@ public class ModuleManager {
 			new Notifications(),
 			new SessionInfo(),
 			new Scoreboard(),
-			new EnabledModules()
-				);
+			new EnabledModules(),
+			new PlayerPosition()
+			);
 		
 		for(Draggable d : draggables)
 			addAll(modules, d);

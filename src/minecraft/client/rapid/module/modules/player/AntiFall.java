@@ -6,20 +6,18 @@ import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.PacketUtil;
 import client.rapid.util.PlayerUtil;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.BlockPos;
 
-@ModuleInfo(getName = "Anti Void", getCategory = Category.PLAYER)
-public class AntiVoid extends Module {
+@ModuleInfo(getName = "Anti Fall", getCategory = Category.PLAYER)
+public class AntiFall extends Module {
     private final Setting mode = new Setting("Mode", this, "Normal", "Jump", "Teleport");
     private final Setting fallDistance = new Setting("Fall Distance", this, 4, 2, 10, false);
     private final Setting height = new Setting("Height", this, 2, 0.42, 10, false);
 
     private BlockPos groundPos;
 
-    public AntiVoid() {
+    public AntiFall() {
         add(mode, fallDistance, height);
     }
 

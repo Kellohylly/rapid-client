@@ -10,6 +10,7 @@ import client.rapid.module.settings.Setting;
 import client.rapid.notification.Notification;
 import client.rapid.notification.NotificationManager;
 import client.rapid.util.PacketUtil;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
@@ -18,8 +19,8 @@ import net.minecraft.util.EnumFacing;
 
 @ModuleInfo(getName = "Disabler", getCategory = Category.OTHER)
 public class Disabler extends Module {
-	private final Setting mode = new Setting("Mode", this, "Transaction", "Payload", "Vulcan Strafe");
-
+	private final Setting mode = new Setting("Mode", this, "Transaction", "Payload", "Vulcan Strafe", "Timer");
+	
 	public Disabler() {
 		add(mode);
 	}
@@ -52,6 +53,10 @@ public class Disabler extends Module {
 				if(event.getPacket() instanceof C17PacketCustomPayload)
 					e.cancel();
 				break;
+				case "Timer":
+					if(event.getPacket() instanceof C03PacketPlayer && mc.thePlayer.ticksExisted % 3 == 0)
+						event.cancel();
+					break;
 			}
 		}
 	}

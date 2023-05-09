@@ -1,6 +1,7 @@
 package client.rapid.module.modules.combat;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.player.EventRotation;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -41,11 +42,7 @@ public class Aimbot extends Module {
 
     @Override
     public void onEvent(Event e) {
-        if(e instanceof EventUpdate && e.isPre()) {
-            collectTargets();
-
-            target = !targets.isEmpty() ? targets.get(0) : null;
-
+        if(e instanceof EventRotation) {
             if(target != null) {
                 float[] rots = RotationUtil.getRotations(target, 0, 0);
 
@@ -53,8 +50,13 @@ public class Aimbot extends Module {
                 rotations[1] = RotationUtil.updateRotation(mc.thePlayer.rotationPitch, rots[1], (float)turnSpeed.getValue());
 
                 mc.thePlayer.rotationYaw = rotations[0];
-                mc.thePlayer.rotationPitch = rotations[1] - 12;
+                mc.thePlayer.rotationPitch = rotations[1];
             }
+        }
+        if(e instanceof EventUpdate && e.isPre()) {
+            collectTargets();
+
+            target = !targets.isEmpty() ? targets.get(0) : null;
         }
     }
 

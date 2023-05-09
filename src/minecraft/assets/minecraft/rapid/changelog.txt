@@ -1,12 +1,27 @@
 - Removed Transaction and ZeroInAir from Velocity.
 - Removed raycast % from Kill Aura.
+- Removed Legit from Scaffold.
 
 / Fixed Kill Aura rotations, GCD and MoveFix.
 / Recoded and Improved Bed Breaker.
+/ Split Hud to Watermark, Enabled Modules and Hud Settings.
+/ Fixed Vulcan Long Jump.
+/ Improved Vulcan No Fall.
+/ Turned NCP Sync Auto Block to NCP.
+/ Renamed Anti Void to Anti Fall.
+/ Hopefully fixed Ping Spoof.
 
++ Added separate category for draggables.
++ Added Pre and Post to Scaffold.
 + Added Vulcan and Ground Only Mode in Velocity.
 + Added Vulcan Ground to Speed.
 + Added Auto Disable to Flight, Speed, Kill Aura and Scaffold.
++ Added Packets to Fast Eat.
++ Added Start Time to Fast Eat.
++ Added Do On Stop to Fast Eat.
++ Added Player Position.
++ Added Block Counter.
++ Added Timer to Disabler.
 + Added Spoof for Scaffold.
 + Added Phase Module.
 + Added Aimbot Module.
