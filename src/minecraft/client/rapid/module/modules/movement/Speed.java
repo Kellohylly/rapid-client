@@ -30,6 +30,10 @@ public class Speed extends Module {
 
 	private final List<Vec3> lastLocations = new ArrayList<>();
 
+	private boolean jumped;
+
+	private double moveSpeed;
+
 	public Speed() {
 		add(mode, speed, damageBoost, groundStrafe, disableOnFlag);
 	}

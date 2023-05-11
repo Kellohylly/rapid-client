@@ -3,7 +3,7 @@ package client.rapid.notification;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class NotificationManager {
-    private static LinkedBlockingQueue<Notification> queue = new LinkedBlockingQueue<>();
+    private static final LinkedBlockingQueue<Notification> queue = new LinkedBlockingQueue<>();
     private static Notification currentNotification = null;
 
     public static void addToQueue(Notification notification) {
@@ -11,14 +11,16 @@ public class NotificationManager {
     }
 
     public static void update() {
-        if (currentNotification != null && !currentNotification.isShown())
+        if (currentNotification != null && !currentNotification.isShown()) {
+            currentNotification.timer.reset();
             currentNotification = null;
+        }
 
         if (currentNotification == null && !queue.isEmpty()) {
             currentNotification = queue.poll();
             currentNotification.start();
+            currentNotification.timer.reset();
         }
-
     }
 
     public static void render(int x, int y) {
@@ -32,7 +34,4 @@ public class NotificationManager {
         return queue;
     }
 
-    public static Notification getCurrentNotification() {
-        return currentNotification;
-    }
 }

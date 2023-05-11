@@ -175,6 +175,9 @@ public class KillAura extends Module {
             if (entity instanceof EntityVillager && !villagers.isEnabled())
                 return false;
 
+            if (entity.isOnSameTeam(mc.thePlayer) && teams.isEnabled())
+                return false;
+
         }
         if (entity.isInvisible() && !invisibles.isEnabled())
             return false;

@@ -33,8 +33,7 @@ public class CsgoGui extends GuiScreen {
 
     public final MCFontRenderer
     font = Fonts.normal,
-    icon1 = Fonts.icons4Big,
-    icon2 = Fonts.icons5Big;
+    icons = Fonts.newIconsBig;
 
     int heightt = 0;
 
@@ -87,10 +86,11 @@ public class CsgoGui extends GuiScreen {
 
             Gui.drawRect(posX, posY + i, posX + size, posY + 10 + i + size - 10, c.equals(selectedCategory) ? ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0) : background);
 
-            if(c == Category.PLAYER || c == Category.HUD)
+            icons.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
+            /*if(c == Category.PLAYER || c == Category.HUD)
                 icon1.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
             else
-                icon2.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
+                icon2.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);*/
             i+= size;
         }
 

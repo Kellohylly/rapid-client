@@ -28,6 +28,7 @@ public class Flight extends Module {
 	private final Setting speed = new Setting("Speed", this, 2, 0.2, 10, false);
 	private final Setting fast = new Setting("Fast", this, false);
 	private final Setting autoDisable = new Setting("Auto Disable", this, true);
+	private final Setting bobbing = new Setting("Bobbing", this, true);
 
 	private Vec3 vec3;
 	private Vector2f vec2f;
@@ -39,7 +40,7 @@ public class Flight extends Module {
 	private final TimerUtil timer = new TimerUtil();
 
 	public Flight() {
-		add(mode, damage, speed, fast, autoDisable);
+		add(mode, damage, speed, fast, autoDisable, bobbing);
 	}
 
 	@Override
@@ -86,6 +87,8 @@ public class Flight extends Module {
 	public void onEvent(Event e) {
 		/* Make player wait for damage */
 		if(e instanceof EventUpdate && e.isPre()) {
+			if(bobbing.isEnabled())
+				mc.thePlayer.cameraYaw = 0.0696f;
 			if (mc.thePlayer.hurtTime != 0)
 				damaged = true;
 
@@ -143,11 +146,7 @@ public class Flight extends Module {
 				mc.thePlayer.capabilities.isFlying = false;
 
 				if(!mc.thePlayer.onGround) {
-					if (mc.thePlayer.ticksExisted % 2 == 0)
-						event.setY(-1.0E-9);
-					else
-						event.setY(1.0E-9);
-
+					event.setY(mc.thePlayer.ticksExisted % 2 == 0 ? -1.0E-9 : 1.0E-9);
 					mc.thePlayer.motionY = 0;
 
 					if(fast.isEnabled()) {

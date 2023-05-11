@@ -12,8 +12,7 @@ import net.minecraft.client.gui.*;
 public class Frame {
 	public MCFontRenderer
 	font = Fonts.clickgui,
-	icon1 = Fonts.icons4,
-	icon2 = Fonts.icons5;
+	icons = Fonts.newIcons;
 
 	public ArrayList<Component> components;
 	public Category category;
@@ -49,10 +48,11 @@ public class Frame {
 		font.drawString(this.category.getName(), (this.x + 2) + 5, (this.y + 2.5f) + 2.5f, -1);
 
 		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Category Icons").isEnabled()) {
-			if(category == Category.PLAYER || category == Category.HUD)
+			icons.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4, -1);
+			/*if(category == Category.PLAYER || category == Category.HUD)
 				icon1.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4f, -1);
 			else
-				icon2.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4f, -1);
+				icon2.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4f, -1);*/
 		}
 
 		if(this.open && !this.components.isEmpty()) {

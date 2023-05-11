@@ -7,7 +7,9 @@ import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.PacketUtil;
 import client.rapid.util.PlayerUtil;
+import net.minecraft.network.play.client.C03PacketPlayer;
 
 @ModuleInfo(getName = "Phase", getCategory = Category.MOVEMENT)
 public class Phase extends Module {
@@ -35,8 +37,9 @@ public class Phase extends Module {
                 if (PlayerUtil.isInsideBlock() && mc.thePlayer.isSneaking())
                     reset = 1;
 
-                if (reset > 0)
+                if (reset > 0) {
                     mc.thePlayer.setPosition(mc.thePlayer.posX + xOff, mc.thePlayer.posY, mc.thePlayer.posZ + zOff);
+                }
                 break;
             }
         }

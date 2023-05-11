@@ -5,17 +5,7 @@ import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.combat.Aimbot;
-import client.rapid.module.modules.combat.AntiBot;
-import client.rapid.module.modules.combat.AutoArmor;
-import client.rapid.module.modules.combat.AutoClicker;
-import client.rapid.module.modules.combat.Criticals;
-import client.rapid.module.modules.combat.KeepSprint;
-import client.rapid.module.modules.combat.KillAura;
-import client.rapid.module.modules.combat.Regen;
-import client.rapid.module.modules.combat.TargetStrafe;
-import client.rapid.module.modules.combat.Velocity;
-import client.rapid.module.modules.combat.WTap;
+import client.rapid.module.modules.combat.*;
 import client.rapid.module.modules.hud.*;
 import client.rapid.module.modules.movement.*;
 import client.rapid.module.modules.other.ChatFilter;
@@ -51,6 +41,7 @@ public class ModuleManager {
 		addAll(modules,
 			// COMBAT
 			new TargetStrafe(),
+			new AntiFireball(),
 			new AutoClicker(),
 			new KeepSprint(),
 			new AutoArmor(),

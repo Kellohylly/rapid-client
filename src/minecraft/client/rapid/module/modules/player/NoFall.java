@@ -24,7 +24,7 @@ public class NoFall extends Module {
 
 	@Override
 	public void onEvent(Event e) {
-		if(isEnabled("Anti Void") && !PlayerUtil.isBlockUnder())
+		if(isEnabled("Anti Fall") && !PlayerUtil.isBlockUnder())
 			return;
 
 		if(e instanceof EventCollide && e.isPre() && mode.getMode().equals("Verus")) {
