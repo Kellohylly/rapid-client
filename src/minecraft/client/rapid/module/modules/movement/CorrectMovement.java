@@ -13,9 +13,9 @@ public class CorrectMovement extends Module {
 
 	@Override
 	public void onEvent(Event e) {
-        if (e instanceof EventStrafe)
+        if (e instanceof EventStrafe) {
             ((EventStrafe) e).setYaw(RotationUtil.yaw);
-
+        }
         if (e instanceof EventJump) {
             ((EventJump) e).setYaw(RotationUtil.yaw);
         }

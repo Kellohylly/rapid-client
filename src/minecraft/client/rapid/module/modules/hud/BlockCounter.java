@@ -8,7 +8,6 @@ import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.player.Scaffold;
-import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.Item;
@@ -29,7 +28,7 @@ public class BlockCounter extends Draggable {
     @Override
     public void drawDummy(int mouseX, int mouseY) {
         Gui.drawRect(x, y, x + width, y + height, 0x90000000);
-        mc.fontRendererObj.drawString("Block Count", x + width / 2 - mc.fontRendererObj.getStringWidth("Block Count") / 2, y + height / 2 - mc.fontRendererObj.FONT_HEIGHT / 2, -1);
+        mc.fontRendererObj.drawString("Block Count", x + (float) width / 2 - (float) mc.fontRendererObj.getStringWidth("Block Count") / 2, y + (float) height / 2 - (float) mc.fontRendererObj.FONT_HEIGHT / 2, -1);
         super.drawDummy(mouseX, mouseY);
     }
 
@@ -55,7 +54,7 @@ public class BlockCounter extends Draggable {
                 HudSettings hud = (HudSettings) Wrapper.getModuleManager().getModule("Hud Settings");
                 Gui.drawRect(x - 1, y - 1, x + width + 1, y + height + 1, hud.getColor(0));
                 Gui.drawRect(x, y, x + width, y + height, new Color(0xFF0F0F13).brighter().getRGB());
-                mc.fontRendererObj.drawString(blockCount + " Blocks", x + width / 2 - mc.fontRendererObj.getStringWidth(blockCount + " Blocks") / 2, y + height / 2 - mc.fontRendererObj.FONT_HEIGHT / 2, -1);
+                mc.fontRendererObj.drawString(blockCount + " Blocks", x + (float) width / 2 - (float) mc.fontRendererObj.getStringWidth(blockCount + " Blocks") / 2, y + (float) height / 2 - (float) mc.fontRendererObj.FONT_HEIGHT / 2, -1);
             }
         }
     }

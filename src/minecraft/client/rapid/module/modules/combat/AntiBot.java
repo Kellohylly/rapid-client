@@ -21,15 +21,15 @@ import java.util.List;
 public class AntiBot extends Module {
 	private final Setting mode = new Setting("Mode", this, "Basic", "Tab");
 	private final Setting maxDistance = new Setting("Max Distance", this, 6, 2, 10, false);
+	private final Setting clearTime = new Setting("Clear in Seconds", this, 180, 60, 300, true);
 	private final Setting remove = new Setting("Remove", this, false);
 	private final Setting excludeTeam = new Setting("Exclude Team", this, false);
-	private final Setting clearTime = new Setting("Clear in Seconds", this, 180, 60, 300, true);
 
 	private static final ArrayList<Entity> bots = new ArrayList<>();
 	private final TimerUtil timer = new TimerUtil();
 
 	public AntiBot() {
-		add(mode, maxDistance, remove, excludeTeam, clearTime);
+		add(mode, maxDistance, clearTime, remove, excludeTeam);
 	}
 
 	@Override

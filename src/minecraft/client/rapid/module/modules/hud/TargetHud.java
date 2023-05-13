@@ -31,7 +31,7 @@ public class TargetHud extends Draggable {
 
 	public void drawDummy(int mouseX, int mouseY) {
 		Gui.drawRect(x, y, x + width, y + height, 0x90000000);
-		mc.fontRendererObj.drawString(name, x + width / 2 - mc.fontRendererObj.getStringWidth(name) / 2, y + height / 2 - mc.fontRendererObj.FONT_HEIGHT / 2, -1);
+		mc.fontRendererObj.drawString(name, x + (float) width / 2 - (float) mc.fontRendererObj.getStringWidth(name) / 2, y + (float) height / 2 - (float) mc.fontRendererObj.FONT_HEIGHT / 2, -1);
 		super.drawDummy(mouseX, mouseY);
 	}
 

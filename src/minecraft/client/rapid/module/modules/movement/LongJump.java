@@ -93,13 +93,13 @@ public class LongJump extends Module {
 			}
 			return;
 		}
-		/*if(e instanceof EventPacket && mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 3 && ((EventPacket) e).getPacket() instanceof C03PacketPlayer && !isEnabled("No Fall")) {
+		if(e instanceof EventPacket && mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 4 && ((EventPacket) e).getPacket() instanceof C03PacketPlayer) {
 			C03PacketPlayer packet = ((EventPacket) e).getPacket();
 			mc.thePlayer.fallDistance = 0;
 			mc.thePlayer.motionY = -0.1;
 			packet.setOnGround(!packet.isOnGround());
 
-		}*/
+		}
 		if(e instanceof EventUpdate && e.isPre()) {
 			switch(mode.getMode()) {
 			case "Vanilla":

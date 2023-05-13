@@ -11,7 +11,6 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
-import client.rapid.util.visual.ColorUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;

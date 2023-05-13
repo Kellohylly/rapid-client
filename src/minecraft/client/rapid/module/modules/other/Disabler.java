@@ -2,6 +2,7 @@ package client.rapid.module.modules.other;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -10,53 +11,79 @@ import client.rapid.module.settings.Setting;
 import client.rapid.notification.Notification;
 import client.rapid.notification.NotificationManager;
 import client.rapid.util.PacketUtil;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
+import client.rapid.util.TimerUtil;
+import net.minecraft.network.play.client.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 @ModuleInfo(getName = "Disabler", getCategory = Category.OTHER)
 public class Disabler extends Module {
-	private final Setting mode = new Setting("Mode", this, "Transaction", "Payload", "Vulcan Strafe", "Timer");
-	
+	//private final Setting mode = new Setting("Mode", this, "Transaction", "Payload", "Vulcan Strafe", "Timer");
+	private final Setting time = new Setting("Transaction Delay", this, 300, 100, 500, true);
+	private final Setting noPayload = new Setting("No Payload", this, false);
+	private final Setting noAbilities = new Setting("No Abilities", this, false);
+	private final Setting timer = new Setting("Timer", this, false);
+	private final Setting transaction = new Setting("Transaction", this, false);
+	private final Setting keepAlive = new Setting("Keep Alive", this, false);
+	private final Setting oldVulcanStrafe = new Setting("Old Vulcan Strafe", this, false);
+
+	private final List<C0FPacketConfirmTransaction> transactions = new ArrayList<>();
+	private final List<C00PacketKeepAlive> keepAlives = new ArrayList<>();
+
+	private final TimerUtil transactionDelay = new TimerUtil();
+	private final TimerUtil keepAliveDelay = new TimerUtil();
+
 	public Disabler() {
-		add(mode);
+		add(time, noPayload, noAbilities, timer, transaction, keepAlive, oldVulcanStrafe);
 	}
 
 	@Override
 	public void onEnable() {
-		if(mode.getMode().equals("Vulcan Strafe"))
+		if(oldVulcanStrafe.isEnabled())
 			NotificationManager.addToQueue(new Notification("Disabler", "This can flag for Auto Block when attacking!", Notification.Type.WARNING));
-		else
-			NotificationManager.addToQueue(new Notification("Note", "Some disablers may require a restart.", Notification.Type.INFO));
+
+		NotificationManager.addToQueue(new Notification("Note", "Some disablers may require a restart.", Notification.Type.INFO));
 	}
 
 	@Override
 	public void onEvent(Event e) {
-		if(e instanceof EventUpdate && e.isPre() && mode.getMode().equals("Vulcan Strafe") && mc.thePlayer.ticksExisted % 4 == 0) {
-			PacketUtil.sendPacketSilent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), EnumFacing.DOWN));
+		if(e instanceof EventUpdate && e.isPre()) {
+			if(oldVulcanStrafe.isEnabled() && mc.thePlayer.ticksExisted % 4 == 0)
+				PacketUtil.sendPacketSilent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), EnumFacing.DOWN));
+
+			if(transaction.isEnabled() && transactionDelay.sleep((int)time.getValue() * 10L) && transactions.size() > 0)
+				PacketUtil.sendPacketSilent(transactions.get(transactions.size() - 1));
+
+			if(keepAlive.isEnabled() && keepAliveDelay.sleep((int)time.getValue() * 10L) && keepAlives.size() > 0)
+				PacketUtil.sendPacketSilent(keepAlives.get(keepAlives.size() - 1));
 
 		}
 		if(e instanceof EventPacket && e.isPre()) {
-			setTag(mode.getMode());
 
 			EventPacket event = (EventPacket)e;
 
-			switch(mode.getMode()) {
-				case "Transaction":
-					if(event.getPacket() instanceof C0FPacketConfirmTransaction)
-						e.cancel();
-				break;
-			case "Payload":
-				if(event.getPacket() instanceof C17PacketCustomPayload)
-					e.cancel();
-				break;
-				case "Timer":
-					if(event.getPacket() instanceof C03PacketPlayer && mc.thePlayer.ticksExisted % 3 == 0)
-						event.cancel();
-					break;
+			if(timer.isEnabled() && event.getPacket() instanceof C03PacketPlayer && mc.thePlayer.ticksExisted % 3 == 0)
+				event.cancel();
+
+			if(noPayload.isEnabled() && event.getPacket() instanceof C17PacketCustomPayload)
+				event.cancel();
+
+			if(noAbilities.isEnabled() && event.getPacket() instanceof C13PacketPlayerAbilities)
+				event.cancel();
+
+			if(transaction.isEnabled() && event.getPacket() instanceof C0FPacketConfirmTransaction) {
+				transactions.add(event.getPacket());
+				event.cancel();
+			}
+
+			if(keepAlive.isEnabled() && event.getPacket() instanceof C00PacketKeepAlive) {
+				System.out.println("working");
+				keepAlives.add(event.getPacket());
+				event.cancel();
 			}
 		}
 	}

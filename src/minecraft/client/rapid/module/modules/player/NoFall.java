@@ -36,6 +36,7 @@ public class NoFall extends Module {
 		}
 		if(e instanceof EventPacket && e.isPre()) {
 			EventPacket event = (EventPacket)e;
+
 			switch(mode.getMode()) {
 			case "Vulcan":
 		        if(event.getPacket() instanceof C03PacketPlayer && !event.isIncoming()) {
@@ -48,7 +49,6 @@ public class NoFall extends Module {
 						if(!mc.thePlayer.onGround) {
 							mc.thePlayer.fallDistance = -0.1f;
 							mc.thePlayer.motionY = -0.1;
-							setMoveSpeed(0.3);
 						}
 						packet.setOnGround(!packet.isOnGround());
 					}

@@ -42,7 +42,7 @@ public class AntiFall extends Module {
                         mc.thePlayer.fallDistance = 0;
                         break;
                     case "Teleport":
-                        if(mc.thePlayer.getDistance(groundPos.getX(), groundPos.getY(), groundPos.getZ()) <= 10) {
+                        if(groundPos != null && mc.thePlayer.getDistance(groundPos.getX(), groundPos.getY(), groundPos.getZ()) <= 10) {
                             mc.thePlayer.setPosition(groundPos.getX(), groundPos.getY(), groundPos.getZ());
                             mc.thePlayer.fallDistance = 0;
                             setMoveSpeed(0);

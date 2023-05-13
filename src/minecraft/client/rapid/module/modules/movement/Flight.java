@@ -17,13 +17,14 @@ import client.rapid.notification.NotificationManager;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import org.lwjgl.util.vector.Vector2f;
 
 @ModuleInfo(getName = "Flight", getCategory = Category.MOVEMENT)
 public class Flight extends Module {
-	private final Setting mode = new Setting("Mode", this, "Creative", "Vanilla", "Old NCP", "Collide", "Verus");
+	private final Setting mode = new Setting("Mode", this, "Creative", "Vanilla", "Old NCP", "Collide", "Verus", "Position");
 	private final Setting damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait");
 	private final Setting speed = new Setting("Speed", this, 2, 0.2, 10, false);
 	private final Setting fast = new Setting("Fast", this, false);
@@ -36,6 +37,8 @@ public class Flight extends Module {
 	private double moveSpeed, launchY;
 	private boolean canFly, damaged;
 	private int ticks;
+
+	private double x, z;
 
 	private final TimerUtil timer = new TimerUtil();
 
@@ -58,6 +61,9 @@ public class Flight extends Module {
 				moveSpeed = speed.getValue();
 			} else
 				moveSpeed = getBaseMoveSpeed();
+
+			x = mc.thePlayer.posX;
+			z = mc.thePlayer.posZ;
 			break;
 		case "Verus":
 			if (mc.thePlayer.onGround) {
@@ -81,6 +87,8 @@ public class Flight extends Module {
 		moveSpeed = 0;
 		ticks = 0;
 		setMoveSpeed(getMoveSpeed() / 5);
+		mc.timer.timerSpeed = 1f;
+
 	}
 
 	@Override
@@ -167,79 +175,96 @@ public class Flight extends Module {
 			setTag(mode.getMode());
 
 			switch(mode.getMode()) {
-			case "Creative":
-				mc.thePlayer.capabilities.isFlying = true;
-				break;
-			case "Vanilla":
-				mc.thePlayer.capabilities.isFlying = false;
+				case "Creative":
+					mc.thePlayer.capabilities.isFlying = true;
+					break;
+				case "Vanilla":
+					mc.thePlayer.capabilities.isFlying = false;
 
-				moveSpeed = speed.getValue();
+					moveSpeed = speed.getValue();
 
-				if(mc.gameSettings.keyBindJump.isKeyDown())
-					mc.thePlayer.motionY = moveSpeed / 2;
+					if (mc.gameSettings.keyBindJump.isKeyDown())
+						mc.thePlayer.motionY = moveSpeed / 2;
 
-				else if(mc.gameSettings.keyBindSneak.isKeyDown())
-					mc.thePlayer.motionY = -moveSpeed / 2;
-				else
-					mc.thePlayer.motionY = 0;
-				
-				setMoveSpeed(moveSpeed);
-				break;
+					else if (mc.gameSettings.keyBindSneak.isKeyDown())
+						mc.thePlayer.motionY = -moveSpeed / 2;
+					else
+						mc.thePlayer.motionY = 0;
+
+					setMoveSpeed(moveSpeed);
+					break;
 				case "Old NCP":
-					if(mc.thePlayer.onGround) {
-						if(!damaged && mode.getMode().equals("None"))
+					if (mc.thePlayer.onGround) {
+						if (!damaged && mode.getMode().equals("None"))
 							return;
 						mc.thePlayer.jump();
 					}
 					break;
-			case "Verus":
-				mc.thePlayer.capabilities.isFlying = false;
+				case "Verus":
+					mc.thePlayer.capabilities.isFlying = false;
 
-				if(!fast.isEnabled()) {
-					if(ticks >= 3 && mc.thePlayer.hurtTime > 1) {
-						setMoveSpeed(speed.getValue());
-						canFly = true;
-						timer.reset();
-					} else if(damaged)
-						setMoveSpeed(speed.getValue());
+					if (!fast.isEnabled()) {
+						if (ticks >= 3 && mc.thePlayer.hurtTime > 1) {
+							setMoveSpeed(speed.getValue());
+							canFly = true;
+							timer.reset();
+						} else if (damaged)
+							setMoveSpeed(speed.getValue());
 
-					if(canFly && timer.reached(575)) {
-						if(mc.thePlayer.onGround) {
-							mc.thePlayer.jump();
-							launchY = mc.thePlayer.posY;
+						if (canFly && timer.reached(575)) {
+							if (mc.thePlayer.onGround) {
+								mc.thePlayer.jump();
+								launchY = mc.thePlayer.posY;
 
+							}
 						}
-					}
-					if(canFly && timer.reached(1200))
-						setMoveSpeed(getBaseMoveSpeed());
+						if (canFly && timer.reached(1200))
+							setMoveSpeed(getBaseMoveSpeed());
 
-				} else {
-					if (mc.thePlayer.onGround) {
-						canFly = true;
-
-						if (!mc.gameSettings.keyBindJump.isKeyDown() && !isEnabled("Speed") && mc.thePlayer.ticksExisted % 15 == 0) {
-							mc.thePlayer.jump();
-							setMoveSpeed(0.5);
-						} else
-							setMoveSpeed(0.35);
-
-						launchY = mc.thePlayer.posY;
 					} else {
-						if (!mc.gameSettings.keyBindJump.isKeyDown() && canFly && isMoving()) {
-							mc.thePlayer.motionY = -0.0980000019;
-							setMoveSpeed(0.36);
+						if (mc.thePlayer.onGround) {
+							canFly = true;
+
+							if (!mc.gameSettings.keyBindJump.isKeyDown() && !isEnabled("Speed") && mc.thePlayer.ticksExisted % 15 == 0) {
+								mc.thePlayer.jump();
+								setMoveSpeed(0.5);
+							} else
+								setMoveSpeed(0.35);
+
+							launchY = mc.thePlayer.posY;
+						} else {
+							if (!mc.gameSettings.keyBindJump.isKeyDown() && canFly && isMoving()) {
+								mc.thePlayer.motionY = -0.0980000019;
+								setMoveSpeed(0.36);
+							}
 						}
+						setMoveSpeed(getMoveSpeed());
 					}
-					setMoveSpeed(getMoveSpeed());
-				}
-				break;
+					break;
+				case "Position":
+					mc.gameSettings.keyBindForward.pressed = false;
+					mc.thePlayer.motionY = 0;
+					double x = -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)) * speed.getValue();
+					double z = Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)) * speed.getValue();
+
+					if(mc.thePlayer.ticksExisted % 2 == 0) {
+						PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + x, mc.thePlayer.posY, mc.thePlayer.posZ + z, false));
+						mc.thePlayer.setPosition(mc.thePlayer.posX + x, mc.thePlayer.posY, mc.thePlayer.posZ + z);
+						PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + x, mc.thePlayer.posY + 30, mc.thePlayer.posZ + z, true));
+
+					}
+					break;
 			}
 		}
 		if(e instanceof EventPacket && e.isPre()) {
 			EventPacket event = (EventPacket)e;
 
-			if(event.getPacket() instanceof C03PacketPlayer && canFly && !timer.reached(575))
-				((C03PacketPlayer) event.getPacket()).setOnGround(true);
+			switch(mode.getMode()) {
+				case "Verus":
+					if(event.getPacket() instanceof C03PacketPlayer && canFly && !timer.reached(575))
+						((C03PacketPlayer) event.getPacket()).setOnGround(true);
+					break;
+			}
 		}
 	}
 }

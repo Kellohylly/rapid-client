@@ -11,15 +11,20 @@ import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @ModuleInfo(getName = "Chest Stealer", getCategory = Category.PLAYER)
 public class ChestStealer extends Module {
 	private final Setting delay = new Setting("Delay", this, 100, 10, 500, true);
+	private final Setting titleCheck = new Setting("Title Check", this, true);
 	private final Setting autoClose = new Setting("Auto Close", this, true);
 
 	private final TimerUtil timer = new TimerUtil();
 
 	public ChestStealer() {
-		add(delay, autoClose);
+		add(delay, titleCheck, autoClose);
 	}
 
 	@Override
@@ -27,7 +32,10 @@ public class ChestStealer extends Module {
 		if(e instanceof EventUpdate && e.isPre()) {
 			if(mc.currentScreen instanceof GuiChest) {
 
-				GuiChest chest = (GuiChest)mc.currentScreen;
+				GuiChest chest = (GuiChest) mc.currentScreen;
+
+				if(titleCheck.isEnabled() && !isChest(chest) && !chest.stealing)
+					return;
 
 				for(int i = 0; i < chest.inventoryRows * 9; i++) {
 					Slot slot = chest.inventorySlots.inventorySlots.get(i);
@@ -38,14 +46,20 @@ public class ChestStealer extends Module {
 							chest.handleMouseClick(slot, slot.slotNumber, 0, 6);
 						}
 					}
-					if(isEmpty(mc.thePlayer.openContainer) && autoClose.isEnabled())
+					if(isEmpty(mc.thePlayer.openContainer) && autoClose.isEnabled() && !chest.stealing)
 						mc.thePlayer.closeScreen();
 				}
 			}
 		}
 	}
+
+	private boolean isChest(GuiChest chest) {
+		String title = chest.lowerChestInventory.getDisplayName().getUnformattedText();
+
+		return title.contains("Chest");
+	}
 	
-    public boolean isEmpty(Container container) {
+    public static boolean isEmpty(Container container) {
         for (int i = 0; i < ((container.inventorySlots.size() == 90) ? 54 : 27); ++i) {
             if (container.getSlot(i).getHasStack())
                 return false;

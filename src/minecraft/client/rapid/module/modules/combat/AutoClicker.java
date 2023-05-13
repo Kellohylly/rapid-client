@@ -14,11 +14,10 @@ import net.minecraft.client.settings.KeyBinding;
 
 @ModuleInfo(getName = "Auto Clicker", getCategory = Category.COMBAT)
 public class AutoClicker extends Module {
-	private final Setting
-	maxCps = new Setting("Max CPS", this, 12, 1, 20, false),
-	minCps = new Setting("Min CPS", this, 12, 1, 20, false),
-	random = new Setting("Random", this, 2, 1, 6, false),
-	breakBlocks = new Setting("Break Blocks", this, false);
+	private final Setting maxCps = new Setting("Max CPS", this, 12, 1, 20, false);
+	private final Setting minCps = new Setting("Min CPS", this, 12, 1, 20, false);
+	private final Setting random = new Setting("Random", this, 2, 1, 6, false);
+	private final Setting breakBlocks = new Setting("Break Blocks", this, false);
 
 	private final TimerUtil timer = new TimerUtil();
 
