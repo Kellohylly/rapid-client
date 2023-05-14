@@ -1,4 +1,4 @@
-package client.rapid.module.modules.combat;
+package client.rapid.module.modules.other;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.player.EventUpdate;
@@ -9,7 +9,7 @@ import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
-@ModuleInfo(getName = "Regen", getCategory = Category.COMBAT)
+@ModuleInfo(getName = "Regen", getCategory = Category.OTHER)
 public class Regen extends Module {
     private final Setting packets = new Setting("Packets", this, 10, 1, 100, true);
     private final Setting onHealth = new Setting("On Health", this, 15, 1, 19, true);

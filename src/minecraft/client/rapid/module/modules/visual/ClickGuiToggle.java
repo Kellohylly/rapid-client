@@ -56,7 +56,4 @@ public class ClickGuiToggle extends Module {
 		}
 		toggle();
 	}
-
-	public void onEvent(Event e) {
-	}
 }

@@ -6,6 +6,9 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import client.rapid.event.EventType;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.connection.UserConnectionImpl;
+import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -52,6 +55,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+import viamcp.ViaMCP;
+import viamcp.handler.CommonTransformer;
+import viamcp.handler.MCPDecodeHandler;
+import viamcp.handler.MCPEncodeHandler;
+import viamcp.utils.NettyUtil;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
    private static final Logger logger = LogManager.getLogger();
@@ -280,6 +288,14 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             }
 
             p_initChannel_1_.pipeline().addLast((String)"timeout", (ChannelHandler)(new ReadTimeoutHandler(30))).addLast((String)"splitter", (ChannelHandler)(new MessageDeserializer2())).addLast((String)"decoder", (ChannelHandler)(new MessageDeserializer(EnumPacketDirection.CLIENTBOUND))).addLast((String)"prepender", (ChannelHandler)(new MessageSerializer2())).addLast((String)"encoder", (ChannelHandler)(new MessageSerializer(EnumPacketDirection.SERVERBOUND))).addLast((String)"packet_handler", (ChannelHandler)networkmanager);
+
+            // VIAMCP
+            if (p_initChannel_1_ instanceof SocketChannel && ViaMCP.getInstance().getVersion() != ViaMCP.PROTOCOL_VERSION)
+            {
+               UserConnection user = new UserConnectionImpl(p_initChannel_1_, true);
+               new ProtocolPipelineImpl(user);
+               p_initChannel_1_.pipeline().addBefore("encoder", CommonTransformer.HANDLER_ENCODER_NAME, new MCPEncodeHandler(user)).addBefore("decoder", CommonTransformer.HANDLER_DECODER_NAME, new MCPDecodeHandler(user));
+            }
          }
       })).channel(oclass)).connect(p_181124_0_, p_181124_1_).syncUninterruptibly();
       return networkmanager;
@@ -330,13 +346,19 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
          if(this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder) {
             ((NettyCompressionDecoder)this.channel.pipeline().get("decompress")).setCompressionTreshold(treshold);
          } else {
-            this.channel.pipeline().addBefore("decoder", "decompress", new NettyCompressionDecoder(treshold));
+            //this.channel.pipeline().addBefore("decoder", "decompress", new NettyCompressionDecoder(treshold));
+
+            // VIAMCP
+            NettyUtil.decodeEncodePlacement(channel.pipeline(), "decoder", "decompress", new NettyCompressionDecoder(treshold));
          }
 
          if(this.channel.pipeline().get("compress") instanceof NettyCompressionEncoder) {
             ((NettyCompressionEncoder)this.channel.pipeline().get("decompress")).setCompressionTreshold(treshold);
          } else {
-            this.channel.pipeline().addBefore("encoder", "compress", new NettyCompressionEncoder(treshold));
+            //this.channel.pipeline().addBefore("encoder", "compress", new NettyCompressionEncoder(treshold));
+
+            // VIAMCP
+            NettyUtil.decodeEncodePlacement(channel.pipeline(), "encoder", "compress", new NettyCompressionEncoder(treshold));
          }
       } else {
          if(this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder) {

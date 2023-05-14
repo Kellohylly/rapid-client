@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.util.Objects;
 
 import client.rapid.util.MinecraftUtil;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
-import net.minecraft.client.renderer.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -31,7 +31,7 @@ public class RenderUtil extends MinecraftUtil {
         GlStateManager.translate(-(x - mc.getRenderManager().renderPosX), -(y - mc.getRenderManager().renderPosY), -(z - mc.getRenderManager().renderPosZ));
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GlStateManager.color(Objects.requireNonNull(color).getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
-        RenderGlobal.func_181561_a(new AxisAlignedBB(x - 1 / 2 + 0.05 - x + (x - mc.getRenderManager().renderPosX), (y - mc.getRenderManager().renderPosY), z - 1 / 2 + 0.05 - z + (z - mc.getRenderManager().renderPosZ), x + 1 - 0.05 - x + (x - mc.getRenderManager().renderPosX), y + 1 - 0.05 - y + (y - mc.getRenderManager().renderPosY), z + 1 - 0.05 - z + (z - mc.getRenderManager().renderPosZ)));
+        RenderGlobal.func_181561_a(new AxisAlignedBB(x - (double) 1 / 2 + 0.05 - x + (x - mc.getRenderManager().renderPosX), (y - mc.getRenderManager().renderPosY), z - (double) 1 / 2 + 0.05 - z + (z - mc.getRenderManager().renderPosZ), x + 1 - 0.05 - x + (x - mc.getRenderManager().renderPosX), y + 1 - 0.05 - y + (y - mc.getRenderManager().renderPosY), z + 1 - 0.05 - z + (z - mc.getRenderManager().renderPosZ)));
         GlStateManager.translate(x - mc.getRenderManager().renderPosX, y - mc.getRenderManager().renderPosY, z - mc.getRenderManager().renderPosZ);
         GlStateManager.translate(-(x - mc.getRenderManager().renderPosX), -(y - mc.getRenderManager().renderPosY), -(z - mc.getRenderManager().renderPosZ));
         GL11.glEnable(GL11.GL_TEXTURE_2D);

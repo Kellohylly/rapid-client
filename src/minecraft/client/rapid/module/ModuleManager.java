@@ -8,17 +8,7 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.modules.combat.*;
 import client.rapid.module.modules.hud.*;
 import client.rapid.module.modules.movement.*;
-import client.rapid.module.modules.other.ChatFilter;
-import client.rapid.module.modules.other.Disabler;
-import client.rapid.module.modules.other.FastBow;
-import client.rapid.module.modules.other.FastPlace;
-import client.rapid.module.modules.other.GodMode;
-import client.rapid.module.modules.other.HackerDetector;
-import client.rapid.module.modules.other.Panic;
-import client.rapid.module.modules.other.PingSpoof;
-import client.rapid.module.modules.other.RichPresenceToggle;
-import client.rapid.module.modules.other.Spammer;
-import client.rapid.module.modules.other.Timer;
+import client.rapid.module.modules.other.*;
 import client.rapid.module.modules.player.*;
 import client.rapid.module.modules.visual.Animations;
 import client.rapid.module.modules.visual.Cape;
@@ -40,16 +30,15 @@ public class ModuleManager {
 	public ModuleManager() {
 		addAll(modules,
 			// COMBAT
-			new TargetStrafe(),
 			new AntiFireball(),
 			new AutoClicker(),
-			new AutoGapple(),
 			new KeepSprint(),
 			new AutoArmor(),
 			new Criticals(),
 			new KillAura(),
 			new Velocity(),
 			new AntiBot(),
+			new AutoHeal(),
 			//new TPAura(),
 			new Aimbot(),
 			new Regen(),
@@ -58,6 +47,7 @@ public class ModuleManager {
 			// MOVEMENT
 			new CorrectMovement(),
 			new InventoryMove(),
+			new TargetStrafe(),
 			new CustomSpeed(),
 			new FastLadder(),
 			new HighJump(),

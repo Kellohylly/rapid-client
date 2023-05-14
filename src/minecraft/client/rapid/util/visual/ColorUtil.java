@@ -1,7 +1,6 @@
 package client.rapid.util.visual;
 
-
-import java.awt.*;
+import java.awt.Color;
 
 public class ColorUtil {
 	
@@ -19,4 +18,5 @@ public class ColorUtil {
 		(int) (first.getGreen() * (1 - index) + second.getGreen() * index),
 		(int) (first.getBlue() * (1 - index) + second.getBlue() * index)).getRGB();
     }
+
 }

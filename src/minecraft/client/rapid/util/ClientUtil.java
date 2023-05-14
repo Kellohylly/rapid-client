@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import client.rapid.Client;
-import client.rapid.util.console.Logger;
 
 public class ClientUtil {
 
@@ -44,22 +43,14 @@ public class ClientUtil {
         for (int i = 0; i < v1.length && i < v2.length; i++) {
             int n1 = (v1[i]);
             int n2 = (v2[i]);
+
             if (n1 > n2) {
                 return true;
             } else if (n1 < n2) {
                 return false;
             }
         }
-        
-        if (v1.length >= v2.length) {
-        	if(v1.length > v2.length) {
-        		Logger.info("wtf rapid version from the future?");
-        	}
-            return true;
-        } else if (v1.length < v2.length) {
-            return false;
-        } else {
-            return false;
-        }
+        return v1.length >= v2.length;
     }
+
 }

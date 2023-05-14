@@ -13,6 +13,7 @@ import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+import viamcp.ViaMCP;
 
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
    private static final Logger logger = LogManager.getLogger();
@@ -58,6 +59,8 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
       } else {
          this.serverListSelector.setDimensions(this.width, this.height, 32, this.height - 64);
       }
+
+      buttonList.add(ViaMCP.getInstance().asyncSlider);
 
       this.createButtons();
    }

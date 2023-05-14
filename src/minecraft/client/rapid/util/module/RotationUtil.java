@@ -1,7 +1,6 @@
 package client.rapid.util.module;
 
 import client.rapid.util.*;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
 

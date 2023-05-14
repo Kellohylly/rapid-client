@@ -5,6 +5,7 @@ import client.rapid.config.*;
 import client.rapid.module.ModuleManager;
 import client.rapid.module.settings.SettingsManager;
 import client.rapid.rpc.RichPresence;
+import viamcp.ViaMCP;
 
 public class Wrapper {
 	private static CommandManager commandManager;
@@ -26,6 +27,13 @@ public class Wrapper {
 		Wrapper.commandManager = new CommandManager();
 		Wrapper.richPresence = new RichPresence();
 		config.generate();
+
+		try {
+			ViaMCP.getInstance().start();
+			ViaMCP.getInstance().initAsyncSlider();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void stop() {

@@ -1,6 +1,5 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.Client;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.event.events.game.EventSettingChange;
@@ -17,7 +16,6 @@ import client.rapid.notification.NotificationManager;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import org.lwjgl.util.vector.Vector2f;
@@ -93,7 +91,6 @@ public class Flight extends Module {
 
 	@Override
 	public void onEvent(Event e) {
-		/* Make player wait for damage */
 		if(e instanceof EventUpdate && e.isPre()) {
 			if(bobbing.isEnabled())
 				mc.thePlayer.cameraYaw = 0.0696f;

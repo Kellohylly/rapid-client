@@ -1,12 +1,20 @@
 package client.rapid.util;
 
-import net.minecraft.block.*;
-import net.minecraft.item.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockHopper;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.*;
 import net.minecraft.block.material.Material;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MathHelper;
+
+import static net.minecraft.util.EnumChatFormatting.*;
 
 public class PlayerUtil extends MinecraftUtil {
 
@@ -19,17 +27,21 @@ public class PlayerUtil extends MinecraftUtil {
     }
 
 	public static void addChatMessage(String message) {
-		message = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "R" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + "] " + EnumChatFormatting.RESET + message;
+		message = GRAY + "[" + RED + BOLD + "R" + RESET + GRAY + "] " + RESET + message;
 		mc.thePlayer.addChatMessage(new ChatComponentText(message));
 	}
 	
     public static boolean isOnWater() {
         final double y = mc.thePlayer.posY - 0.03;
+
         for (int x = MathHelper.floor_double(mc.thePlayer.posX); x < MathHelper.ceiling_double_int(mc.thePlayer.posX); ++x) {
             for (int z = MathHelper.floor_double(mc.thePlayer.posZ); z < MathHelper.ceiling_double_int(mc.thePlayer.posZ); ++z) {
+
                 final BlockPos pos = new BlockPos(x, MathHelper.floor_double(y), z);
-                if (mc.theWorld.getBlockState(pos).getBlock() instanceof BlockLiquid &&mc.theWorld.getBlockState(pos).getBlock().getMaterial() == Material.water)
+
+                if (mc.theWorld.getBlockState(pos).getBlock() instanceof BlockLiquid &&mc.theWorld.getBlockState(pos).getBlock().getMaterial() == Material.water) {
                     return true;
+                }
             }
         }
         return false;
@@ -48,13 +60,19 @@ public class PlayerUtil extends MinecraftUtil {
         for(int x = MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.boundingBox.minX); x < MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.boundingBox.maxX) + 1; x++) {
             for(int y = MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.boundingBox.minY); y < MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.boundingBox.maxY) + 1; y++) {
                 for(int z = MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.boundingBox.minZ); z < MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.boundingBox.maxZ) + 1; z++) {
+
                     Block block = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
+
                     if(block != null && !(block instanceof BlockAir)) {
+
                         AxisAlignedBB boundingBox = block.getCollisionBoundingBox(Minecraft.getMinecraft().theWorld, new BlockPos(x, y, z), Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(x, y, z)));
-                        if(block instanceof BlockHopper)
+
+                        if(block instanceof BlockHopper) {
                             boundingBox = new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
-                        if(boundingBox != null && Minecraft.getMinecraft().thePlayer.boundingBox.intersectsWith(boundingBox))
+                        }
+                        if(boundingBox != null && Minecraft.getMinecraft().thePlayer.boundingBox.intersectsWith(boundingBox)) {
                             return true;
+                        }
                     }
                 }
             }

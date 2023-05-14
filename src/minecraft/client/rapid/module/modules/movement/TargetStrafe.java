@@ -1,4 +1,4 @@
-package client.rapid.module.modules.combat;
+package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.player.EventMove;
@@ -6,11 +6,12 @@ import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.combat.KillAura;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.module.RotationUtil;
 import net.minecraft.entity.EntityLivingBase;
 
-@ModuleInfo(getName = "Target Strafe", getCategory = Category.COMBAT)
+@ModuleInfo(getName = "Target Strafe", getCategory = Category.MOVEMENT)
 public class TargetStrafe extends Module {
 	private final Setting range = new Setting("Range", this, 2, 1, 6, false);
     private final Setting controllable = new Setting("Controllable", this, true);

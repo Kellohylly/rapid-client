@@ -25,7 +25,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 
@@ -114,7 +113,7 @@ public class KillAura extends Module {
                     doClick();
                 }
             }
-            if (e.isPost() && target != null && MathUtil.isinpercentage(autoblockperc.getValue())) {
+            if (e.isPost() && target != null && MathUtil.isInPercentage(autoblockperc.getValue())) {
                 if(autoBlock.getMode().equals("Packet"))
                     AuraUtil.block();
 
@@ -288,7 +287,7 @@ public class KillAura extends Module {
     }
 
     private void doPreAutoBlock() {
-        if (AuraUtil.canAutoBlock(target, reach.getValue()/*blockRange.getValue()*/) && MathUtil.isinpercentage(autoblockperc.getValue())) {
+        if (AuraUtil.canAutoBlock(target, reach.getValue()/*blockRange.getValue()*/) && MathUtil.isInPercentage(autoblockperc.getValue())) {
             switch (autoBlock.getMode()) {
                 case "Vanilla":
                     AuraUtil.block();
