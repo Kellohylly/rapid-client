@@ -260,7 +260,6 @@ public class PlayerControllerMP {
    }
 
    public boolean onPlayerRightClick(EntityPlayerSP player, WorldClient worldIn, ItemStack heldStack, BlockPos hitPos, EnumFacing side, Vec3 hitVec) {
-      ((Scaffold)Wrapper.getModuleManager().getModule("Scaffold")).rotated = true;
       this.syncCurrentPlayItem();
       float f = (float)(hitVec.xCoord - (double)hitPos.getX());
       float f1 = (float)(hitVec.yCoord - (double)hitPos.getY());
@@ -284,6 +283,7 @@ public class PlayerControllerMP {
          }
 
          this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(hitPos, side.getIndex(), player.inventory.getCurrentItem(), f, f1, f2));
+         Scaffold.rotated = false;
          if(!flag && this.currentGameType != WorldSettings.GameType.SPECTATOR) {
             if(heldStack == null) {
                return false;

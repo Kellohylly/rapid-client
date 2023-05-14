@@ -10,6 +10,7 @@
 / Turned NCP Sync Auto Block to NCP.
 / Renamed Anti Void to Anti Fall.
 / Recoded Disabler.
+/ Renamed NCP Criticals to Old NCP.
 
 + Added separate category for draggables.
 + Added Pre and Post to Scaffold.
@@ -23,6 +24,7 @@
 + Added Title Check to Chest Stealer.
 + Added Steal Button in Chests.
 + Added Bobbing to Flight.
++ Added Simple Rotations to Scaffold.
 + Added Player Position.
 + Added Block Counter.
 + Added Timer to Disabler.
@@ -31,3 +33,4 @@
 + Added Aimbot Module.
 + Added Anti Fireball Module.
 + Added Auto Gapple Module.
++ Added VIA.

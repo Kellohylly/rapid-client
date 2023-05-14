@@ -26,7 +26,7 @@ import java.util.List;
 @ModuleInfo(getName = "Scaffold", getCategory = Category.PLAYER)
 public class Scaffold extends Module {
 	private final Setting mode = new Setting("Mode", this, "Pre", "Post");
-	private final Setting rotations = new Setting("Rotations", this, "None", "Normal", "Keep");
+	private final Setting rotations = new Setting("Rotations", this, "None", "Normal", "Keep", "Simple");
 	private final Setting safewalk = new Setting("Safewalk", this, "None", "Simple", "Legit");
 	private final Setting tower = new Setting("Tower", this, "None", "NCP", "Slow");
 	private final Setting sprint = new Setting("Sprint", this, "None", "Normal", "No Packet");
@@ -39,6 +39,7 @@ public class Scaffold extends Module {
 	private final Setting eagle = new Setting("Eagle", this, true);
 	private final Setting keepY = new Setting("Keep Y", this, false);
 	private final Setting swing = new Setting("Swing", this, false);
+
 	private final Setting autoDisable = new Setting("Auto Disable", this, true);
 	private double funnyY;
 	public static boolean rotated = false;
@@ -75,8 +76,8 @@ public class Scaffold extends Module {
 	@Override
 	public void onEnable() {
 		rotated = false;
-		yaw = mc.thePlayer.rotationYaw;
-		pitch = mc.thePlayer.rotationPitch;
+		yaw = mc.thePlayer.rotationYaw - 180;
+		pitch = 88;
 
 		oldSlot = mc.thePlayer.inventory.currentItem;
 	}
@@ -124,12 +125,16 @@ public class Scaffold extends Module {
 						event.setPitch(rots[1]);
 						break;
 					case "Keep":
-						if(rotated) {
-							yaw = mc.thePlayer.rotationYaw - 180;
-							pitch = rots[1];
-						}
 						event.setYaw(yaw);
-						event.setPitch(pitch);
+						event.setPitch(rots[1]);
+						break;
+					case "Simple":
+						event.setYaw(mc.thePlayer.rotationYaw - 180);
+
+						if(isMoving())
+							event.setPitch(84f);
+						else
+							event.setPitch(90);
 						break;
 				}
 				if (!rotations.getMode().equals("None")) {
@@ -162,10 +167,10 @@ public class Scaffold extends Module {
 				if(safewalk.getMode().equals("Legit"))
 					sneak(safewalkthing);
 
-				rotated = false;
-
 				if(safewalkthing)
 					rotated = true;
+				else
+					rotated = false;
 
 				if(mc.thePlayer.onGround && boost.getValue() != 0)
 					setMoveSpeed(getMoveSpeed() + boost.getValue());
@@ -221,10 +226,14 @@ public class Scaffold extends Module {
 							return;
 
 						if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.inventory.getCurrentItem(), blockData.getPosition(), blockData.getFace(), dataToVec(blockData))) {
+							yaw = mc.thePlayer.rotationYaw - 180;
+							pitch = RotationUtil.getScaffoldRotations(blockData.getPosition(), blockData.getFace())[1];
+
 							if (swing.isEnabled())
 								mc.thePlayer.swingItem();
 							else
 								PacketUtil.sendPacket(new C0APacketAnimation());
+							rotated = true;
 
 						}
 					}
