@@ -1,8 +1,7 @@
 package client.rapid.module.modules.visual;
 
-import client.rapid.event.events.Event;
-import client.rapid.gui.clickgui.ClickGui;
-import client.rapid.gui.csgogui.CsgoGui;
+import client.rapid.gui.dropgui.DropdownGui;
+import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -26,32 +25,32 @@ public class ClickGuiToggle extends Module {
 	
 	public void onEnable() {
 		if(clickGui == null)
-			clickGui = mode.getMode().equals("Dropdown") ? new ClickGui() : new CsgoGui();
+			clickGui = mode.getMode().equals("Dropdown") ? new DropdownGui() : new PanelGui();
 
 		switch(mode.getMode()) {
 			case "Normal":
-				if(clickGui instanceof ClickGui)
-					clickGui = new CsgoGui();
+				if(clickGui instanceof DropdownGui)
+					clickGui = new PanelGui();
 				break;
 			case "Dropdown":
-				if(clickGui instanceof CsgoGui)
-					clickGui = new ClickGui();
+				if(clickGui instanceof PanelGui)
+					clickGui = new DropdownGui();
 				break;
 		}
 		mc.displayGuiScreen(clickGui);
 
 		switch(theme.getMode()) {
 			case "Rapid":
-				CsgoGui.setBackground(CsgoGui.rapidadapta);
-				CsgoGui.setBackgroundDark(CsgoGui.rapidadaptaDark);
+				PanelGui.setBackground(PanelGui.rapidadapta);
+				PanelGui.setBackgroundDark(PanelGui.rapidadaptaDark);
 				break;
 			case "Nord":
-				CsgoGui.setBackground(CsgoGui.nord);
-				CsgoGui.setBackgroundDark(CsgoGui.nordDark);
+				PanelGui.setBackground(PanelGui.nord);
+				PanelGui.setBackgroundDark(PanelGui.nordDark);
 				break;
 			case "Material":
-				CsgoGui.setBackgroundDark(0xFF1E272C);
-				CsgoGui.setBackground(0xFF263238);
+				PanelGui.setBackgroundDark(0xFF1E272C);
+				PanelGui.setBackground(0xFF263238);
 			break;
 		}
 		toggle();

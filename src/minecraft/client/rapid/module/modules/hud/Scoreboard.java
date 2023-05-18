@@ -25,11 +25,19 @@ public class Scoreboard extends Draggable {
         super(40, 200, 110, 130);
     }
 
+    @Override
+    public void drawDummy(int mouseX, int mouseY) {
+        Gui.drawRect(x, y, x + width, y + height, 0x90000000);
+        mc.fontRendererObj.drawString(name, x + (float) width / 2 - mc.fontRendererObj.getStringWidth(name) / 2, y + (float) height / 2, -1);
+        super.drawDummy(mouseX, mouseY);
+    }
+
     public void renderScoreboard(ScoreObjective p_180475_1_, ScaledResolution p_180475_2_)
     {
         net.minecraft.scoreboard.Scoreboard scoreboard = p_180475_1_.getScoreboard();
         Collection collection = scoreboard.getSortedScores(p_180475_1_);
         ArrayList arraylist = Lists.newArrayList(Iterables.filter(collection, new Predicate()
+
         {
             private static final String __OBFID = "CL_00001958";
             public boolean apply(Score p_apply_1_)

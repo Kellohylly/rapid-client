@@ -23,6 +23,12 @@ public class Sprint extends Module {
 			if(isEnabled("Scaffold") && !getBoolean("Scaffold", "Sprint"))
 				return;
 
+			if((mc.thePlayer.isBlocking() || mc.thePlayer.isUsingItem() || mc.thePlayer.isEating()) && !getBoolean("No Slow", "Allow Sprinting"))
+				return;
+
+			if(mc.thePlayer.moveForward > 0 && !mc.thePlayer.isSneaking() && mc.thePlayer.getFoodStats().getFoodLevel() > 6 && !mc.thePlayer.isCollidedHorizontally)
+				mc.thePlayer.setSprinting(true);
+
 			if(omni.isEnabled()) {
 				if(mc.thePlayer.getFoodStats().getFoodLevel() > 6 && !mc.thePlayer.isCollidedHorizontally && !mc.thePlayer.isBlocking() && !mc.thePlayer.isUsingItem() && !mc.thePlayer.isEating() && !mc.thePlayer.isSneaking() && isMoving()) {
 					mc.thePlayer.setSprinting(true);

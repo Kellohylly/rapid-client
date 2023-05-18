@@ -1,4 +1,4 @@
-package client.rapid.gui;
+package client.rapid.gui.mainmenu;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -6,6 +6,7 @@ import java.util.Scanner;
 import client.rapid.Client;
 import client.rapid.Wrapper;
 import client.rapid.gui.alt.AltManager;
+import client.rapid.gui.mainmenu.components.MMButton;
 import client.rapid.util.ClientUtil;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
@@ -32,11 +33,11 @@ public class ClientMainMenu extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		buttonList.add(new GuiButton(0, width / 2 - 70, height / 2, 140, 18, "Singleplayer"));
-		buttonList.add(new GuiButton(1, width / 2 - 70, height / 2 + 19, 140, 18, "Multiplayer"));
-		buttonList.add(new GuiButton(2, width / 2 - 70, height / 2 + 38, 140, 18, "Alt Manager"));
-		buttonList.add(new GuiButton(3, width / 2 - 70, height / 2 + 56, 140, 18, "Settings"));
-		buttonList.add(new GuiButton(4, width / 2 - 70, height / 2 + 75, 140, 18, "Quit"));
+		buttonList.add(new MMButton(0, width / 2 - 70, height / 2, 140, 18, "Singleplayer"));
+		buttonList.add(new MMButton(1, width / 2 - 70, height / 2 + 19, 140, 18, "Multiplayer"));
+		buttonList.add(new MMButton(2, width / 2 - 70, height / 2 + 38, 140, 18, "Alt Manager"));
+		buttonList.add(new MMButton(3, width / 2 - 70, height / 2 + 57, 140, 18, "Settings"));
+		buttonList.add(new MMButton(4, width / 2 - 70, height / 2 + 76, 140, 18, "Quit"));
 		Wrapper.getRichPresence().update("In Menu", "");
 		backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background",  new DynamicTexture(256, 256));
 		outdated = !ClientUtil.isLatest();
@@ -49,8 +50,8 @@ public class ClientMainMenu extends GuiScreen {
 		renderSkybox(partialTicks);
 		GlStateManager.popMatrix();
 
-		Gui.drawRect(width / 2 - 76, height / 2 - 8, width / 2 + 76, height / 2 + 100, 0x40000000);
-		Gui.drawRect(width / 2 - 74, height / 2 - 6, width / 2 + 74, height / 2 + 98, 0x40000000);
+		Gui.drawRect(width / 2 - 76, height / 2 - 8, width / 2 + 76, height / 2 + 101, 0x40000000);
+		Gui.drawRect(width / 2 - 74, height / 2 - 6, width / 2 + 74, height / 2 + 99, 0x40000000);
 
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
@@ -69,8 +70,12 @@ public class ClientMainMenu extends GuiScreen {
 				changelog[i] = scanner.nextLine();
 
 				int color = 0xFFFF3030;
-				if (!changelog[i].contains("-"))
-					color = changelog[i].contains("+") ? 0xFF30C530 : 0xFFFFC530;
+				if(changelog[i].contains("+"))
+					color = 0xFF30C530;
+				else if(changelog[i].contains("/"))
+					color = 0xFFFFC530;
+				else if(!changelog[i].contains("-"))
+					color = 0xFF4040C0;
 
 				mc.fontRendererObj.drawStringWithShadow(changelog[i].replace("+", "").replace("-", "").replace("/", ""), 10, 12 + i * 10, -1);
 

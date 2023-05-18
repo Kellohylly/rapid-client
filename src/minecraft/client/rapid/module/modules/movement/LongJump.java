@@ -9,6 +9,7 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
+import client.rapid.util.PlayerUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
@@ -76,8 +77,7 @@ public class LongJump extends Module {
 				setMoveSpeed(0);
 				switch(damage.getMode()) {
 					case "Simple":
-						PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 3.001, mc.thePlayer.posZ, false));
-						PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+						PlayerUtil.damagePlayer(3.001F);
 						damaged = true;
 						break;
 					case "Jump":
@@ -195,7 +195,7 @@ public class LongJump extends Module {
 							else
 								mc.thePlayer.motionY = -0.0975;
 
-							if(isEnabled("Disabler") && getMode("Disabler", "Mode").equals("Vulcan Strafe"))
+							if(isEnabled("Disabler") && getBoolean("Disabler", "Old Vulcan Strafe"))
 								setMoveSpeed(getBaseMoveSpeed() + 0.0449);
 					}
 				}

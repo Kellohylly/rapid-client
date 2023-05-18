@@ -1,12 +1,12 @@
-package client.rapid.gui.csgogui.component;
+package client.rapid.gui.panelgui.component;
 
-import client.rapid.gui.csgogui.CsgoGui;
+import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.Module;
 import client.rapid.module.settings.Setting;
 
 public class Comp {
     public double x, y, scrollY;
-    public CsgoGui parent;
+    public PanelGui parent;
     public Module module;
     public Setting setting;
 

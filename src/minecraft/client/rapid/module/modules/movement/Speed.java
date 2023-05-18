@@ -10,6 +10,7 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.notification.Notification;
 import client.rapid.notification.NotificationManager;
+import client.rapid.notification.NotificationType;
 import client.rapid.util.PlayerUtil;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
@@ -230,7 +231,7 @@ public class Speed extends Module {
 				S08PacketPlayerPosLook p = event.getPacket();
 
 				if (lastLocations.stream().anyMatch(loc -> p.getX() == loc.xCoord && p.getY() == loc.yCoord && p.getZ() == loc.zCoord) && disableOnFlag.isEnabled()) {
-					NotificationManager.addToQueue(new Notification("Lagback", "Disabled Speed for Flagging!", Notification.Type.WARNING));
+					NotificationManager.addToQueue(new Notification("Lagback", "Disabled Speed for Flagging!", NotificationType.WARNING, 3));
 					setEnabled(false);
 				}
 			}

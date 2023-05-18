@@ -13,7 +13,7 @@ public class Fonts {
 	inter = getFont("inter.ttf", 19),
 	sfui = getFont("sfui.ttf", 19),
 	clickgui = getFont("font.ttf", 17),
-	newIcons = getFont("category.ttf", 26),
+	newIcons = getFont("category.ttf", 22),
 	newIconsBig = getFont("category.ttf", 40);
 
 	private static MCFontRenderer getFont(String location, float size) {

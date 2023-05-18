@@ -16,6 +16,7 @@ import net.minecraft.client.gui.Gui;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @ModuleInfo(getName = "Enabled Modules", getCategory = Category.HUD)
 public class EnabledModules extends Draggable {
@@ -35,6 +36,8 @@ public class EnabledModules extends Draggable {
 
     public static String text = Client.getInstance().getName();
     MCFontRenderer font = Fonts.normal2;
+
+    private CopyOnWriteArrayList<Module> modules;
 
     public EnabledModules() {
         super(100, 100, 50, 110);
@@ -61,9 +64,14 @@ public class EnabledModules extends Draggable {
         if(e instanceof EventRender && e.isPre()) {
             int i = 0, i2 = 0, height = (int)listHeight.getValue();
 
+            if(modules == null)
+                modules = new CopyOnWriteArrayList<>(Wrapper.getModuleManager().getModules());
+
             int width = getWidth() / 2;
 
-            for(Module m : Wrapper.getModuleManager().getModules()) {
+            modules.sort(Comparator.comparingInt(mod -> lowercased.isEnabled() ? (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth((((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")).toLowerCase()) : font.getStringWidth((((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")).toLowerCase())) : mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")) : font.getStringWidth(((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : ""))).reversed());
+
+            for(Module m : modules) {
                 if(m.isEnabled() && m.getCategory() != Category.HUD) {
                     if(hideVisual.isEnabled() && m.getCategory() == Category.VISUAL)
                         continue;
@@ -74,7 +82,6 @@ public class EnabledModules extends Draggable {
                     if(flipTags.isEnabled())
                         modText = (!mcFont.isEnabled() ? "&7" : "\u00a77") + (modeTags.isEnabled() ? m.getTag() + (m.getTag() != "" ? " ": "") : "") + (!mcFont.isEnabled() ? "&r" : "\u00a7r") + m.getName() + (!mcFont.isEnabled() ? "&f" : "\u00a7r");
 
-                    Wrapper.getModuleManager().getModules().sort(Comparator.comparingInt(mod -> lowercased.isEnabled() ? (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth((((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")).toLowerCase()) : font.getStringWidth((((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")).toLowerCase())) : mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")) : font.getStringWidth(((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : ""))).reversed());
 
                     if(lowercased.isEnabled())
                         modText = modText.toLowerCase();
@@ -131,7 +138,7 @@ public class EnabledModules extends Draggable {
                                 Gui.drawRect(x + width + 1, y + i + 1, x + width + 2, 8 + y + i + height, getColor(i2));
                             break;
                         case "Top":
-                            ArrayList<Module> enabled1 = new ArrayList<>(Wrapper.getModuleManager().getModules());
+                            ArrayList<Module> enabled1 = new ArrayList<>(modules);
                             enabled1.removeIf(module -> !module.isEnabled() || (hideVisual.isEnabled() && module.getCategory() == Category.VISUAL));
                             int index1 = enabled1.indexOf(m);
 
@@ -163,7 +170,7 @@ public class EnabledModules extends Draggable {
                             else
                                 Gui.drawRect(x + width + 1, y + i - 1, x + width + 2, 10 + y + i + height, getColor(i2));
 
-                            ArrayList<Module> enabled = new ArrayList<>(Wrapper.getModuleManager().getModules());
+                            ArrayList<Module> enabled = new ArrayList<>(modules);
                             enabled.removeIf(module -> !module.isEnabled() || (hideVisual.isEnabled() && module.getCategory() == Category.VISUAL) || module.getCategory() == Category.HUD);
                             int index = enabled.indexOf(m);
 

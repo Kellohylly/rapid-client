@@ -8,6 +8,7 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.combat.KillAura;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.module.MoveUtil;
 import client.rapid.util.module.RotationUtil;
 import net.minecraft.entity.EntityLivingBase;
 

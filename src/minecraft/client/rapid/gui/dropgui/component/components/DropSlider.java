@@ -1,15 +1,14 @@
-package client.rapid.gui.clickgui.component.components;
+package client.rapid.gui.dropgui.component.components;
 
 import java.awt.Color;
 import java.math.*;
 
-import client.rapid.gui.clickgui.ClickGui;
-import client.rapid.gui.clickgui.component.Button;
-import client.rapid.gui.clickgui.component.Component;
+import client.rapid.gui.dropgui.DropdownGui;
+import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.gui.Gui;
 
-public class Slider extends Component {
+public class DropSlider extends DropComponent {
 	private final Setting set;
 	private int offset;
 	private int x, y;
@@ -17,7 +16,7 @@ public class Slider extends Component {
 
 	private double renderWidth;
 
-	public Slider(Setting value, Button button, int offset) {
+	public DropSlider(Setting value, DropButton button, int offset) {
 		this.set = value;
 		this.parent = button;
 		this.x = button.parent.getX() + button.parent.getWidth();
@@ -27,8 +26,8 @@ public class Slider extends Component {
 
 	public void renderComponent() {
 		Gui.drawRect(parent.parent.getX() - 1, parent.parent.getY() + offset, parent.parent.getX() + parent.parent.getWidth() + 1, parent.parent.getY() + offset + 12, this.hovered ? new Color(0xFF0F0F13).darker().getRGB() : 0xFF0F0F13);
-		Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + (int) renderWidth + 2, parent.parent.getY() + offset + 12,hovered ? new Color(ClickGui.hud.getColor(offset / 2)).darker().darker().getRGB() : new Color(ClickGui.hud.getColor(offset / 2)).darker().getRGB());
-		Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + 12,hovered ? new Color(ClickGui.hud.getColor(offset / 2)).darker().getRGB() : ClickGui.hud.getColor(offset / 2));
+		Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + (int) renderWidth + 2, parent.parent.getY() + offset + 12,hovered ? new Color(DropdownGui.hud.getColor(offset / 2)).darker().darker().getRGB() : new Color(DropdownGui.hud.getColor(offset / 2)).darker().getRGB());
+		Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + 12,hovered ? new Color(DropdownGui.hud.getColor(offset / 2)).darker().getRGB() : DropdownGui.hud.getColor(offset / 2));
 		parent.parent.font.drawString(this.set.getName(), (parent.parent.getX() + 4), (parent.parent.getY() + offset + 2) + 1.5f, -1);
 		parent.parent.font.drawString("" + this.set.getValue(), (parent.parent.getX() + 100) - parent.parent.font.getStringWidth("" + set.getValue()) + 3, (parent.parent.getY() + offset + 2) + 1.5f, -1);
 	}

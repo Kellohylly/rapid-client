@@ -1,6 +1,7 @@
 
-package client.rapid.gui.alt;
+package client.rapid.gui.alt.components;
 
+import client.rapid.util.animation.Animation;
 import net.minecraft.server.network.NetHandlerLoginServer;
 import net.minecraft.util.*;
 import net.minecraft.client.gui.*;
@@ -11,6 +12,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class PasswordField extends Gui
 {
+    Animation animation = new Animation(1, 0.8f);
+
     private final FontRenderer fontRenderer;
     private final int xPos;
     private final int yPos;
@@ -29,7 +32,6 @@ public class PasswordField extends Gui
     private int enabledColor;
     private int disabledColor;
     private boolean field_73823_s;
-    private int animation = 1;
 
     public PasswordField(final FontRenderer par1FontRenderer, final int par2, final int par3, final int par4, final int par5) {
         this.text = "";
@@ -339,19 +341,17 @@ public class PasswordField extends Gui
 
                 Gui.drawRect(this.xPos, this.yPos + height + 1, this.xPos + this.width, this.yPos + this.height, -1);
 
-                if(isFocused()) {
-                	if(animation < width / 2)
-                		animation += 8;
-                	
-                    Gui.drawRect(this.xPos + width / 2, this.yPos + height + 1, this.xPos + this.width / 2 + animation - 3, this.yPos + this.height, 0xFFFF2020);
-                    Gui.drawRect(this.xPos + width / 2, this.yPos + height + 1, this.xPos + this.width / 2 - animation + 3, this.yPos + this.height, 0xFFFF2020);
+                if(isFocused) {
+                    animation.interpolate(width / 2);
+
+                    Gui.drawRect(xPos + width / 2, yPos + height + 1, xPos + width / 2 + animation.getValue(), yPos + height, 0xFFFF2020);
+                    Gui.drawRect(xPos + width / 2, yPos + height + 1, xPos + width / 2 - animation.getValue(), yPos + height, 0xFFFF2020);
                 } else {
-                	if(animation > 1) {
-                		animation -= 8;
-                        Gui.drawRect(this.xPos + width / 2, this.yPos + height + 1, this.xPos + this.width / 2 + animation - 3, this.yPos + this.height, 0xFFFF2020);
-                        Gui.drawRect(this.xPos + width / 2, this.yPos + height + 1, this.xPos + this.width / 2 - animation + 3, this.yPos + this.height, 0xFFFF2020);
-                	} else
-                		animation = 1;
+                    if(animation.getValueF() > 0) {
+                        Gui.drawRect(xPos + width / 2, yPos + height + 1, (xPos + width / 2) + animation.getValue(), yPos + height, 0xFFFF2020);
+                        Gui.drawRect(xPos + width / 2, yPos + height + 1, (xPos + width / 2) - animation.getValue(), yPos + height, 0xFFFF2020);
+                    }
+                    animation.interpolate(0);
                 }
 
             }

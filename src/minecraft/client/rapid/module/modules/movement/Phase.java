@@ -7,40 +7,71 @@ import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.PacketUtil;
 import client.rapid.util.PlayerUtil;
-import net.minecraft.network.play.client.C03PacketPlayer;
 
 @ModuleInfo(getName = "Phase", getCategory = Category.MOVEMENT)
 public class Phase extends Module {
-    private final Setting mode = new Setting("Mode", this, "Vanilla");
+    private final Setting mode = new Setting("Mode", this, "Vanilla", "No Clip");
+    private final Setting speed = new Setting("Speed", this, 2.6, 0.25, 3, false);
+
     private int reset;
-    private double dist = 1D;
+
+    private boolean wasPhasing;
 
     public Phase() {
-        add(mode);
+        add(mode, speed);
+    }
+
+    @Override
+    public void onEnable() {
+        wasPhasing = false;
+    }
+
+    @Override
+    public void onDisable() {
+        wasPhasing = false;
     }
 
     @Override
     public void onEvent(Event e) {
         if(e instanceof EventMotion && e.isPre()) {
+            setTag(mode.getMode());
+
             switch(mode.getMode()) {
-                case "Vanilla":
+            case "Vanilla":
                 reset -= 1;
                 double xOff;
                 double zOff;
+
                 double mx = Math.cos(Math.toRadians(mc.thePlayer.rotationYaw + 90F));
                 double mz = Math.sin(Math.toRadians(mc.thePlayer.rotationYaw + 90F));
-                xOff = mc.thePlayer.moveForward * 2.6D * mx + mc.thePlayer.moveStrafing * 2.6D * mz;
-                zOff = mc.thePlayer.moveForward * 2.6D * mz + mc.thePlayer.moveStrafing * 2.6D * mx;
 
-                if (PlayerUtil.isInsideBlock() && mc.thePlayer.isSneaking())
+                xOff = mc.thePlayer.moveForward * speed.getValue() * mx + mc.thePlayer.moveStrafing * speed.getValue() * mz;
+                zOff = mc.thePlayer.moveForward * speed.getValue() * mz + mc.thePlayer.moveStrafing * speed.getValue() * mx;
+
+                if (PlayerUtil.isInsideBlock() && mc.thePlayer.isSneaking()) {
                     reset = 1;
+                }
 
                 if (reset > 0) {
                     mc.thePlayer.setPosition(mc.thePlayer.posX + xOff, mc.thePlayer.posY, mc.thePlayer.posZ + zOff);
                 }
                 break;
+                case "No Clip":
+                    mc.thePlayer.noClip = true;
+
+                    if(PlayerUtil.isInsideBlock()) {
+                        mc.thePlayer.motionY = 0D;
+                        mc.thePlayer.onGround = true;
+                        setMoveSpeed(speed.getValue());
+                        wasPhasing = true;
+                    } else {
+                        if(wasPhasing) {
+                            setMoveSpeed(0);
+                            wasPhasing = false;
+                        }
+                    }
+                    break;
             }
         }
         if(e instanceof EventCollide && e.isPre()) {

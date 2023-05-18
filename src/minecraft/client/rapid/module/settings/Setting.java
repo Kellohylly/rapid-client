@@ -113,6 +113,6 @@ public class Setting {
     
     private void save() {
 		if(Client.getInstance() != null && Minecraft.getMinecraft().thePlayer != null)
-			Wrapper.getConfig().save();
+			Wrapper.getConfigManager().getModuleConfig().save();
     }
 }

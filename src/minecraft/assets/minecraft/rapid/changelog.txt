@@ -1,36 +1,15 @@
-- Removed Transaction and ZeroInAir from Velocity.
-- Removed raycast % from Kill Aura.
-- Removed Legit from Scaffold.
+Added Allow Sprinting to No Slow.
+Added Amount to Notifications.
+Added Speed to Phase.
+Added No Clip to Phase.
 
-/ Fixed Kill Aura rotations, GCD and MoveFix.
-/ Recoded and Improved Bed Breaker.
-/ Split Hud to Watermark, Enabled Modules and Hud Settings.
-/ Fixed Vulcan Long Jump.
-/ Improved Vulcan No Fall.
-/ Turned NCP Sync Auto Block to NCP.
-/ Renamed Anti Void to Anti Fall.
-/ Recoded Disabler.
-/ Renamed NCP Criticals to Old NCP.
+/ Made Config System a bit better.
+/ Improved Notification System.
+/ Fixed modules moving random places in ClickGUI.
+/ Fixed Top in Enabled Modules.
+/ Changed ClickGui Category Icons.
+/ Fixed a few Main Menu and Alt Manager visuals.
+/ Separated Auto Pot from Auto Heal again lol.
+/ Fixed Inventory Manager dropping all at once.
 
-+ Added separate category for draggables.
-+ Added Pre and Post to Scaffold.
-+ Added Vulcan and Ground Only Mode in Velocity.
-+ Added Verus Ground to Speed.
-+ Added Auto Disable to Flight, Speed, Kill Aura and Scaffold.
-+ Added Position to Flight.
-+ Added Packets to Fast Eat.
-+ Added Start Time to Fast Eat.
-+ Added Do On Stop to Fast Eat.
-+ Added Title Check to Chest Stealer.
-+ Added Steal Button in Chests.
-+ Added Bobbing to Flight.
-+ Added Simple Rotations to Scaffold.
-+ Added Player Position.
-+ Added Block Counter.
-+ Added Timer to Disabler.
-+ Added Spoof for Scaffold.
-+ Added Phase Module.
-+ Added Aimbot Module.
-+ Added Anti Fireball Module.
-+ Added Auto Gapple Module.
-+ Added VIA.
+This update is to clean my shitty code a bit.

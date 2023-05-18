@@ -1,4 +1,4 @@
-package client.rapid.gui.clickgui;
+package client.rapid.gui.dropgui;
 
 import java.awt.*;
 import java.io.IOException;
@@ -6,15 +6,14 @@ import java.util.ArrayList;
 
 import client.rapid.Wrapper;
 import client.rapid.gui.GuiPosition;
-import client.rapid.gui.clickgui.component.Component;
-import client.rapid.gui.clickgui.component.Frame;
+import client.rapid.gui.dropgui.component.DropComponent;
+import client.rapid.gui.dropgui.component.components.DropFrame;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.hud.HudSettings;
-import client.rapid.module.modules.visual.Watermark;
 import net.minecraft.client.gui.*;
 
-public class ClickGui extends GuiScreen {
-	public static ArrayList<Frame> frames;
+public class DropdownGui extends GuiScreen {
+	public static ArrayList<DropFrame> frames;
 	public static int color = 0xFFCC4646,
 	background = 0xFF0F0F13,
 	backgroundDark = new Color(0xFF0F0F13).darker().getRGB();
@@ -23,11 +22,11 @@ public class ClickGui extends GuiScreen {
 	
 	public static HudSettings hud = ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings"));
 	
-	public ClickGui() {
+	public DropdownGui() {
 		frames = new ArrayList<>();
 		int frameX = 5;
 		for(Category category : Category.values()) {
-			Frame frame = new Frame(category);
+			DropFrame frame = new DropFrame(category);
 			frame.setX(frameX);
 			frames.add(frame);
 			frameX += frame.getWidth() + 5;
@@ -43,11 +42,11 @@ public class ClickGui extends GuiScreen {
 		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Background").isEnabled())
 			Gui.drawRect(0, 0, width, height, 0xCC200000);
 
-		for(Frame frame : frames) {
+		for(DropFrame frame : frames) {
 			frame.renderFrame();
 			frame.updatePosition(mouseX, mouseY);
 
-			for(Component comp : frame.getComponents())
+			for(DropComponent comp : frame.getComponents())
 				comp.updateComponent(mouseX, mouseY);
 		}
 		
@@ -57,7 +56,7 @@ public class ClickGui extends GuiScreen {
 	}
 	
     protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
-		for(Frame frame : frames) {
+		for(DropFrame frame : frames) {
 			if(frame.isWithinHeader(mouseX, mouseY) && mouseButton == 0) {
 				frame.dragX = mouseX - frame.getX();
 				frame.dragY = mouseY - frame.getY();
@@ -67,7 +66,7 @@ public class ClickGui extends GuiScreen {
 				frame.setOpen(!frame.isOpen());
 
 			if(frame.isOpen() && !frame.getComponents().isEmpty()) {
-				for(Component component : frame.getComponents())
+				for(DropComponent component : frame.getComponents())
 					component.mouseClicked(mouseX, mouseY, mouseButton);
 			}
 		}
@@ -79,9 +78,9 @@ public class ClickGui extends GuiScreen {
 	}
 	
 	protected void keyTyped(char typedChar, int keyCode) {
-		for(Frame frame : frames) {
+		for(DropFrame frame : frames) {
 			if(frame.isOpen() && keyCode != 1 && !frame.getComponents().isEmpty()) {
-				for(Component component : frame.getComponents())
+				for(DropComponent component : frame.getComponents())
 					component.keyTyped(typedChar, keyCode);
 			}
 		}
@@ -91,12 +90,12 @@ public class ClickGui extends GuiScreen {
 
 	
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-		for(Frame frame : frames)
+		for(DropFrame frame : frames)
 			frame.setDrag(false);
 
-		for(Frame frame : frames) {
+		for(DropFrame frame : frames) {
 			if(frame.isOpen() && !frame.getComponents().isEmpty()) {
-				for(Component component : frame.getComponents())
+				for(DropComponent component : frame.getComponents())
 					component.mouseReleased(mouseX, mouseY, state);
 			}
 		}

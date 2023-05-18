@@ -7,6 +7,7 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
+import client.rapid.util.module.MoveUtil;
 import net.minecraft.util.BlockPos;
 
 @ModuleInfo(getName = "Anti Fall", getCategory = Category.PLAYER)
@@ -45,7 +46,6 @@ public class AntiFall extends Module {
                         if(groundPos != null && mc.thePlayer.getDistance(groundPos.getX(), groundPos.getY(), groundPos.getZ()) <= 10) {
                             mc.thePlayer.setPosition(groundPos.getX(), groundPos.getY(), groundPos.getZ());
                             mc.thePlayer.fallDistance = 0;
-                            setMoveSpeed(0);
                         }
                         break;
                 }

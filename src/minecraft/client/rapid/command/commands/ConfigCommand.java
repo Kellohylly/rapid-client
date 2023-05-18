@@ -25,29 +25,30 @@ public class ConfigCommand extends Command {
 			if(args[0].equalsIgnoreCase("load")) {
 				
 				StringJoiner configName = new StringJoiner(" ");
+
 				for(int i = 1; i < args.length; i++)
 					configName.add(args[i]);
 				
 				if(new File(dir + File.separator + configName + ".conf").exists()) {
-					Wrapper.getConfig().load(new File(dir + File.separator + configName + ".conf"));
+					Wrapper.getConfigManager().getModuleConfig().load(new File(dir + File.separator + configName + ".conf"));
 					PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Loaded config!");
 				}
 				else {
 					PlayerUtil.addChatMessage(EnumChatFormatting.RED + "Couldnt load config, check if the names correct,");
 					PlayerUtil.addChatMessage(EnumChatFormatting.RED + "If it still doesnt work, try renaming the file to something else!");
 				}
-				
-				
 			}
 		} else {
 			try {
 				PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Available Configs:");
+
+				assert configs != null;
+
 				for(String f : configs)
 					PlayerUtil.addChatMessage(FilenameUtils.removeExtension(f));
 				
 			} catch(Exception e) {
 				PlayerUtil.addChatMessage(EnumChatFormatting.RED + "Please make a file in .minecraft/Rapid called \"Configs\"!");
-	
 			}
 		}
 

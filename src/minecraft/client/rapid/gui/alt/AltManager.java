@@ -2,30 +2,30 @@ package client.rapid.gui.alt;
 
 import java.io.IOException;
 
-import client.rapid.Client;
 import client.rapid.Wrapper;
-import client.rapid.module.modules.other.RichPresenceToggle;
-import net.minecraft.util.ResourceLocation;
+import client.rapid.gui.alt.components.ATextField;
+import client.rapid.gui.alt.components.PasswordField;
+import client.rapid.gui.mainmenu.components.MMButton;
 import org.lwjgl.input.Keyboard;
 
-import client.rapid.gui.ClientMainMenu;
+import client.rapid.gui.mainmenu.ClientMainMenu;
 import fr.litarvan.openauth.microsoft.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.*;
 
 public class AltManager extends GuiScreen {
-	private GuiTextField username;
+	private ATextField username;
 	private PasswordField password;
 	private String string = "Works for Cracked and Microsoft";
 
 	@Override
 	public void initGui() {
         int var3 = height / 4 + 24;
-		buttonList.add(new GuiButton(0, width / 2 - 70, height / 2 + 64, 69, 20, "Login"));
-		buttonList.add(new GuiButton(2, width / 2 + 1, height / 2 + 64, 69, 20, "Web view"));
-		buttonList.add(new GuiButton(1, width / 2 - 70, height / 2 + 86, 140, 20, "Back"));
-        this.username = new GuiTextField(var3, this.mc.fontRendererObj, width / 2 - 70, height / 2 + 16, 140, 20);
+		buttonList.add(new MMButton(0, width / 2 - 70, height / 2 + 64, 69, 20, "Login"));
+		buttonList.add(new MMButton(2, width / 2 + 1, height / 2 + 64, 69, 20, "Web view"));
+		buttonList.add(new MMButton(1, width / 2 - 70, height / 2 + 86, 140, 20, "Back"));
+        this.username = new ATextField(var3, this.mc.fontRendererObj, width / 2 - 70, height / 2 + 16, 140, 20);
         this.password = new PasswordField(this.mc.fontRendererObj, width / 2 - 70, height / 2 + 40, 140, 20);
         username.setFocused(true);
 		Wrapper.getRichPresence().update("In Alt Manager", "");
@@ -38,8 +38,8 @@ public class AltManager extends GuiScreen {
 		ClientMainMenu.renderSkybox(partialTicks);
 		GlStateManager.enableAlpha();
 
-		Gui.drawRect(width / 2 - 76, height / 2 - 8, width / 2 + 76, height / 2 + 110, 0x40000000);
-		Gui.drawRect(width / 2 - 74, height / 2 - 6, width / 2 + 74, height / 2 + 108, 0x40000000);
+		Gui.drawRect(width / 2 - 76, height / 2 - 8, width / 2 + 76, height / 2 + 112, 0x40000000);
+		Gui.drawRect(width / 2 - 74, height / 2 - 6, width / 2 + 74, height / 2 + 110, 0x40000000);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		
 		GlStateManager.pushMatrix();

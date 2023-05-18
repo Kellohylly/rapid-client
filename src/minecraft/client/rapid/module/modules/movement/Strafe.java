@@ -6,6 +6,7 @@ import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.module.MoveUtil;
 
 @ModuleInfo(getName = "Strafe", getCategory = Category.MOVEMENT)
 public class Strafe extends Module {

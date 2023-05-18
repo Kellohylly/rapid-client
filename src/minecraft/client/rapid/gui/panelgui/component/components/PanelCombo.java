@@ -1,15 +1,14 @@
-package client.rapid.gui.csgogui.component.components;
+package client.rapid.gui.panelgui.component.components;
 
-import client.rapid.gui.csgogui.CsgoGui;
-import client.rapid.gui.csgogui.component.Comp;
+import client.rapid.gui.panelgui.PanelGui;
+import client.rapid.gui.panelgui.component.Comp;
 import client.rapid.module.Module;
 import client.rapid.module.settings.Setting;
-import net.minecraft.client.gui.Gui;
 
-public class CsgoCombo extends Comp {
+public class PanelCombo extends Comp {
     private int modeIndex;
 
-    public CsgoCombo(double x, double y, CsgoGui parent, Module module, Setting setting) {
+    public PanelCombo(double x, double y, PanelGui parent, Module module, Setting setting) {
         this.x = x;
         this.y = y;
         this.parent = parent;

@@ -2,7 +2,7 @@ package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
 
-import client.rapid.gui.ClientMainMenu;
+import client.rapid.gui.mainmenu.ClientMainMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,9 +1,10 @@
-package client.rapid.gui.clickgui.component;
+package client.rapid.gui.dropgui.component;
 
+import client.rapid.gui.dropgui.component.components.DropButton;
 import client.rapid.module.settings.Setting;
 
-public class Component {
-	protected Button parent;
+public class DropComponent {
+	protected DropButton parent;
 	protected boolean hovered;
 	protected Setting set;
 

@@ -5,6 +5,7 @@ import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.combat.AutoArmor;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
@@ -36,46 +37,65 @@ public class InventoryManager extends Module {
     }
 
     @Override
+    public void onEnable() {
+        timer.reset();
+    }
+
+    @Override
+    public void onDisable() {
+        timer.reset();
+    }
+
+    @Override
     public void onEvent(Event e) {
         if(e instanceof EventUpdate && e.isPre()) {
             if(inventoryOnly.isEnabled() && !(mc.currentScreen instanceof GuiInventory))
                 return;
 
-            if(timer.sleep((int) delay.getValue())) {
-                for(int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++) {
-                    ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+            for(int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++) {
+                ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
 
-                    if(stack != null && !(stack.getItem() instanceof ItemArmor)) {
-                        if(clean.isEnabled()) {
-                            if(stack.getItem() instanceof ItemSword) {
-                                if(getBestSword() != -1 && getBestSword() != i)
-                                    drop(i, stack);
-                            }
-                            if(stack.getItem() instanceof ItemAxe && !keepAxe.isEnabled()) {
-                                if(getBestAxe() != -1 && getBestAxe() != i)
-                                    drop(i, stack);
-                            }
-                            if(stack.getItem() instanceof ItemPickaxe && !keepPickaxe.isEnabled()) {
-                                if(getBestPickaxe() != -1 && getBestPickaxe() != i)
-                                    drop(i, stack);
-                            }
+                if(stack != null && !(stack.getItem() instanceof ItemArmor) && timer.sleep((int)delay.getValue())) {
+                    if(clean.isEnabled()) {
 
-                            if(isShovel(stack.getItem()) && stack.getItem() instanceof ItemTool && !keepShovel.isEnabled()) {
-                                if(getBestPickaxe() != -1 && getBestPickaxe() != i)
-                                    drop(i, stack);
-                            }
-                        }
-                        if(getBestSword() != -1 && getBestSword() != swordSlot.getValue() - 1) {
-                            for(int j = 0; j < mc.thePlayer.inventoryContainer.inventorySlots.size(); j++) {
-                                Slot slot = mc.thePlayer.inventoryContainer.inventorySlots.get(i);
-
-                                if(slot.getHasStack() && slot.getStack() == mc.thePlayer.inventory.mainInventory[getBestSword()]) {
-                                    mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot.slotNumber, (int)swordSlot.getValue(), 2, mc.thePlayer);
-                                }
-                            }
-                        }
+                        // Bad / Useless Items
                         if(isBadItem(stack.getItem()))
                             drop(i, stack);
+
+                        // Keep Sword
+                        if(stack.getItem() instanceof ItemSword) {
+                            if(getBestSword() != -1 && getBestSword() != i)
+                                drop(i, stack);
+                        }
+
+                        // Keep Axe
+                        if(stack.getItem() instanceof ItemAxe && !keepAxe.isEnabled()) {
+                            if(getBestAxe() != -1 && getBestAxe() != i)
+                                drop(i, stack);
+                        }
+
+                        // Keep Pickaxe
+                        if(stack.getItem() instanceof ItemPickaxe && !keepPickaxe.isEnabled()) {
+                            if(getBestPickaxe() != -1 && getBestPickaxe() != i)
+                                drop(i, stack);
+                        }
+
+                        // Keep Shovel
+                        if(isShovel(stack.getItem()) && stack.getItem() instanceof ItemTool && !keepShovel.isEnabled()) {
+                            if(getBestShovel() != -1 && getBestShovel() != i)
+                                drop(i, stack);
+                        }
+                    }
+
+                    // Best Sword
+                    if(getBestSword() != -1 && getBestSword() != swordSlot.getValue() - 1) {
+                        for (int j = 0; j < mc.thePlayer.inventoryContainer.inventorySlots.size(); j++) {
+                            Slot slot = mc.thePlayer.inventoryContainer.inventorySlots.get(i);
+
+                            if (slot.getHasStack() && slot.getStack() == mc.thePlayer.inventory.mainInventory[getBestSword()]) {
+                                mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot.slotNumber, (int) swordSlot.getValue(), 2, mc.thePlayer);
+                            }
+                        }
                     }
                 }
             }
@@ -159,13 +179,14 @@ public class InventoryManager extends Module {
         for(int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++) {
             ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
 
-            if(stack != null && isShovel(stack.getItem()) && stack.getItem() instanceof ItemTool) {
+            if(stack != null && stack.getItem() instanceof ItemTool && isShovel(stack.getItem())) {
                 ItemTool itemSword = (ItemTool)stack.getItem();
 
                 float damage = itemSword.getStrVsBlock(stack, Block.getBlockById(4));
                 damage += EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, stack);
 
                 if(damage > bestDamage) {
+                    System.out.println("shovel");
                     bestDamage = damage;
                     best = i;
                 }
@@ -177,7 +198,7 @@ public class InventoryManager extends Module {
     private void drop(int slot, ItemStack item) {
         boolean hotbar = false;
 
-        for(int i =0; i < 9; i++) {
+        for(int i = 0; i < 9; i++) {
             ItemStack stack = mc.thePlayer.inventory.getStackInSlot(i);
 
             if(stack != null && stack == item) {
@@ -192,6 +213,7 @@ public class InventoryManager extends Module {
             mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, 0, 0, mc.thePlayer);
             mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, -999, 0, 0, mc.thePlayer);
         }
+        timer.reset();
     }
 
     private boolean isBadItem(Item item) {

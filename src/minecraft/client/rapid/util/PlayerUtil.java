@@ -5,6 +5,7 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.block.material.Material;
 
@@ -26,11 +27,16 @@ public class PlayerUtil extends MinecraftUtil {
         return mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemBlock;
     }
 
+    public static void damagePlayer(float height) {
+        PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + height, mc.thePlayer.posZ, false));
+        PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+    }
+
 	public static void addChatMessage(String message) {
 		message = GRAY + "[" + RED + BOLD + "R" + RESET + GRAY + "] " + RESET + message;
 		mc.thePlayer.addChatMessage(new ChatComponentText(message));
 	}
-	
+
     public static boolean isOnWater() {
         final double y = mc.thePlayer.posY - 0.03;
 

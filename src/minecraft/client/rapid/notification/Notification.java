@@ -10,27 +10,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 public class Notification {
-    private final Type type;
+    private final NotificationType type;
     private final String title, message;
     private final MCFontRenderer font = Fonts.normal;
 
     public final TimerUtil timer = new TimerUtil();
 
     private long start;
+    private int seconds;
 
     private final Animation animation = new Animation(1, 0.25f);
 
-    public Notification(String title, String message, Type type) {
+    public Notification(String title, String message, NotificationType type, int seconds) {
         this.type = type;
         this.title = title;
         this.message = message;
-    }
-
-    public enum Type {
-        INFO, WARNING, ERROR
+        this.seconds = seconds * 1000;
     }
 
     public void start() {
@@ -38,7 +37,7 @@ public class Notification {
     }
 
     public boolean isShown() {
-        return getTime() <= 3500;
+        return getTime() <= seconds + 500;
     }
 
     private long getTime() {
@@ -57,26 +56,22 @@ public class Notification {
 
         Gui.drawRect(x - animation.getValue(), y - 30, x, y - 4, 0x90000000);
 
+        double number = ((float)(seconds / 100 - 1 - timer.time() / 100) / 10) - 0.6;
+        String counter = number <= 0 ? "0.0" : String.format("%.1f", number);
+
         if(mcFont) {
-            mc.fontRendererObj.drawString(title, (int) (x - animation.getValue() + 33), y - 27, -1);
+            mc.fontRendererObj.drawString(title + EnumChatFormatting.GRAY + " (" + counter + ")", (int) (x - animation.getValue() + 33), y - 27, -1);
             mc.fontRendererObj.drawString(message, (int) (x - animation.getValue() + 33), y - 15, -1);
         } else {
-            font.drawString(title, (int) (x - animation.getValue() + 33), y - 27, -1);
+            font.drawString(title + " &7(" + counter + ")", (int) (x - animation.getValue() + 33), y - 27, -1);
             font.drawString(message, (int) (x - animation.getValue() + 33), y - 15, -1);
         }
 
-        if(timer.reached(2450)) {
+        if(timer.reached(seconds - 1000 + 450)) {
             animation.interpolate(0);
         } else {
             animation.interpolate(getTime() > 0 ? width : 0);
         }
-
-        int color = 0xFFCC0012;
-
-        if (type == Type.INFO)
-            color = 0xFF001AC4;
-        else if (type == Type.WARNING)
-            color = 0xFFCCC100;
 
         GlStateManager.pushMatrix();
         GlStateManager.color(1, 1, 1);
@@ -84,10 +79,16 @@ public class Notification {
         GlStateManager.enableDepth();
         GlStateManager.enableCull();
 
-        if(type == Type.WARNING)
-            mc.getTextureManager().bindTexture(new ResourceLocation("rapid/images/warning.png"));
+        ResourceLocation image;
+
+        if(type == NotificationType.WARNING)
+            image = new ResourceLocation("rapid/images/warning.png");
+        else if(type == NotificationType.ERROR)
+            image = new ResourceLocation("rapid/images/error.png");
         else
-            mc.getTextureManager().bindTexture(new ResourceLocation(type == Type.ERROR ? "rapid/images/error.png" : "rapid/images/info.png"));
+            image = new ResourceLocation("rapid/images/info.png");
+
+        mc.getTextureManager().bindTexture(image);
 
         Gui.drawModalRectWithCustomSizedTexture((int) (x - animation.getValue()) + 6, y - 27, 0, 0, 20, 20, 20, 20);
         GlStateManager.popMatrix();

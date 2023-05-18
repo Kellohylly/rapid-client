@@ -25,8 +25,8 @@ public class WatermarkCommand extends Command {
 			Watermark.setWatermark(text.replace("{version}", Client.getInstance().getVersion()));
 			PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Watermark changed!");
 
-			if(Wrapper.getDragConfig() != null)
-				Wrapper.getDragConfig().save();
+			if(Wrapper.getConfigManager().getHudConfig() != null)
+				Wrapper.getConfigManager().getHudConfig().save();
 		} else
 			sendSyntax();
 	}

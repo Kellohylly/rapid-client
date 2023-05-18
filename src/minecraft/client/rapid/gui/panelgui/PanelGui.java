@@ -1,13 +1,12 @@
-package client.rapid.gui.csgogui;
+package client.rapid.gui.panelgui;
 
 import client.rapid.Wrapper;
 import client.rapid.gui.GuiPosition;
-import client.rapid.gui.csgogui.component.Comp;
-import client.rapid.gui.csgogui.component.components.*;
+import client.rapid.gui.panelgui.component.Comp;
+import client.rapid.gui.panelgui.component.components.*;
 import client.rapid.module.Module;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.hud.HudSettings;
-import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
@@ -22,7 +21,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CsgoGui extends GuiScreen {
+public class PanelGui extends GuiScreen {
     public double posX, posY, width2, height2, dragX, dragY;
     public boolean dragging, binding;
     public Category selectedCategory;
@@ -47,7 +46,7 @@ public class CsgoGui extends GuiScreen {
     background = rapidadapta,
     backgroundDark = rapidadaptaDark;
 
-    public CsgoGui() {
+    public PanelGui() {
         dragging = false;
         posX = 70;
         posY = 70;
@@ -180,16 +179,16 @@ public class CsgoGui extends GuiScreen {
                             selectedModule = m;
 
                             if (setting.isCheck()) {
-                                comps.add(new CsgoCheckbox(275, sOffset, this, selectedModule, setting));
+                                comps.add(new PanelCheckbox(275, sOffset, this, selectedModule, setting));
                                 sOffset += 20;
                             }
                             if (setting.isCombo()) {
-                                comps.add(new CsgoCombo(275, sOffset, this, selectedModule, setting));
+                                comps.add(new PanelCombo(275, sOffset, this, selectedModule, setting));
                                 sOffset += 20;
                             }
 
                             if (setting.isSlider()) {
-                                comps.add(new CsgoSlider(275, sOffset, this, selectedModule, setting));
+                                comps.add(new PanelSlider(275, sOffset, this, selectedModule, setting));
                                 sOffset += 20;
                             }
                         }
@@ -237,10 +236,10 @@ public class CsgoGui extends GuiScreen {
     }
 
     public static void setBackground(int background) {
-        CsgoGui.background = background;
+        PanelGui.background = background;
     }
 
     public static void setBackgroundDark(int backgroundDark) {
-        CsgoGui.backgroundDark = backgroundDark;
+        PanelGui.backgroundDark = backgroundDark;
     }
 }

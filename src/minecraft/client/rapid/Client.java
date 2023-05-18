@@ -3,7 +3,7 @@ package client.rapid;
 import client.rapid.module.Module;
 
 public class Client {
-	private static final Client instance = new Client();
+	private static final Client INSTANCE = new Client();
 
 	public void init() {
 		Wrapper.init();
@@ -18,7 +18,7 @@ public class Client {
 	}
 
 	public static Client getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 	
 	public String getName() {
@@ -26,7 +26,7 @@ public class Client {
 	}
 	
 	public String getVersion() {
-		return "1.5";
+		return "1.5.1";
 	}
 
 }

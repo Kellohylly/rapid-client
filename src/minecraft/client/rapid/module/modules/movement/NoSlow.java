@@ -20,11 +20,12 @@ import net.minecraft.util.EnumFacing;
 public class NoSlow extends Module {
 	private final Setting mode = new Setting("Mode", this, "Vanilla", "Packet", "NCP");
 	private final Setting delay = new Setting("Delay", this, 60, 1, 100, true);
+	private final Setting allowSprinting = new Setting("Allow Sprinting", this, true);
 
 	private final TimerUtil timer = new TimerUtil();
 
 	public NoSlow() {
-		add(mode, delay);
+		add(mode, delay, allowSprinting);
 	}
 
 	@Override
@@ -35,6 +36,9 @@ public class NoSlow extends Module {
 			EventSlowdown event = (EventSlowdown) e;
 
 			if (mc.thePlayer.isUsingItem() && isMoving() && !mc.thePlayer.isSneaking()) {
+				if(mc.thePlayer.isSprinting() && !allowSprinting.isEnabled())
+					mc.thePlayer.setSprinting(false);
+
 				switch(mode.getMode()) {
 					case "Vanilla":
 						event.cancel();
@@ -57,10 +61,10 @@ public class NoSlow extends Module {
 								if(mc.thePlayer.onGround)
 									event.cancel();
 
-								if (e.isPre())
+								if (e.isPre() && timer.sleep((int)delay.getValue()))
 									PacketUtil.sendPacketSilent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
 
-								if (e.isPost() && timer.sleep((int)delay.getValue())) {
+								if (e.isPost()) {
 									PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 1));
 									PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
 								}

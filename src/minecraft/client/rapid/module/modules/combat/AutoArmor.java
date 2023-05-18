@@ -24,6 +24,7 @@ public class AutoArmor extends Module {
     private final int[] boots = {313, 309, 317, 305, 301};
 
     private boolean best = true;
+    public static boolean selecting = true;
 
     private final TimerUtil timer = new TimerUtil();
 
@@ -92,8 +93,10 @@ public class AutoArmor extends Module {
                     }
                 }
                 if (item != -1) {
+                    selecting = true;
                     mc.playerController.windowClick(0, item, 0, 1, mc.thePlayer);
-                }
+                } else
+                    selecting = false;
             }
         }
     }
@@ -173,8 +176,10 @@ public class AutoArmor extends Module {
             }
             switchArmor = switchArmor && !b;
             if (item != -1) {
+                selecting = true;
                 mc.playerController.windowClick(0, item, 0, switchArmor ? 4 : 1, mc.thePlayer);
-            }
+            } else
+                selecting = false;
         }
         }
     }

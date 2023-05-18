@@ -1,17 +1,16 @@
-package client.rapid.gui.clickgui.component.components;
+package client.rapid.gui.dropgui.component.components;
 
 import java.awt.Color;
 
-import client.rapid.gui.clickgui.component.Button;
-import client.rapid.gui.clickgui.component.Component;
+import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.gui.Gui;
 
-public class ModeButton extends Component {
+public class DropCombo extends DropComponent {
 	private int modeIndex;
 	private int offset, x, y;
 
-	public ModeButton(Setting set, Button button, int offset) {
+	public DropCombo(Setting set, DropButton button, int offset) {
 		this.set = set;
 		this.parent = button;
 		this.x = button.parent.getX() + button.parent.getWidth();

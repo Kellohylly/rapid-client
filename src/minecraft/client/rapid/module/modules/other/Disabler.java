@@ -10,6 +10,7 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.notification.Notification;
 import client.rapid.notification.NotificationManager;
+import client.rapid.notification.NotificationType;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.network.play.client.*;
@@ -44,9 +45,9 @@ public class Disabler extends Module {
 	@Override
 	public void onEnable() {
 		if(oldVulcanStrafe.isEnabled())
-			NotificationManager.addToQueue(new Notification("Disabler", "This can flag for Auto Block when attacking!", Notification.Type.WARNING));
+			NotificationManager.addToQueue(new Notification("Disabler", "This can flag for Auto Block when attacking!", NotificationType.WARNING, 3));
 
-		NotificationManager.addToQueue(new Notification("Note", "Some disablers may require a restart.", Notification.Type.INFO));
+		NotificationManager.addToQueue(new Notification("Note", "Some disablers may require a restart.", NotificationType.INFO, 3));
 	}
 
 	@Override

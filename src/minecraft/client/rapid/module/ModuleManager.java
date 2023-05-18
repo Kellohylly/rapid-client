@@ -2,6 +2,7 @@ package client.rapid.module;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import client.rapid.module.modules.Category;
@@ -22,6 +23,7 @@ import client.rapid.module.modules.visual.NameTags;
 import client.rapid.module.modules.visual.NoRender;
 import client.rapid.module.modules.visual.TimeChanger;
 import client.rapid.module.modules.visual.XRay;
+import client.rapid.util.font.Fonts;
 
 public class ModuleManager {
 	private final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
@@ -38,6 +40,7 @@ public class ModuleManager {
 			new KillAura(),
 			new Velocity(),
 			new AntiBot(),
+			new AutoPot(),
 			new AutoHeal(),
 			//new TPAura(),
 			new Aimbot(),
@@ -123,13 +126,17 @@ public class ModuleManager {
 		
 		for(Draggable d : draggables)
 			addAll(modules, d);
-		
+
+		Watermark.setWatermark(Watermark.text);
+
+		modules.sort(Comparator.comparingInt(mod -> Fonts.normal2.getStringWidth(((Module)mod).getName())).reversed());
+
 	}
 
 	public void addAll(CopyOnWriteArrayList list, Module... modules) {
 		list.addAll(Arrays.asList(modules));
 	}
-	
+
 	public CopyOnWriteArrayList<Module> getModules() {
 		return modules;
 	}

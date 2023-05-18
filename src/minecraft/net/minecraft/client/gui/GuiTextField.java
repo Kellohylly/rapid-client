@@ -12,27 +12,27 @@ import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
 
 public class GuiTextField extends Gui {
-   private final int id;
-   private final FontRenderer fontRendererInstance;
+   protected final int id;
+   protected final FontRenderer fontRendererInstance;
    public int xPosition;
    public int yPosition;
-   private final int width;
-   private final int height;
-   private String text = "";
-   private int maxStringLength = 32;
-   private int cursorCounter;
-   private boolean enableBackgroundDrawing = true;
-   private boolean canLoseFocus = true;
-   private boolean isFocused;
-   private boolean isEnabled = true;
-   private int lineScrollOffset;
-   private int cursorPosition;
-   private int selectionEnd;
-   private int enabledColor = 14737632;
-   private int disabledColor = 7368816;
-   private boolean visible = true;
-   private GuiPageButtonList.GuiResponder field_175210_x;
-   private Predicate<String> field_175209_y = Predicates.<String>alwaysTrue();
+   protected final int width;
+   protected final int height;
+   protected String text = "";
+   protected int maxStringLength = 32;
+   protected int cursorCounter;
+   protected boolean enableBackgroundDrawing = true;
+   protected boolean canLoseFocus = true;
+   protected boolean isFocused;
+   protected boolean isEnabled = true;
+   protected int lineScrollOffset;
+   protected int cursorPosition;
+   protected int selectionEnd;
+   protected int enabledColor = 14737632;
+   protected int disabledColor = 7368816;
+   protected boolean visible = true;
+   protected GuiPageButtonList.GuiResponder field_175210_x;
+   protected Predicate<String> field_175209_y = Predicates.<String>alwaysTrue();
 
    
    private int animation = 1;
@@ -337,30 +337,8 @@ public class GuiTextField extends Gui {
    public void drawTextBox() {
       if(this.getVisible()) {
          if(this.getEnableBackgroundDrawing()) {
-            if(Minecraft.getMinecraft().currentScreen instanceof AltManager) {
-               Gui.drawRect(this.xPosition - 1, this.yPosition - 1, this.xPosition + this.width + 1, this.yPosition + this.height + 1, 0x30000000);
-               Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, 0x40000000);
-               Gui.drawRect(this.xPosition, this.yPosition + height + 1, this.xPosition + this.width, this.yPosition + this.height, -1);
-
-               if(isFocused()) {
-               	if(animation < width / 2)
-               		animation += 8;
-               	
-                   Gui.drawRect(this.xPosition + width / 2, this.yPosition + height + 1, this.xPosition + this.width / 2 + animation - 3, this.yPosition + this.height, 0xFFFF2020);
-                   Gui.drawRect(this.xPosition + width / 2, this.yPosition + height + 1, this.xPosition + this.width / 2 - animation + 3, this.yPosition + this.height, 0xFFFF2020);
-
-               } else {
-               	if(animation > 1) {
-               		animation -= 8;
-                       Gui.drawRect(this.xPosition + width / 2, this.yPosition + height + 1, this.xPosition + this.width / 2 + animation - 3, this.yPosition + this.height, 0xFFFF2020);
-                       Gui.drawRect(this.xPosition + width / 2, this.yPosition + height + 1, this.xPosition + this.width / 2 - animation + 3, this.yPosition + this.height, 0xFFFF2020);
-               	} else
-               		animation = 1;
-               }           
-               } else {
-               drawRect(this.xPosition - 1, this.yPosition - 1, this.xPosition + this.width + 1, this.yPosition + this.height + 1, -6250336);
-               drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, -16777216);
-            }
+            drawRect(this.xPosition - 1, this.yPosition - 1, this.xPosition + this.width + 1, this.yPosition + this.height + 1, -6250336);
+            drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, -16777216);
          }
 
          int i = this.isEnabled?this.enabledColor:this.disabledColor;
@@ -409,7 +387,7 @@ public class GuiTextField extends Gui {
       }
    }
 
-   private void drawCursorVertical(int p_146188_1_, int p_146188_2_, int p_146188_3_, int p_146188_4_) {
+   protected void drawCursorVertical(int p_146188_1_, int p_146188_2_, int p_146188_3_, int p_146188_4_) {
       if(p_146188_1_ < p_146188_3_) {
          int i = p_146188_1_;
          p_146188_1_ = p_146188_3_;

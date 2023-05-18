@@ -1,27 +1,28 @@
-package client.rapid.gui.clickgui.component;
+package client.rapid.gui.dropgui.component.components;
 
 import java.util.ArrayList;
 
 import client.rapid.Wrapper;
-import client.rapid.gui.clickgui.ClickGui;
+import client.rapid.gui.dropgui.DropdownGui;
+import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.module.Module;
 import client.rapid.module.modules.Category;
 import client.rapid.util.font.*;
 import net.minecraft.client.gui.*;
 
-public class Frame {
+public class DropFrame {
 	public MCFontRenderer
 	font = Fonts.clickgui,
 	icons = Fonts.newIcons;
 
-	public ArrayList<Component> components;
+	public ArrayList<DropComponent> components;
 	public Category category;
 	private boolean open, dragging;
 	private final int width;
 	public int x, y, dragX, dragY;
 	private final int barHeight;
 	
-	public Frame(Category cat) {
+	public DropFrame(Category cat) {
 		this.components = new ArrayList<>();
 		this.category = cat;
 		this.width = 105;
@@ -34,7 +35,7 @@ public class Frame {
 		int tY = this.barHeight;
 		
 		for(Module mod : Wrapper.getModuleManager().getModulesInCategory(category)) {
-			Button modButton = new Button(mod, this, tY);
+			DropButton modButton = new DropButton(mod, this, tY);
 			this.components.add(modButton);
 			tY += 12;
 		}
@@ -42,13 +43,13 @@ public class Frame {
 	
 	public void renderFrame() {
 		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled())
-			Gui.drawRect(this.x - 1.5, this.y - 0.5, this.x + this.width + 1.5, this.y + this.barHeight + 0.5, ClickGui.hud.getColor(barHeight));
+			Gui.drawRect(this.x - 1.5, this.y - 0.5, this.x + this.width + 1.5, this.y + this.barHeight + 0.5, DropdownGui.hud.getColor(barHeight));
 
-		Gui.drawRect(this.x - 1, this.y, this.x + this.width + 1, this.y + this.barHeight, ClickGui.backgroundDark);
+		Gui.drawRect(this.x - 1, this.y, this.x + this.width + 1, this.y + this.barHeight, DropdownGui.backgroundDark);
 		font.drawString(this.category.getName(), (this.x + 2) + 5, (this.y + 2.5f) + 2.5f, -1);
 
 		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Category Icons").isEnabled()) {
-			icons.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4, -1);
+			icons.drawString(String.valueOf(category.getIcon()), x + width - 15, y + icons.getStringHeight(String.valueOf(category.getIcon())) / 1.5f - 0.5f, -1);
 			/*if(category == Category.PLAYER || category == Category.HUD)
 				icon1.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4f, -1);
 			else
@@ -56,14 +57,14 @@ public class Frame {
 		}
 
 		if(this.open && !this.components.isEmpty()) {
-			for(Component component : components)
+			for(DropComponent component : components)
 				component.renderComponent();
 		}
 	}
 	
 	public void refresh() {
 		int off = this.barHeight;
-		for(Component comp : components) {
+		for(DropComponent comp : components) {
 			comp.setOff(off);
 			off += comp.getHeight();
 		}
@@ -92,7 +93,7 @@ public class Frame {
 		return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.barHeight;
 	}
 
-	public ArrayList<Component> getComponents() {
+	public ArrayList<DropComponent> getComponents() {
 		return components;
 	}
 

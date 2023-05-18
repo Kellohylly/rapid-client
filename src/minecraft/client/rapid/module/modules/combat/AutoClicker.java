@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventTick;
-import client.rapid.gui.clickgui.ClickGui;
+import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.module.*;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
@@ -27,7 +27,7 @@ public class AutoClicker extends Module {
 
 	@Override
 	public void onEvent(Event e) {
-		if(e instanceof EventTick && e.isPre() && Mouse.isButtonDown(0) && !(mc.currentScreen instanceof ClickGui)) {
+		if(e instanceof EventTick && e.isPre() && Mouse.isButtonDown(0) && !(mc.currentScreen instanceof DropdownGui)) {
 			if(breakBlocks.isEnabled() && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
 				return;
 

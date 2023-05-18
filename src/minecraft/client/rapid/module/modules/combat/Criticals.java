@@ -46,16 +46,16 @@ public class Criticals extends Module {
 
 					if(packet.getAction() == C02PacketUseEntity.Action.ATTACK && mc.thePlayer.onGround && !mc.thePlayer.isInWater() && timer.sleep((int)delay.getValue() * 10L)) {
 						switch(mode.getMode()) {
-							case "Vanilla":
-								double[] vanilla = {0.013D, 0.012D, 0.011D, 0.01D};
+						case "Vanilla":
+							double[] vanilla = {0.013D, 0.012D, 0.011D, 0.01D};
 
-								for (double height : vanilla)
-									PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + height, mc.thePlayer.posZ, false));
-								break;
-							case "Old NCP":
-								PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.11, mc.thePlayer.posZ, false));
-								PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
-								break;
+							for (double height : vanilla)
+								PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + height, mc.thePlayer.posZ, false));
+							break;
+						case "Old NCP":
+							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.11, mc.thePlayer.posZ, false));
+							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+							break;
 						}
 					}
 				}

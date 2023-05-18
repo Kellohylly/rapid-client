@@ -88,7 +88,12 @@ public class KillAura extends Module {
         if(e instanceof EventUpdate && e.isPost()) {
             collectTargets();
             sortTargets();
-            updateIndex();
+
+            if (switchTimer.sleep((long) switchDelay.getValue()) && mode.getMode().equals("Switch"))
+                index++;
+
+            if (index >= targets.size())
+                index = 0;
 
             target = !targets.isEmpty() ? targets.get(index) : null;
         }
@@ -107,6 +112,7 @@ public class KillAura extends Module {
                     doPreAutoBlock();
 
                     MovingObjectPosition cast = RaycastUtil.getMouseOver((float) reach.getValue());
+
                     if (rayCast.isEnabled() && cast != null && !cast.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY))
                         return;
 
@@ -132,14 +138,6 @@ public class KillAura extends Module {
                 setEnabled(false);
             }
         }
-    }
-
-    private void updateIndex() {
-        if (switchTimer.sleep((long) switchDelay.getValue()) && mode.getMode().equals("Switch"))
-            index++;
-
-        if (index >= targets.size())
-            index = 0;
     }
 
     private void collectTargets() {
@@ -295,10 +293,6 @@ public class KillAura extends Module {
                 case "Packet":
                     AuraUtil.blockPacket();
                     break;
-                /*case "NCP Sync": // thanks Kellohylly for giving me an idea using C09.
-                    PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 1));
-                    PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-                    break;*/
             }
         }
     }

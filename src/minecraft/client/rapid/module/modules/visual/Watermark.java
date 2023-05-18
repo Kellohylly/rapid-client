@@ -85,14 +85,13 @@ public class Watermark extends Draggable {
 		}
 	}
 
-	public static void setWatermark(String watermark) {
-		text = watermark;
-		save();
-
+	public static void setWatermark(String text) {
+		Watermark.text = text;
+		savePositions();
 	}
 
 	public int getColor(long index) {
-		return ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(index);
+		return ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(index);
 	}
 
 }

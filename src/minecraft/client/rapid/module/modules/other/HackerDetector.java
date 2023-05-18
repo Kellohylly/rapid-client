@@ -8,6 +8,7 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.notification.Notification;
 import client.rapid.notification.NotificationManager;
+import client.rapid.notification.NotificationType;
 import client.rapid.util.PlayerUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.block.Block;
@@ -104,7 +105,7 @@ public class HackerDetector extends Module {
         if (cooldown.sleep(mode.getMode().equals("Server Side") ? 5000 : 1000)) {
             switch(mode.getMode()) {
                 case "Notifications":
-                    NotificationManager.addToQueue(new Notification("Hacker Alert", player.getName() + " failed " + check + "!", Notification.Type.WARNING));
+                    NotificationManager.addToQueue(new Notification("Hacker Alert", player.getName() + " failed " + check + "!", NotificationType.WARNING, 3));
                     hackers.add(player);
                     break;
                 case "Client Side":

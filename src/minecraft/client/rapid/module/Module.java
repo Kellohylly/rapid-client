@@ -1,11 +1,16 @@
 package client.rapid.module;
 
 import client.rapid.*;
+import client.rapid.config.configs.ModuleConfig;
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventWorldLoad;
+import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.module.MoveUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.potion.Potion;
+
+import java.util.Arrays;
 
 public class Module {
 	protected final String name = getClass().getAnnotation(ModuleInfo.class).getName();
@@ -30,8 +35,7 @@ public class Module {
 	}
 	
 	public void add(Setting... settings) {
-		for(Setting s : settings)
-			Wrapper.getSettingsManager().rSetting(s);
+		Arrays.stream(settings).forEach(Wrapper.getSettingsManager()::rSetting);
 	}
 
 	public boolean isEnabled(String module) {
@@ -46,7 +50,7 @@ public class Module {
 		return Wrapper.getSettingsManager().getSettingByName(module, name).isEnabled();
 	}
 
-	public double getValue(String module, String name) {
+	public double getDouble(String module, String name) {
 		return Wrapper.getSettingsManager().getSettingByName(module, name).getValue();
 	}
 
@@ -70,7 +74,7 @@ public class Module {
 		this.key = key;
 		
 		if(Client.getInstance() != null && mc.thePlayer != null)
-			Wrapper.getKeyConfig().save();
+			Wrapper.getConfigManager().getModKeyConfig().save();
 	}
 
 	public boolean isEnabled() {
@@ -89,6 +93,16 @@ public class Module {
 		save();
 	}
 
+	protected void autoDisable(Event e) {
+		if(e instanceof EventUpdate && e.isPre()) {
+			if(mc.thePlayer.getHealth() <= 0)
+				setEnabled(false);
+		}
+		if (e instanceof EventWorldLoad) {
+			setEnabled(false);
+		}
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -100,68 +114,34 @@ public class Module {
 	public Category getCategory() {
 		return category;
 	}
-
-	protected void strafe() {
-		setMoveSpeed(getMoveSpeed());
-	}
-	
-    protected void setMoveSpeed(double moveSpeed) {
-    	setMoveSpeed(moveSpeed, mc.thePlayer.rotationYaw, mc.thePlayer.movementInput.moveStrafe, mc.thePlayer.movementInput.moveForward);
-    }
-    
-    protected float getMoveSpeed() {
-        return (float) Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
-    }
-    
-    protected boolean isMoving() {
-        return mc.thePlayer.movementInput.moveForward != 0.0F || mc.thePlayer.movementInput.moveStrafe != 0.0F;
-    }
-    
-    protected boolean isMovingOnGround() {
-        return isMoving() && mc.thePlayer.onGround;
-    }
-
-    protected void setMoveSpeed(double moveSpeed, float yaw, double strafe, double forward) {
-        if (forward != 0.0D) {
-            if (strafe > 0.0D)
-            	yaw += (forward > 0.0D) ? -45 : 45;
-
-            else if (strafe < 0.0D)
-            	yaw += (forward > 0.0D) ? 45 : -45;
-
-            strafe = 0.0D;
-
-            if (forward > 0.0D)
-            	forward = 1.0D;
-
-            else if (forward < 0.0D)
-            	forward = -1.0D;
-        }
-        if (strafe > 0.0D)
-        	strafe = 1.0D;
-
-        else if (strafe < 0.0D)
-        	strafe = -1.0D;
-
-        double
-        mx = Math.cos(Math.toRadians(yaw + 90.0F)),
-        mz = Math.sin(Math.toRadians(yaw + 90.0F));
-
-        mc.thePlayer.motionX = forward * moveSpeed * mx + strafe * moveSpeed * mz;
-        mc.thePlayer.motionZ = forward * moveSpeed * mz - strafe * moveSpeed * mx;
-    }
-    
-    protected double getBaseMoveSpeed() {
-        double base = 0.2875;
-        if (mc.thePlayer.isPotionActive(Potion.moveSpeed))
-            base *= 1.0 + 0.2 * (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1);
-        
-        return base;
-    }
     
     protected static void save() {
-		if(Wrapper.getConfig() != null && Minecraft.getMinecraft().thePlayer != null)
-			Wrapper.getConfig().save();
+		if(Wrapper.getConfigManager() != null && Minecraft.getMinecraft().thePlayer != null)
+			Wrapper.getConfigManager().getModuleConfig().save();
     }
+
+	protected float getMoveSpeed() {
+		return MoveUtil.getMoveSpeed();
+	}
+
+	protected void strafe() {
+		MoveUtil.strafe();
+	}
+
+	protected void setMoveSpeed(double moveSpeed) {
+		MoveUtil.setMoveSpeed(moveSpeed);
+	}
+
+	protected float getBaseMoveSpeed() {
+		return (float) MoveUtil.getBaseMoveSpeed();
+	}
+
+	protected boolean isMoving() {
+		return MoveUtil.isMoving();
+	}
+
+	protected boolean isMovingOnGround() {
+		return MoveUtil.isMovingOnGround();
+	}
 	
 }
