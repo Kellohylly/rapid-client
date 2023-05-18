@@ -1,6 +1,7 @@
 package net.minecraft.client;
 
 import client.rapid.Wrapper;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.module.modules.other.RichPresenceToggle;
 import com.google.common.collect.Iterables;
@@ -2419,6 +2420,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             EventWorldLoad eventWorldLoad = new EventWorldLoad();
             eventWorldLoad.setType(EventType.PRE);
             Event.dispatch(eventWorldLoad);
+
         }
         else
         {

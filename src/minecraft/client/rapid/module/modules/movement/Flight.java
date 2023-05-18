@@ -47,6 +47,14 @@ public class Flight extends Module {
 	}
 
 	@Override
+	public void onSettingChange(EventSettingChange e) {
+		speed.setVisible(!mode.getMode().equals("Creative") && !mode.getMode().equals("Collide"));
+		fast.setVisible(mode.getMode().equals("Verus") || mode.getMode().equals("Old NCP"));
+		bobbing.setVisible(mode.getMode().equals("Old NCP"));
+		System.out.println("done");
+	}
+
+	@Override
 	public void onEnable() {
 		launchY = mc.thePlayer.posY;
 		damaged = mc.thePlayer.hurtTime != 0 && !damage.getMode().equals("None");
@@ -94,6 +102,7 @@ public class Flight extends Module {
 	@Override
 	public void onEvent(Event e) {
 		if(e instanceof EventUpdate && e.isPre()) {
+
 			if(bobbing.isEnabled())
 				mc.thePlayer.cameraYaw = 0.0696f;
 			if (mc.thePlayer.hurtTime != 0)

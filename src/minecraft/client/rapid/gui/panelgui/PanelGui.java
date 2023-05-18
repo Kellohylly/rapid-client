@@ -36,6 +36,8 @@ public class PanelGui extends GuiScreen {
 
     int heightt = 0;
 
+    int offset = 0;
+
     public ArrayList<Comp> comps = new ArrayList<>();
 
     public static int
@@ -86,10 +88,7 @@ public class PanelGui extends GuiScreen {
             Gui.drawRect(posX, posY + i, posX + size, posY + 10 + i + size - 10, c.equals(selectedCategory) ? ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0) : background);
 
             icons.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
-            /*if(c == Category.PLAYER || c == Category.HUD)
-                icon1.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
-            else
-                icon2.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);*/
+
             i+= size;
         }
 
@@ -111,8 +110,13 @@ public class PanelGui extends GuiScreen {
             }
             i += 26;
         }
+        int i2 = 3;
         for (Comp comp : comps) {
-            comp.drawScreen(mouseX, mouseY);
+            if(comp.setting.isVisible()) {
+                comp.drawScreen(mouseX, mouseY);
+                comp.setY(i2);
+                i2 += 20;
+            }
 
             if(isInside(mouseX, mouseY, posX + 252, posY, width2, height2)) {
                 if (wheel < 0) {
@@ -139,8 +143,10 @@ public class PanelGui extends GuiScreen {
             binding = false;
         }
 
-        for (Comp comp : comps)
-            comp.keyTyped(typedChar, keyCode);
+        for (Comp comp : comps) {
+            if(comp.setting.isVisible())
+                comp.keyTyped(typedChar, keyCode);
+        }
 
     }
 
@@ -171,35 +177,39 @@ public class PanelGui extends GuiScreen {
                     } else if(mouseButton == 2) {
                         bindingModule = m;
                         binding = true;
-                } else if(mouseButton == 1) {
-                    int sOffset = 3;
-                    comps.clear();
-                    if (Wrapper.getSettingsManager().getSettingsByMod(m) != null)
-                        for (Setting setting : Wrapper.getSettingsManager().getSettingsByMod(m)) {
-                            selectedModule = m;
+                    } else if(mouseButton == 1) {
+                        int offset = 3;
+                        comps.clear();
+                        if (Wrapper.getSettingsManager().getSettingsByMod(m) != null)
+                            for (Setting setting : Wrapper.getSettingsManager().getSettingsByMod(m)) {
+                                selectedModule = m;
 
-                            if (setting.isCheck()) {
-                                comps.add(new PanelCheckbox(275, sOffset, this, selectedModule, setting));
-                                sOffset += 20;
-                            }
-                            if (setting.isCombo()) {
-                                comps.add(new PanelCombo(275, sOffset, this, selectedModule, setting));
-                                sOffset += 20;
-                            }
+                                if(setting.isVisible()) {
+                                    if (setting.isCheck()) {
+                                        comps.add(new PanelCheckbox(275, offset, this, selectedModule, setting));
+                                    }
 
-                            if (setting.isSlider()) {
-                                comps.add(new PanelSlider(275, sOffset, this, selectedModule, setting));
-                                sOffset += 20;
+                                    if (setting.isCombo()) {
+                                        comps.add(new PanelCombo(275, offset, this, selectedModule, setting));
+                                    }
+
+                                    if (setting.isSlider()) {
+                                        comps.add(new PanelSlider(275, offset, this, selectedModule, setting));
+                                    }
+                                    offset += 20;
+                                }
+
                             }
-                        }
                     }
                 }
+
             }
             i += 26;
         }
         for (Comp comp : comps) {
-            if(isInside(mouseX, mouseY, posX + 252, posY, width2, height2))
+            if(isInside(mouseX, mouseY, posX + 252, posY, width2, height2) && comp.setting.isVisible()) {
                 comp.mouseClicked(mouseX, mouseY, mouseButton);
+            }
         }
 
         if(mouseButton == 0 && isInside(mouseX, mouseY, 4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4)) {
@@ -207,6 +217,8 @@ public class PanelGui extends GuiScreen {
                 position = new GuiPosition();
             mc.displayGuiScreen(position);
         }
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+
     }
 
     @Override
@@ -214,8 +226,11 @@ public class PanelGui extends GuiScreen {
         super.mouseReleased(mouseX, mouseY, state);
         dragging = false;
 
-        for (Comp comp : comps)
-            comp.mouseReleased(mouseX, mouseY, state);
+        for (Comp comp : comps) {
+            if(comp.setting.isVisible())
+                comp.mouseReleased(mouseX, mouseY, state);
+        }
+
     }
 
     @Override
@@ -241,5 +256,14 @@ public class PanelGui extends GuiScreen {
 
     public static void setBackgroundDark(int backgroundDark) {
         PanelGui.backgroundDark = backgroundDark;
+    }
+
+    private Comp getComponentFromSetting(Setting setting) {
+        Comp comp = null;
+        for(Comp component : comps) {
+            if(component.setting.equals(setting))
+                comp = component;
+        }
+        return comp;
     }
 }

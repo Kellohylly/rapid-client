@@ -37,10 +37,12 @@ public class AntiFireball extends Module {
     @Override
     public void onEvent(Event e) {
         Entity fireball = null;
-        
-        for(Entity entity : mc.theWorld.loadedEntityList) {
-            if(entity instanceof EntityFireball && mc.thePlayer.getDistanceToEntity(entity) < range.getValue() + 4) {
-                fireball = entity;
+
+        if(e instanceof EventUpdate && e.isPre()) {
+            for(Entity entity : mc.theWorld.loadedEntityList) {
+                if (entity instanceof EntityFireball && mc.thePlayer.getDistanceToEntity(entity) < range.getValue() + 4) {
+                    fireball = entity;
+                }
             }
         }
 

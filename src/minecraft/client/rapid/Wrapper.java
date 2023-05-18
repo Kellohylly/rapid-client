@@ -2,6 +2,8 @@ package client.rapid;
 
 import client.rapid.command.CommandManager;
 import client.rapid.config.ConfigManager;
+import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.ModuleManager;
 import client.rapid.module.settings.SettingsManager;
 import client.rapid.rpc.RichPresence;

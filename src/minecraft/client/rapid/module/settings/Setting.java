@@ -17,7 +17,7 @@ public class Setting {
 
 	private String sval;
 	private final Module parent;
-	private boolean bval, onlyInteger = false;
+	private boolean bval, onlyInteger = false, visible = true;
 	private double dval, min, max;
 
 	public Setting(String name, Module parent, String... options) {
@@ -44,7 +44,15 @@ public class Setting {
 		this.onlyInteger = onlyInteger;
 		this.mode = SettingType.SLIDER;
 	}
-	
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
 	public String getName() {
 		return name;
 	}

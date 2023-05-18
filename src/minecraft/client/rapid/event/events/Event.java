@@ -3,6 +3,7 @@ package client.rapid.event.events;
 import client.rapid.Wrapper;
 import client.rapid.event.*;
 import client.rapid.event.events.game.EventChat;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Module;
 import net.minecraft.client.Minecraft;
 
@@ -13,8 +14,14 @@ public class Event extends EventCancel {
 		if(e instanceof EventChat && e.isPre())
 			Wrapper.getCommandManager().handle((EventChat)e);
 		
-		if(Minecraft.getMinecraft().thePlayer != null)
+		if(Minecraft.getMinecraft().thePlayer != null) {
+			Wrapper.getModuleManager().getModules().forEach(m -> {
+				if (e instanceof EventSettingChange) {
+					m.onSettingChange((EventSettingChange) e);
+				}
+			});
 			Wrapper.getModuleManager().getModules().stream().filter(Module::isEnabled).forEach(m -> m.onEvent(e));
+		}
 	}
 
 	public EventType getType() {

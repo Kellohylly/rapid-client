@@ -26,7 +26,7 @@ import java.util.List;
 @ModuleInfo(getName = "Scaffold", getCategory = Category.PLAYER)
 public class Scaffold extends Module {
 	private final Setting mode = new Setting("Mode", this, "Pre", "Post");
-	private final Setting rotations = new Setting("Rotations", this, "None", "Normal", "Keep", "Simple");
+	private final Setting rotations = new Setting("Rotations", this, "None", "Normal", "Normal2", "Keep", "Simple");
 	private final Setting safewalk = new Setting("Safewalk", this, "None", "Simple", "Legit");
 	private final Setting tower = new Setting("Tower", this, "None", "NCP", "Slow");
 	private final Setting sprint = new Setting("Sprint", this, "None", "Normal", "No Packet");
@@ -34,6 +34,7 @@ public class Scaffold extends Module {
 	private final Setting delay = new Setting("Delay", this, 0, 0, 500, true);
 	private final Setting boost = new Setting("Speed Boost", this, 0, 0, 1, false);
 	private final Setting placeOnEnd = new Setting("Place on end", this, true);
+	private final Setting towerMove = new Setting("Tower Move", this, false);
 	private final Setting rayCast = new Setting("Ray Cast", this, true);
 	private final Setting strict = new Setting("Strict", this, true);
 	private final Setting eagle = new Setting("Eagle", this, true);
@@ -70,7 +71,7 @@ public class Scaffold extends Module {
 	TimerUtil timer = new TimerUtil();
 
 	public Scaffold() {
-		add(mode, rotations, safewalk, tower, sprint, spoof, delay, boost, placeOnEnd, rayCast, strict, eagle, keepY, swing, autoDisable);
+		add(mode, rotations, safewalk, tower, sprint, spoof, delay, boost, placeOnEnd, towerMove, rayCast, strict, eagle, keepY, swing, autoDisable);
 	}
 
 	@Override
@@ -122,6 +123,10 @@ public class Scaffold extends Module {
 				switch (rotations.getMode()) {
 					case "Normal":
 						event.setYaw(mc.thePlayer.rotationYaw - 180);
+						event.setPitch(rots[1]);
+						break;
+					case "Normal2":
+						event.setYaw(rots[0]);
 						event.setPitch(rots[1]);
 						break;
 					case "Keep":
@@ -205,7 +210,10 @@ public class Scaffold extends Module {
 							}
 						}
 					}
-					if (mc.theWorld.getBlockState(blockPos).getBlock() == Blocks.air && PlayerUtil.hasBlockEquipped() && mc.gameSettings.keyBindJump.isKeyDown() && !isMoving()) {
+					if (mc.theWorld.getBlockState(blockPos).getBlock() == Blocks.air && PlayerUtil.hasBlockEquipped() && mc.gameSettings.keyBindJump.isKeyDown() && timer.reached((int)delay.getValue())) {
+						if(!towerMove.isEnabled() && isMoving())
+							return;
+
 						mc.thePlayer.motionX = 0;
 						mc.thePlayer.motionZ = 0;
 						switch (tower.getMode()) {

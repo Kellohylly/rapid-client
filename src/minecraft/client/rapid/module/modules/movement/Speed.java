@@ -2,6 +2,7 @@ package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -21,7 +22,7 @@ import java.util.*;
 
 @ModuleInfo(getName = "Speed", getCategory = Category.MOVEMENT)
 public class Speed extends Module {
-	private final Setting mode = new Setting("Mode", this, "Vanilla", "Strafe", "NCP", "Old NCP", "Vulcan", "Verus", "Verus Ground");
+	private final Setting mode = new Setting("Mode", this, "Vanilla", "Strafe", "NCP", "NCP Low", "Old NCP", "Vulcan", "Verus", "Verus Ground");
 	private final Setting speed = new Setting("Speed", this, 12, 1, 100, true);
 	private final Setting damageBoost = new Setting("Damage Boost", this, 0.01, 0, 2, false);
 	private final Setting groundStrafe = new Setting("Ground Strafe", this, false);
@@ -37,6 +38,13 @@ public class Speed extends Module {
 
 	public Speed() {
 		add(mode, speed, damageBoost, groundStrafe, disableOnFlag);
+	}
+
+	@Override
+	public void onSettingChange(EventSettingChange e) {
+		groundStrafe.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Strafe"));
+		damageBoost.setVisible(!mode.getMode().equals("Vanilla") && !mode.getMode().equals("Verus Ground") && !mode.getMode().equals("Vulcan"));
+		speed.setVisible(mode.getMode().equals("Vanilla"));
 	}
 
 	@Override
@@ -112,6 +120,7 @@ public class Speed extends Module {
 					setMoveSpeed((getMoveSpeed() * 1.006) + (mc.thePlayer.hurtTime > 0 ? damageBoost.getValue() / 5 : 0));
 					break;
 			case "NCP":
+			case "NCP Low":
 				if(isMovingOnGround()) {
 					mc.thePlayer.jump();
 
@@ -139,7 +148,9 @@ public class Speed extends Module {
 					setMoveSpeed(getMoveSpeed() * 1.0004);
 
 					if(ticks == 5) {
-						mc.thePlayer.motionY = -0.19f;
+						if(mode.getMode().equals("NCP Low"))
+							mc.thePlayer.motionY = -0.19f;
+
 						mc.timer.timerSpeed = 1.01f;
 					}
 					if(mc.thePlayer.hurtTime != 0)

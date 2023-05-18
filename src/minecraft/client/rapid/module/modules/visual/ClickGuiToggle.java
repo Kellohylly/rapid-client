@@ -1,5 +1,7 @@
 package client.rapid.module.modules.visual;
 
+import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.Module;
@@ -24,8 +26,9 @@ public class ClickGuiToggle extends Module {
 	}
 	
 	public void onEnable() {
-		if(clickGui == null)
+		if(clickGui == null) {
 			clickGui = mode.getMode().equals("Dropdown") ? new DropdownGui() : new PanelGui();
+		}
 
 		switch(mode.getMode()) {
 			case "Normal":

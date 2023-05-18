@@ -2,6 +2,7 @@ package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -30,6 +31,13 @@ public class LongJump extends Module {
 
 	public LongJump() {
 		add(mode, damage, speed, height, slowdown, autoDisable);
+	}
+
+	@Override
+	public void onSettingChange(EventSettingChange e) {
+		height.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Vanilla"));
+		slowdown.setVisible(mode.getMode().equals("Old NCP"));
+		speed.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Old NCP"));
 	}
 
 	@Override

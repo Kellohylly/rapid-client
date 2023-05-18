@@ -26,7 +26,6 @@ public class PanelCombo extends Comp {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
         int maxIndex = setting.getOptions().size();
 
         if(isInside(mouseX, mouseY, (int)(parent.posX + x - 20), (int)(parent.posY + y + 1) + scrollY, (int)(parent.posX + x + 122), (int)(parent.posY + y + 20) + scrollY)) {

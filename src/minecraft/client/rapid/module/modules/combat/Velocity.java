@@ -2,6 +2,8 @@ package client.rapid.module.modules.combat;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.game.EventSettingChange;
+import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -11,18 +13,49 @@ import net.minecraft.network.play.server.*;
 
 @ModuleInfo(getName = "Velocity", getCategory = Category.COMBAT)
 public class Velocity extends Module {
-	private final Setting mode = new Setting("Mode", this, "Cancel", "Vulcan", "Ground Only");
+	private final Setting mode = new Setting("Mode", this, "Cancel", "Vulcan", "Ground Only", "Ticks");
+	private final Setting ticks = new Setting("Ticks", this, 2, 1, 5, true);
 	private final Setting horizontal = new Setting("Horizontal", this, 50, 0, 100, true);
 	private final Setting vertical = new Setting("Vertical", this, 50, 0, 100, true);
 	private final Setting explosives = new Setting("Explosives", this, true);
 
 	public Velocity() {
-		add(mode, horizontal, vertical, explosives);
+		add(mode, ticks, horizontal, vertical, explosives);
+	}
+
+	private int tickss;
+
+	@Override
+	public void onSettingChange(EventSettingChange e) {
+		ticks.setVisible(mode.getMode().equals("Ticks"));
+	}
+
+	@Override
+	public void onEnable() {
+		tickss = 0;
+	}
+
+	@Override
+	public void onDisable() {
+		tickss = 0;
 	}
 
 	@Override
 	public void onEvent(Event e) {
 		setTag(mode.getMode());
+
+		if(e instanceof EventUpdate && e.isPre() && mode.getMode().equals("Ticks")) {
+			if(mc.thePlayer.hurtTime != 0)
+				tickss++;
+			else
+				tickss = 0;
+
+			if(tickss == ticks.getValue()) {
+				mc.thePlayer.motionY *= vertical.getValue() / 100;
+				mc.thePlayer.motionX *= horizontal.getValue() / 100;
+				mc.thePlayer.motionZ *= horizontal.getValue() / 100;
+			}
+		}
 
 		if(e instanceof EventPacket && e.isPre()) {
 			EventPacket event = (EventPacket)e;
@@ -47,8 +80,8 @@ public class Velocity extends Module {
 				else {
 					if ((event.getPacket() instanceof S12PacketEntityVelocity) || (event.getPacket() instanceof S27PacketExplosion && explosives.isEnabled()))
 						event.cancel();
-					break;
 				}
+				break;
 			}
 		}
 	}

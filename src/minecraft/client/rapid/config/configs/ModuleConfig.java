@@ -1,6 +1,7 @@
 package client.rapid.config.configs;
 
 import client.rapid.Wrapper;
+import client.rapid.gui.panelgui.component.Comp;
 import client.rapid.module.Module;
 import client.rapid.module.settings.Setting;
 import client.rapid.config.Config;
