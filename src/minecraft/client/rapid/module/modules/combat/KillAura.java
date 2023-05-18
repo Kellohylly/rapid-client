@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventRotation;
@@ -70,6 +71,19 @@ public class KillAura extends Module {
 
     public KillAura() {
         add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, autoDisable, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
+    }
+
+    @Override
+    public void onSettingChange(EventSettingChange e) {
+        viewLock.setVisible(!rotate.getMode().equals("None"));
+        autoblockperc.setVisible(!autoBlock.getMode().equals("None"));
+        useGcd.setVisible(!rotate.getMode().equals("None"));
+        shakeX.setVisible(!rotate.getMode().equals("None"));
+        shakeY.setVisible(!rotate.getMode().equals("None"));
+        minTurn.setVisible(!rotate.getMode().equals("None"));
+        maxTurn.setVisible(!rotate.getMode().equals("None"));
+        switchDelay.setVisible(mode.getMode().equals("Switch"));
+
     }
 
     @Override

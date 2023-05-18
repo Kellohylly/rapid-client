@@ -9,6 +9,7 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
+import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
@@ -20,7 +21,7 @@ import java.util.List;
 public class PingSpoof extends Module {
     private final Setting delay = new Setting("Delay", this, 4000, 100, 5000, true);
 
-    private final List<Packet> packets = new ArrayList<>();
+    private final List<Packet<? extends INetHandler>> packets = new ArrayList<>();
 
     private final TimerUtil timer = new TimerUtil();
 

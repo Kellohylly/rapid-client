@@ -75,6 +75,11 @@ public class Scaffold extends Module {
 	}
 
 	@Override
+	public void onSettingChange(EventSettingChange e) {
+		towerMove.setVisible(!tower.getMode().equals("None"));
+	}
+
+	@Override
 	public void onEnable() {
 		rotated = false;
 		yaw = mc.thePlayer.rotationYaw - 180;

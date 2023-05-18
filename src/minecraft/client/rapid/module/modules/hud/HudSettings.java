@@ -1,5 +1,6 @@
 package client.rapid.module.modules.hud;
 
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -27,6 +28,15 @@ public class HudSettings extends Draggable {
     public HudSettings() {
         super(0, 0, 0, 0);
         add(colorMode, red, green, blue, red1, green1, blue1, rainbow, mcFont, fontMode, shadow);
+    }
+
+    @Override
+    public void onSettingChange(EventSettingChange e) {
+        red1.setVisible(colorMode.getMode().equals("Gradient"));
+        green1.setVisible(colorMode.getMode().equals("Gradient"));
+        blue1.setVisible(colorMode.getMode().equals("Gradient"));
+        rainbow.setVisible((!colorMode.getMode().equals("Custom")));
+        fontMode.setVisible(!mcFont.isEnabled());
     }
 
     public int getColor(long wave) {

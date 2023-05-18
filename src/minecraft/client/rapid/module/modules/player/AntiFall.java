@@ -1,6 +1,7 @@
 package client.rapid.module.modules.player;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -20,6 +21,11 @@ public class AntiFall extends Module {
 
     public AntiFall() {
         add(mode, fallDistance, height);
+    }
+
+    @Override
+    public void onSettingChange(EventSettingChange e) {
+        height.setVisible(!mode.getMode().equals("Teleport"));
     }
 
     @Override

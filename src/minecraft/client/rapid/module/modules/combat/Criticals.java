@@ -2,6 +2,7 @@ package client.rapid.module.modules.combat;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -21,6 +22,11 @@ public class Criticals extends Module {
 
 	public Criticals() {
 		add(mode, delay);
+	}
+
+	@Override
+	public void onSettingChange(EventSettingChange e) {
+		delay.setVisible(!mode.getMode().equals("No Ground"));
 	}
 
 	@Override

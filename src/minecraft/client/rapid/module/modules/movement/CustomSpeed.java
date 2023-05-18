@@ -1,6 +1,7 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -24,6 +25,11 @@ public class CustomSpeed extends Module {
 
 	public CustomSpeed() {
 		add(jumpHeight, groundSpeed, fallMode, fastFall, fallTicks, airSpeed, slowdown, timer);
+	}
+
+	@Override
+	public void onSettingChange(EventSettingChange e) {
+		fallTicks.setVisible(fallMode.getMode().equals("Ticks"));
 	}
 
 	@Override

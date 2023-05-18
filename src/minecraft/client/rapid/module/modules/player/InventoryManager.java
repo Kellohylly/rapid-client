@@ -1,6 +1,7 @@
 package client.rapid.module.modules.player;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -34,6 +35,13 @@ public class InventoryManager extends Module {
 
     public InventoryManager() {
         add(delay, swordSlot, clean, keepAxe, keepPickaxe, keepShovel, inventoryOnly);
+    }
+
+    @Override
+    public void onSettingChange(EventSettingChange e) {
+        keepAxe.setVisible(clean.isEnabled());
+        keepPickaxe.setVisible(clean.isEnabled());
+        keepShovel.setVisible(clean.isEnabled());
     }
 
     @Override

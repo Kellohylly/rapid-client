@@ -4,6 +4,7 @@ import client.rapid.Client;
 import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventRender;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Draggable;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -36,6 +37,11 @@ public class Watermark extends Draggable {
 	public Watermark() {
 		super(100, 100, 100, 20);
 		add(watermarkMode, watermarkOpacity);
+	}
+
+	@Override
+	public void onSettingChange(EventSettingChange e) {
+		watermarkOpacity.setVisible(watermarkMode.getMode().equals("Cool"));
 	}
 
 	@Override

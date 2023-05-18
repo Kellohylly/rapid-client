@@ -51,7 +51,6 @@ public class Flight extends Module {
 		speed.setVisible(!mode.getMode().equals("Creative") && !mode.getMode().equals("Collide"));
 		fast.setVisible(mode.getMode().equals("Verus") || mode.getMode().equals("Old NCP"));
 		bobbing.setVisible(mode.getMode().equals("Old NCP"));
-		System.out.println("done");
 	}
 
 	@Override

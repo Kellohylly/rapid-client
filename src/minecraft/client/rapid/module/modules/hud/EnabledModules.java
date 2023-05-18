@@ -4,6 +4,7 @@ import client.rapid.Client;
 import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventRender;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Draggable;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;

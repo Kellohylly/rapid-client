@@ -1,6 +1,7 @@
 package client.rapid.module.modules.combat;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -30,6 +31,11 @@ public class AntiBot extends Module {
 
 	public AntiBot() {
 		add(mode, maxDistance, clearTime, remove, excludeTeam);
+	}
+
+	@Override
+	public void onSettingChange(EventSettingChange e) {
+		maxDistance.setVisible(!mode.getMode().equals("Tab"));
 	}
 
 	@Override
