@@ -24,6 +24,20 @@ public class RaycastUtil extends MinecraftUtil {
         return movingObjectPosition.getBlockPos() != null && movingObjectPosition.getBlockPos().equals(pos) && (!strict || movingObjectPosition.sideHit == enumFacing);
     }
 
+    public static boolean overEntity(final Entity entity, final BlockPos pos, final boolean strict) {
+        final MovingObjectPosition movingObjectPosition = RaycastUtil.getMouseOver(6);
+
+        if (movingObjectPosition == null)
+            return false;
+
+        final Vec3 hitVec = movingObjectPosition.hitVec;
+
+        if (hitVec == null)
+            return false;
+
+        return movingObjectPosition.getBlockPos() != null && movingObjectPosition.getBlockPos().equals(pos) && (!strict || movingObjectPosition.entityHit == entity);
+    }
+
     // Big thanks to ExterminateYT for this
     public static MovingObjectPosition getMouseOver(final float range) {
         final Entity entity = mc.getRenderViewEntity();

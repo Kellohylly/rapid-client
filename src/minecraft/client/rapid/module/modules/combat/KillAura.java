@@ -26,6 +26,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 
@@ -112,9 +113,10 @@ public class KillAura extends Module {
             target = !targets.isEmpty() ? targets.get(index) : null;
         }
         if(e instanceof EventRotation) {
+            EventRotation event = (EventRotation) e;
             if (target != null) {
                 if(!rotate.getMode().equals("None")) {
-                    doRotations((EventRotation) e, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
+                    doRotations(event, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
                 }
             }
         }
@@ -253,10 +255,20 @@ public class KillAura extends Module {
     	if(this.useGcd.isEnabled()) {
     		rots = this.applyMouseFix(rots[0], rots[1]);
     	}
-    	
-    	rots[0] = RotationUtil.updateRotation(RotationUtil.yaw, rots[0]);
+
+        float f = (float)(mc.thePlayer.posX - target.posX);
+        float f2 = (float)(mc.thePlayer.posZ - target.posZ);
+        double distance = MathHelper.sqrt_float(f * f + f2 * f2);
+
+        /*if(distance < 0.42) {
+            rots[0] = RotationUtil.updateRotation(RotationUtil.yaw, 0);
+
+        } else {*/
+            rots[0] = RotationUtil.updateRotation(RotationUtil.yaw, rots[0]);
+        //}
+
         rots[1] = RotationUtil.updateRotation(RotationUtil.pitch, rots[1]);
-        
+
         rots = this.smoothenRotations(rots);
         
         if (viewLock.isEnabled()) {

@@ -58,7 +58,7 @@ public class TargetStrafe extends Module {
 
             if (target != null) {
                 if(!mc.gameSettings.keyBindBack.isKeyDown())
-                    setSpeed((EventMove) e, getMoveSpeed(), RotationUtil.getRotations(target, 0, 0)[0], direction, (mc.thePlayer.getDistanceToEntity(target) <= range.getValue()) ? 0.0 : 1.0);
+                    setSpeed((EventMove) e, getMoveSpeed(), RotationUtil.getRotations(target, 0, 0)[0], direction, (mc.thePlayer.getDistanceToEntity(target) <= range.getValue() - 1) ? 0.0 : 1.0);
                 if(autoThirdPerson.isEnabled() && !changedView && mc.gameSettings.thirdPersonView != 1) {
                     mc.gameSettings.thirdPersonView = 1;
                     changedView = true;

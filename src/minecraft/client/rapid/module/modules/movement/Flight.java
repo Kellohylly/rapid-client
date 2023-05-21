@@ -25,7 +25,7 @@ import org.lwjgl.util.vector.Vector2f;
 @ModuleInfo(getName = "Flight", getCategory = Category.MOVEMENT)
 public class Flight extends Module {
 	private final Setting mode = new Setting("Mode", this, "Creative", "Vanilla", "Old NCP", "Collide", "Verus", "Position");
-	private final Setting damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait");
+	private final Setting damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait", "Vulcant");
 	private final Setting speed = new Setting("Speed", this, 2, 0.2, 10, false);
 	private final Setting fast = new Setting("Fast", this, false);
 	private final Setting autoDisable = new Setting("Auto Disable", this, true);
@@ -117,19 +117,30 @@ public class Flight extends Module {
 			if(e instanceof EventUpdate && e.isPre()) {
 				setMoveSpeed(0);
 				switch(damage.getMode()) {
-				case "Simple":
-					PlayerUtil.damagePlayer(3.001F);
-					damaged = true;
-					break;
-				case "Jump":
-					if (ticks < 3) {
-						if (mc.thePlayer.onGround) {
-							mc.thePlayer.onGround = false;
-							mc.thePlayer.jump();
-							ticks++;
+					case "Simple":
+						PlayerUtil.damagePlayer(3.001F);
+						damaged = true;
+						break;
+					case "Jump":
+						if (ticks < 3) {
+							if (mc.thePlayer.onGround) {
+								mc.thePlayer.onGround = false;
+								mc.thePlayer.jump();
+								ticks++;
+							}
 						}
 						break;
-					}
+					case "Vulcant":
+						if (mc.thePlayer.onGround) {
+							if(ticks == 1)
+								mc.thePlayer.jump();
+						}
+
+						if(ticks == 8)
+							mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + 10, mc.thePlayer.posZ);
+
+						ticks++;
+						break;
 				}
 			}
 			return;
@@ -182,7 +193,18 @@ public class Flight extends Module {
 
 			switch(mode.getMode()) {
 				case "Creative":
-					mc.thePlayer.capabilities.isFlying = true;
+					//mc.thePlayer.capabilities.isFlying = true;
+					if(mc.thePlayer.ticksExisted % 10 == 0) {
+						mc.thePlayer.onGround = true;
+						setMoveSpeed(0.32);
+					}
+					mc.thePlayer.fallDistance = 1;
+
+					if(mc.thePlayer.ticksExisted % 3 == 0)
+						mc.thePlayer.motionY = -0.1476;
+					else
+						mc.thePlayer.motionY = -0.0975;
+
 					break;
 				case "Vanilla":
 					mc.thePlayer.capabilities.isFlying = false;

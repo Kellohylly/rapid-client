@@ -15,6 +15,7 @@
 / Fixed a few Main Menu and Alt Manager visuals.
 / Separated Auto Pot from Auto Heal again lol.
 / Fixed Inventory Manager dropping all at once.
+/ Unpatched and improved Vulcan Long Jump.
 
 / Made settings hide if not used (some atleast)
 

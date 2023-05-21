@@ -52,6 +52,7 @@ public class LongJump extends Module {
 		jumped = false;
 		ticks = 0;
 		jumps = 0;
+		glideTime.reset();
 	}
 
 	@Override
@@ -69,6 +70,7 @@ public class LongJump extends Module {
 	@Override
 	public void onEvent(Event e) {
 		setTag(mode.getMode());
+
 
 		if(e instanceof EventUpdate && e.isPre()) {
 			if(mc.thePlayer.hurtTime != 0)
@@ -101,54 +103,47 @@ public class LongJump extends Module {
 			}
 			return;
 		}
-		if(e instanceof EventPacket && mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 4 && ((EventPacket) e).getPacket() instanceof C03PacketPlayer) {
-			C03PacketPlayer packet = ((EventPacket) e).getPacket();
-			mc.thePlayer.fallDistance = 0;
-			mc.thePlayer.motionY = -0.1;
-			packet.setOnGround(!packet.isOnGround());
-
-		}
 		if(e instanceof EventUpdate && e.isPre()) {
 			switch(mode.getMode()) {
-			case "Vanilla":
-				if(mc.thePlayer.onGround) {
-					setMoveSpeed(0);
-					if(jumped && autoDisable.isEnabled())
-						setEnabled(false);
-					else {
-						mc.thePlayer.jump();
-						mc.thePlayer.motionY *= height.getValue();
-					}
-				} else {
-					jumped = true;
-					this.setMoveSpeed(speed.getValue());
-				}
-				break;
-			case "Old NCP":
-				if(mc.thePlayer.onGround) {
-					if(jumped && autoDisable.isEnabled()) {
+				case "Vanilla":
+					if (mc.thePlayer.onGround) {
 						setMoveSpeed(0);
-						setEnabled(false);
+						if (jumped && autoDisable.isEnabled())
+							setEnabled(false);
+						else {
+							mc.thePlayer.jump();
+							mc.thePlayer.motionY *= height.getValue();
+						}
 					} else {
-						if(!autoDisable.isEnabled())
-							moveSpeed = speed.getValue();
-
-						mc.thePlayer.jump();
+						jumped = true;
+						this.setMoveSpeed(speed.getValue());
 					}
-				} else {
-					jumped = true;
-					if(moveSpeed > getBaseMoveSpeed())
-						moveSpeed -= slowdown.getValue() / 10;
+					break;
+				case "Old NCP":
+					if (mc.thePlayer.onGround) {
+						if (jumped && autoDisable.isEnabled()) {
+							setMoveSpeed(0);
+							setEnabled(false);
+						} else {
+							if (!autoDisable.isEnabled())
+								moveSpeed = speed.getValue();
 
-					this.setMoveSpeed(moveSpeed);
-				}
-				break;
+							mc.thePlayer.jump();
+						}
+					} else {
+						jumped = true;
+						if (moveSpeed > getBaseMoveSpeed())
+							moveSpeed -= slowdown.getValue() / 10;
+
+						this.setMoveSpeed(moveSpeed);
+					}
+					break;
 				case "NCP":
-					if(!canJump) {
+					if (!canJump) {
 						mc.gameSettings.keyBindForward.pressed = true;
 						mc.gameSettings.keyBindJump.pressed = false;
 
-						if(!mc.thePlayer.isUsingItem())
+						if (!mc.thePlayer.isUsingItem())
 							setMoveSpeed(-0.1275);
 						else
 							setMoveSpeed(-0.02);
@@ -156,18 +151,18 @@ public class LongJump extends Module {
 						mc.thePlayer.moveStrafing *= 0;
 						mc.thePlayer.moveForward *= 0;
 
-						if(mc.thePlayer.hurtTime > 0)
+						if (mc.thePlayer.hurtTime > 0)
 							canJump = true;
 						return;
 					}
-					if(mc.thePlayer.onGround) {
-						if(canJump && !jumped) {
+					if (mc.thePlayer.onGround) {
+						if (canJump && !jumped) {
 							mc.thePlayer.jump();
 							mc.thePlayer.motionY *= 1.04f;
 							mc.thePlayer.speedInAir = 0.022f;
 							moveSpeed = 0.69;
 							mc.timer.timerSpeed = 0.85f;
-						} else if(canJump) {
+						} else if (canJump) {
 							mc.timer.timerSpeed = 1f;
 							setEnabled(false);
 						}
@@ -175,7 +170,7 @@ public class LongJump extends Module {
 						moveSpeed = getMoveSpeed();
 						jumped = true;
 
-						if(moveSpeed <= 0.52 && !(mc.thePlayer.fallDistance > 0))
+						if (moveSpeed <= 0.52 && !(mc.thePlayer.fallDistance > 0))
 							moveSpeed = 0.52;
 
 					}
@@ -204,7 +199,15 @@ public class LongJump extends Module {
 								mc.thePlayer.motionY = -0.0975;
 
 							if(isEnabled("Disabler") && getBoolean("Disabler", "Old Vulcan Strafe"))
-								setMoveSpeed(getBaseMoveSpeed() + 0.0449);
+								setMoveSpeed(getBaseMoveSpeed());
+							else {
+								if(mc.thePlayer.ticksExisted % 11 == 0) {
+									if(mc.thePlayer.ticksExisted % 5.5 == 0)
+										mc.thePlayer.onGround = true;
+									setMoveSpeed(0.48);
+								}
+							}
+
 					}
 				}
 				break;

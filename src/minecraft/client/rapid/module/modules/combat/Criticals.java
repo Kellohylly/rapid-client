@@ -15,7 +15,7 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 
 @ModuleInfo(getName = "Criticals", getCategory = Category.COMBAT)
 public class Criticals extends Module {
-	private final Setting mode = new Setting("Mode", this, "Vanilla", "No Ground", "Old NCP");
+	private final Setting mode = new Setting("Mode", this, "Vanilla", "No Ground", "Old NCP", "Vulcan");
 	private final Setting delay = new Setting("Delay", this, 100, 0, 200, true);
 
 	private final TimerUtil timer = new TimerUtil();
@@ -61,6 +61,11 @@ public class Criticals extends Module {
 						case "Old NCP":
 							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.11, mc.thePlayer.posZ, false));
 							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+							break;
+						case "Vulcan":
+							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.003, mc.thePlayer.posZ, false));
+							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+
 							break;
 						}
 					}
