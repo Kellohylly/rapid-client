@@ -1,12 +1,10 @@
 package client.rapid.module.modules.player;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.combat.AutoArmor;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
@@ -38,7 +36,7 @@ public class InventoryManager extends Module {
     }
 
     @Override
-    public void onSettingChange(EventSettingChange e) {
+    public void onSettingChange() {
         keepAxe.setVisible(clean.isEnabled());
         keepPickaxe.setVisible(clean.isEnabled());
         keepShovel.setVisible(clean.isEnabled());

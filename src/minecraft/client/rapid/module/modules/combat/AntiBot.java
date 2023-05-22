@@ -1,14 +1,12 @@
 package client.rapid.module.modules.combat;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.TimerUtil;
-import client.rapid.util.module.RotationUtil;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -34,7 +32,7 @@ public class AntiBot extends Module {
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		maxDistance.setVisible(!mode.getMode().equals("Tab"));
 	}
 

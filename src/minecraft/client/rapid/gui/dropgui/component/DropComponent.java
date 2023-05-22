@@ -4,9 +4,9 @@ import client.rapid.gui.dropgui.component.components.DropButton;
 import client.rapid.module.settings.Setting;
 
 public class DropComponent {
-	protected DropButton parent;
-	protected boolean hovered;
-	protected Setting set;
+	public DropButton parent;
+	public boolean hovered;
+	public Setting set;
 
 	public void renderComponent() {}
 	public void updateComponent(int mouseX, int mouseY) {}

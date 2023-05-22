@@ -1,18 +1,14 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventPacket;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.PacketUtil;
 import client.rapid.util.PlayerUtil;
 import client.rapid.util.TimerUtil;
-import net.minecraft.network.play.client.C03PacketPlayer;
 
 @ModuleInfo(getName = "Long Jump", getCategory = Category.MOVEMENT)
 public class LongJump extends Module {
@@ -34,7 +30,7 @@ public class LongJump extends Module {
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		height.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Vanilla"));
 		slowdown.setVisible(mode.getMode().equals("Old NCP"));
 		speed.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Old NCP"));

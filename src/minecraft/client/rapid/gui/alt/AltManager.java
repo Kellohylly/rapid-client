@@ -1,6 +1,8 @@
 package client.rapid.gui.alt;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import client.rapid.Wrapper;
 import client.rapid.gui.alt.components.ATextField;
@@ -85,7 +87,7 @@ public class AltManager extends GuiScreen {
 			break;
 		case 1: mc.displayGuiScreen(new ClientMainMenu());
 			break;
-		case 2: 
+		case 2:
 	        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
 	        MicrosoftAuthResult result = null;
 	        try {
@@ -93,9 +95,9 @@ public class AltManager extends GuiScreen {
 		        mc.session = new Session(result.getProfile().getName(), result.getProfile().getId(), result.getAccessToken(), "legacy");
 		        setText(EnumChatFormatting.GREEN + "Logged into Microsoft");
 			    } catch (Exception e) {
-			        e.printStackTrace();
-			        setText(EnumChatFormatting.RED + "Failed to login: " + e.getMessage());
-			    }
+					e.printStackTrace();
+					setText(EnumChatFormatting.RED + "Failed to login: " + e.getMessage());
+			}
 			break;
 		}
 	}

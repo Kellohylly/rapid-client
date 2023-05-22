@@ -7,7 +7,6 @@ import client.rapid.event.events.game.EventRender;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.visual.Watermark;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
 import net.minecraft.client.gui.Gui;

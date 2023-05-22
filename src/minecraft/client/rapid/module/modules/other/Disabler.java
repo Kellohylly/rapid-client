@@ -31,6 +31,7 @@ public class Disabler extends Module {
 	private final Setting transaction = new Setting("Transaction", this, false);
 	private final Setting keepAlive = new Setting("Keep Alive", this, false);
 	private final Setting oldVulcanStrafe = new Setting("Old Vulcan Strafe", this, false);
+	private final Setting omniSprint = new Setting("Omni Sprint", this, false);
 
 	private final List<C0FPacketConfirmTransaction> transactions = new ArrayList<>();
 	private final List<C00PacketKeepAlive> keepAlives = new ArrayList<>();
@@ -39,7 +40,7 @@ public class Disabler extends Module {
 	private final TimerUtil keepAliveDelay = new TimerUtil();
 
 	public Disabler() {
-		add(time, noPayload, noAbilities, timer, transaction, keepAlive, oldVulcanStrafe);
+		add(time, noPayload, noAbilities, timer, transaction, keepAlive, oldVulcanStrafe, omniSprint);
 	}
 
 	@Override
@@ -64,7 +65,6 @@ public class Disabler extends Module {
 
 		}
 		if(e instanceof EventPacket && e.isPre()) {
-
 			EventPacket event = (EventPacket)e;
 
 			if(timer.isEnabled() && event.getPacket() instanceof C03PacketPlayer && mc.thePlayer.ticksExisted % 3 == 0)
@@ -85,6 +85,10 @@ public class Disabler extends Module {
 				System.out.println("working");
 				keepAlives.add(event.getPacket());
 				event.cancel();
+			}
+
+			if(event.getPacket() instanceof C03PacketPlayer && mc.thePlayer.isSprinting()) {
+				PacketUtil.sendPacketSilent(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SPRINTING));
 			}
 		}
 	}

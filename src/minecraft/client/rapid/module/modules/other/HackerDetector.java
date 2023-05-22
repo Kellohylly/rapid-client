@@ -32,6 +32,7 @@ public class HackerDetector extends Module {
     private final TimerUtil airTime = new TimerUtil();
     private final TimerUtil groundTime = new TimerUtil();
     private final TimerUtil collideTime = new TimerUtil();
+    private final TimerUtil useTime = new TimerUtil();
 
     public HackerDetector() {
         add(mode, flagPlayer);
@@ -76,17 +77,20 @@ public class HackerDetector extends Module {
                     if(!entity.isCollidedHorizontally || !entity.isSneaking())
                         collideTime.reset();
 
-                    // Flight
+                    if(!mc.thePlayer.isUsingItem())
+                        useTime.reset();
+
+                    // Flight (weird but works sometimes)
                     if (blockUnder instanceof BlockAir && entity.fallDistance == 0 && airTime.reached(500))
                         flag(entity, "Flight");
 
-                    // Speed
+                    // Speed A (Max)
                     if(speed > 0.45 && !entity.isPotionActive(Potion.moveSpeed) && entity.hurtTime == 0 && entity.moveForward > 0)
-                        flag(entity, "Speed");
+                        flag(entity, "Speed (A)");
 
-                    // No Slow
-                    if(entity.isUsingItem() && (entity.isSprinting() || speed > 0.12) && groundTime.reached(500))
-                        flag(entity, "No Slow");
+                    // Speed B (Sprint-Block)
+                    if(entity.isUsingItem() && (entity.isSprinting() || speed > 0.12) && useTime.reached(500))
+                        flag(entity, "Speed (B)");
 
                     // Sprint
                     if((entity.isSprinting() && ((entity.isCollidedHorizontally && collideTime.reached(500)) || (entity.isSneaking() && collideTime.reached(500)) || entity.getFoodStats().getFoodLevel() <= 6))

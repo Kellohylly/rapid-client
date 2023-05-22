@@ -1,7 +1,5 @@
 package client.rapid.gui.panelgui.component;
 
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.Module;
 import client.rapid.module.settings.Setting;

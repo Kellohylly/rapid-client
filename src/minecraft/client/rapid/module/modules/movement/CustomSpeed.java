@@ -1,7 +1,6 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -28,7 +27,7 @@ public class CustomSpeed extends Module {
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		fallTicks.setVisible(fallMode.getMode().equals("Ticks"));
 	}
 

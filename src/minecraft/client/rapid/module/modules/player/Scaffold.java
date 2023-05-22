@@ -28,7 +28,7 @@ public class Scaffold extends Module {
 	private final Setting mode = new Setting("Mode", this, "Pre", "Post");
 	private final Setting rotations = new Setting("Rotations", this, "None", "Normal", "Normal2", "Keep", "Simple");
 	private final Setting safewalk = new Setting("Safewalk", this, "None", "Simple", "Legit");
-	private final Setting tower = new Setting("Tower", this, "None", "NCP", "Slow");
+	private final Setting tower = new Setting("Tower", this, "None", "NCP", "Slow", "Matrix");
 	private final Setting sprint = new Setting("Sprint", this, "None", "Normal", "No Packet");
 	private final Setting spoof = new Setting("Spoof", this, "None", "Switch");
 	private final Setting delay = new Setting("Delay", this, 0, 0, 500, true);
@@ -75,7 +75,7 @@ public class Scaffold extends Module {
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		towerMove.setVisible(!tower.getMode().equals("None"));
 	}
 
@@ -215,16 +215,24 @@ public class Scaffold extends Module {
 							}
 						}
 					}
-					if (mc.theWorld.getBlockState(blockPos).getBlock() == Blocks.air && PlayerUtil.hasBlockEquipped() && mc.gameSettings.keyBindJump.isKeyDown() && timer.reached((int)delay.getValue())) {
+					if (PlayerUtil.hasBlockEquipped() && mc.gameSettings.keyBindJump.isKeyDown() && timer.reached((int)delay.getValue())) {
 						if(!towerMove.isEnabled() && isMoving())
 							return;
 
 						mc.thePlayer.motionX = 0;
 						mc.thePlayer.motionZ = 0;
 						switch (tower.getMode()) {
+							case "Matrix":
+								if(mc.thePlayer.onGround) {
+									mc.thePlayer.jump();
+								}
+
+								if(rotated)
+									mc.thePlayer.motionY = 0;
+								break;
 							case "NCP":
 							case "Slow":
-								if (!mc.thePlayer.isPotionActive(Potion.jump)) {
+								if (!mc.thePlayer.isPotionActive(Potion.jump) && mc.theWorld.getBlockState(blockPos).getBlock() == Blocks.air) {
 									mc.thePlayer.setPosition(mc.thePlayer.posX, Math.floor(mc.thePlayer.posY), mc.thePlayer.posZ);
 									mc.thePlayer.motionY = tower.getMode().equals("Slow") ? 0.37 : 0.42;
 								}

@@ -1,26 +1,20 @@
-package client.rapid.module.modules.visual;
+package client.rapid.module.modules.hud;
 
 import client.rapid.Client;
 import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventRender;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Draggable;
-import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.hud.HudSettings;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
-import client.rapid.util.visual.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 
 @ModuleInfo(getName = "Watermark", getCategory = Category.HUD)
@@ -40,7 +34,7 @@ public class Watermark extends Draggable {
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		watermarkOpacity.setVisible(watermarkMode.getMode().equals("Cool"));
 	}
 

@@ -1,7 +1,5 @@
 package client.rapid.module.modules.visual;
 
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.Module;
@@ -10,10 +8,12 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.gui.GuiScreen;
 
+import java.awt.*;
+
 @ModuleInfo(getName = "Click Gui", getCategory = Category.VISUAL)
 public class ClickGuiToggle extends Module {	
 	private final Setting mode = new Setting("Mode", this, "Normal", "Dropdown");
-	private final Setting theme = new Setting("Theme", this, "Rapid", "Nord", "Material");
+	private final Setting theme = new Setting("Theme", this, "Rapid", "Nord", "Material", "Tenacity");
 	private final Setting outline = new Setting("Outline", this, true);
 	private final Setting categoryIcons = new Setting("Category Icons", this, true);
 	private final Setting background = new Setting("Background", this, true);
@@ -55,6 +55,10 @@ public class ClickGuiToggle extends Module {
 				PanelGui.setBackgroundDark(0xFF1E272C);
 				PanelGui.setBackground(0xFF263238);
 			break;
+			case "Tenacity":
+				PanelGui.setBackgroundDark(0xFF212226);
+				PanelGui.setBackground(0xFF2b2c31);
+				break;
 		}
 		toggle();
 	}

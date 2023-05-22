@@ -3,7 +3,7 @@ package client.rapid.command.commands;
 import client.rapid.Client;
 import client.rapid.Wrapper;
 import client.rapid.command.Command;
-import client.rapid.module.modules.visual.Watermark;
+import client.rapid.module.modules.hud.Watermark;
 import client.rapid.util.PlayerUtil;
 import net.minecraft.util.EnumChatFormatting;
 

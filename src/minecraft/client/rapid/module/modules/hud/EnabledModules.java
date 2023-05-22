@@ -4,7 +4,6 @@ import client.rapid.Client;
 import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventRender;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Draggable;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -139,52 +138,34 @@ public class EnabledModules extends Draggable {
                                 Gui.drawRect(x + width + 1, y + i + 1, x + width + 2, 8 + y + i + height, getColor(i2));
                             break;
                         case "Top":
-                            ArrayList<Module> enabled1 = new ArrayList<>(modules);
-                            enabled1.removeIf(module -> !module.isEnabled() || (hideVisual.isEnabled() && module.getCategory() == Category.VISUAL));
-                            int index1 = enabled1.indexOf(m);
-
-                            if(index1 == 0) {
-                                String sep9 = (modeTags.isEnabled() ? (enabled1.get(0).getTag() != "" ? " ": "") + enabled1.get(0).getTag() : "");
-                                String modText9 = enabled1.get(0).getName() +  (!mcFont.isEnabled() ? "&7" : "\u00a77") + sep9;
-
-                                if(lowercased.isEnabled())
-                                    modText9 = modText9.toLowerCase();
-
-                                /*if (!flipVertically.isEnabled()) {*/
-                                if (flipHorizontally.isEnabled())
-                                    Gui.drawRect(x + width, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText9) + 4 : font.getStringWidth(modText9) + 4), y - 1, getColor(i2));
-                                else
-                                    Gui.drawRect(x + width + 1, y, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText9) + 5 : font.getStringWidth(modText9) + 3), y - 1, getColor(i2));
-                                //}
-                            }
+                            if(!flipHorizontally.isEnabled())
+                                Gui.drawRect(x + width + 1, y, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 4 : font.getStringWidth(modText) + 3), y - 1, getColor(0));
+                            else
+                                Gui.drawRect(x + width, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y + 1, getColor(0));
                             break;
-
-                        // Messiest shit ive made LMFAOO
                         case "Outline":
+                            // Front
                             if(flipHorizontally.isEnabled())
                                 Gui.drawRect(x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 4 : font.getStringWidth(modText) + 4), y + i, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 5), y + 10 + i + height, getColor(i2));
                             else
                                 Gui.drawRect(x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 4 : font.getStringWidth(modText) + 3), y + i, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y + 10 + i + height, getColor(i2));
 
+                            // Back
                             if(flipHorizontally.isEnabled())
                                 Gui.drawRect(x + width - 1, y + i, x + width, 9 + y + i + height, getColor(i2));
                             else
                                 Gui.drawRect(x + width + 1, y + i - 1, x + width + 2, 10 + y + i + height, getColor(i2));
 
+                            // Top
+                            if(!flipHorizontally.isEnabled())
+                                Gui.drawRect(x + width + 1, y, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y - 1, getColor(0));
+                            else
+                                Gui.drawRect(x + width - 1, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y + 1, getColor(0));
+
+                            // Bottom thing.
                             ArrayList<Module> enabled = new ArrayList<>(modules);
                             enabled.removeIf(module -> !module.isEnabled() || (hideVisual.isEnabled() && module.getCategory() == Category.VISUAL) || module.getCategory() == Category.HUD);
                             int index = enabled.indexOf(m);
-
-                            String sep1 = (modeTags.isEnabled() ? (enabled.get(0).getTag() != "" ? " ": "") + enabled.get(0).getTag() : "");
-                            String modText1 = enabled.get(0).getName() +  (!mcFont.isEnabled() ? "&7" : "\u00a77") + sep1;
-
-                            if(lowercased.isEnabled())
-                                modText1 = modText1.toLowerCase();
-
-                            if(!flipHorizontally.isEnabled())
-                                Gui.drawRect(x + width + 1, y, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText1) + 5 : font.getStringWidth(modText1) + 4), y - 1, getColor(i2));
-                            else
-                                Gui.drawRect(x + width - 1, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText1) + 5 : font.getStringWidth(modText1) + 4), y + 1, getColor(i2));
 
                             if(index != enabled.size() - 1) {
                                 String sep2 = (modeTags.isEnabled() ? (enabled.get(index + 1).getTag() != "" ? " ": "") + enabled.get(index + 1).getTag() : "");
@@ -198,16 +179,10 @@ public class EnabledModules extends Draggable {
                                 else
                                     Gui.drawRect(x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText2) + 4 : font.getStringWidth(modText2) + 3), y + i + font.getHeight() + height + 1, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 4 : font.getStringWidth(modText) + 3), y + i + font.getHeight() + height + 2, getColor(i2));
                             } else {
-                                String sep3 = (modeTags.isEnabled() ? (enabled.get(index).getTag() != "" ? " ": "") + enabled.get(index).getTag() : "");
-                                String modText3 = enabled.get(index).getName() +  (!mcFont.isEnabled() ? "&7" : "\u00a77") + sep3;
-
-                                if(lowercased.isEnabled())
-                                    modText3 = modText3.toLowerCase();
-
                                 if(!flipHorizontally.isEnabled())
-                                    Gui.drawRect(x + width + 1, y + i + 9 + height, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText3) + 5 : font.getStringWidth(modText3) + 4), y + i + 10 + height, getColor(i2));
+                                    Gui.drawRect(x + width + 1, y + i + 9 + height, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y + i + 10 + height, getColor(i2));
                                 else
-                                    Gui.drawRect(x + width - 1, y + i + 9 + height, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText3) + 5 : font.getStringWidth(modText3) + 5), y + i + 10 + height, getColor(i2));
+                                    Gui.drawRect(x + width - 1, y + i + 9 + height, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 5), y + i + 10 + height, getColor(i2));
 
                             }
                             break;

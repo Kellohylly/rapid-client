@@ -17,7 +17,7 @@ import client.rapid.module.modules.visual.ClickGuiToggle;
 import client.rapid.module.modules.visual.Crosshair;
 import client.rapid.module.modules.visual.ESP;
 import client.rapid.module.modules.visual.FullBright;
-import client.rapid.module.modules.visual.Watermark;
+import client.rapid.module.modules.hud.Watermark;
 import client.rapid.module.modules.visual.NameProtect;
 import client.rapid.module.modules.visual.NameTags;
 import client.rapid.module.modules.visual.NoRender;
@@ -94,6 +94,7 @@ public class ModuleManager {
 			new SpinBot(),
 			new FastEat(),
 			new NoFall(),
+			new Fences(),
 			new NoWeb(),
 			new Jesus(),
 

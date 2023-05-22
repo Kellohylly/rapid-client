@@ -2,7 +2,6 @@ package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -40,8 +39,7 @@ public class Speed extends Module {
 		add(mode, speed, damageBoost, groundStrafe, disableOnFlag);
 	}
 
-	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		groundStrafe.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Strafe"));
 		damageBoost.setVisible(!mode.getMode().equals("Vanilla") && !mode.getMode().equals("Verus Ground") && !mode.getMode().equals("Vulcan"));
 		speed.setVisible(mode.getMode().equals("Vanilla"));
@@ -123,8 +121,6 @@ public class Speed extends Module {
 			case "NCP Low":
 				if(isMovingOnGround()) {
 					mc.thePlayer.jump();
-
-					double moveSpeed = 0;
 
 					if(mc.thePlayer.moveForward != 0) {
 						if(mc.thePlayer.moveStrafing != 0)

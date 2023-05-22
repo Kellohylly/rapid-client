@@ -2,7 +2,7 @@ package client.rapid.config.configs;
 
 import client.rapid.Wrapper;
 import client.rapid.module.Draggable;
-import client.rapid.module.modules.visual.Watermark;
+import client.rapid.module.modules.hud.Watermark;
 import client.rapid.config.Config;
 import client.rapid.util.console.Logger;
 
@@ -22,7 +22,7 @@ public class HudConfig extends Config {
         for(Draggable d : Wrapper.getModuleManager().getDraggables())
             saves.add("ModuleDrag:" + d.getName().replace(" ", "-") + ":" + d.getX() + ":" + d.getY());
 
-        saves.add("WatermarkText:" + Watermark.text.replace(" ", "ag]68j$"));
+        saves.add("WatermarkText:" + Watermark.text.replace(" ", "_"));
 
         try {
             PrintWriter pw = new PrintWriter(this.getData());
@@ -67,7 +67,7 @@ public class HudConfig extends Config {
             }
 
             if(line.startsWith("WatermarkText"))
-                Watermark.setWatermark(args[1].replace("ag]68j$", " "));
+                Watermark.setWatermark(args[1].replace("_", " "));
         }
         super.load();
     }

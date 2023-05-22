@@ -2,7 +2,6 @@ package client.rapid.module.modules.combat;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -19,13 +18,14 @@ public class Criticals extends Module {
 	private final Setting delay = new Setting("Delay", this, 100, 0, 200, true);
 
 	private final TimerUtil timer = new TimerUtil();
+	private int hits = 0;
 
 	public Criticals() {
 		add(mode, delay);
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		delay.setVisible(!mode.getMode().equals("No Ground"));
 	}
 
@@ -33,6 +33,13 @@ public class Criticals extends Module {
 	public void onEnable() {
 		if(mode.getMode().equals("No Ground") && mc.thePlayer.onGround)
 			mc.thePlayer.jump();
+
+		hits = 0;
+	}
+
+	@Override
+	public void onDisable() {
+		hits = 0;
 	}
 
 	@Override
@@ -63,9 +70,12 @@ public class Criticals extends Module {
 							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
 							break;
 						case "Vulcan":
-							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.003, mc.thePlayer.posZ, false));
-							PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
-
+							hits++;
+							if(hits > 7) {
+								PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.003, mc.thePlayer.posZ, false));
+								PacketUtil.sendPacketSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+								hits = 0;
+							}
 							break;
 						}
 					}

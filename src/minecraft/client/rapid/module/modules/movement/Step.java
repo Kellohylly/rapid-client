@@ -1,7 +1,6 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventStep;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -27,7 +26,7 @@ public class Step extends Module {
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		height.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Packet"));
 	}
 

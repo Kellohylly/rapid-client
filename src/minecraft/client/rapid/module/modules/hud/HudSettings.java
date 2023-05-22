@@ -1,6 +1,5 @@
 package client.rapid.module.modules.hud;
 
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -31,7 +30,7 @@ public class HudSettings extends Draggable {
     }
 
     @Override
-    public void onSettingChange(EventSettingChange e) {
+    public void onSettingChange() {
         red1.setVisible(colorMode.getMode().equals("Gradient"));
         green1.setVisible(colorMode.getMode().equals("Gradient"));
         blue1.setVisible(colorMode.getMode().equals("Gradient"));

@@ -4,8 +4,6 @@ import java.util.*;
 
 import client.rapid.Client;
 import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.module.Module;
 import net.minecraft.client.Minecraft;
 
@@ -68,8 +66,6 @@ public class Setting {
 	public void setMode(String in) {
 		this.sval = in;
 		save();
-
-		Event.dispatch(new EventSettingChange(this));
 	}
 	
 	public ArrayList<String> getOptions() {
@@ -83,8 +79,6 @@ public class Setting {
 	public void setEnabled(boolean in) {
 		this.bval = in;
 		save();
-
-		Event.dispatch(new EventSettingChange(this));
 	}
 
 	public double getValue() {
@@ -95,8 +89,6 @@ public class Setting {
 	public void setValue(double in) {
 		this.dval = in;
 		save();
-
-		Event.dispatch(new EventSettingChange(this));
 	}
 	
 	public double getMin() {
@@ -123,4 +115,9 @@ public class Setting {
 		if(Client.getInstance() != null && Minecraft.getMinecraft().thePlayer != null)
 			Wrapper.getConfigManager().getModuleConfig().save();
     }
+
+	public void check() {
+		parent.onSettingChange();
+	}
+
 }

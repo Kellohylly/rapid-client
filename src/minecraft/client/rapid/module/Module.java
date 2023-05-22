@@ -1,9 +1,7 @@
 package client.rapid.module;
 
 import client.rapid.*;
-import client.rapid.config.configs.ModuleConfig;
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.Category;
@@ -30,7 +28,7 @@ public class Module {
 	public void onEnable() {}
 	public void onDisable() {}
 	public void onEvent(Event e) {}
-	public void onSettingChange(EventSettingChange e) {}
+	public void onSettingChange() {}
 	
 	public void toggle() {
 		setEnabled(!enabled);

@@ -30,7 +30,7 @@ public class DropFrame {
 		this.y = 5;
 		this.barHeight = 16;
 		this.dragX = 0;
-		this.open = false;
+		this.open = true;
 		this.dragging = false;
 		int tY = this.barHeight;
 		

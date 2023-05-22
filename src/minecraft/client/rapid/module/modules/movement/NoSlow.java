@@ -1,7 +1,6 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventSlowdown;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -30,7 +29,7 @@ public class NoSlow extends Module {
 	}
 
 	@Override
-	public void onSettingChange(EventSettingChange e) {
+	public void onSettingChange() {
 		delay.setVisible(!mode.getMode().equals("Vanilla"));
 	}
 

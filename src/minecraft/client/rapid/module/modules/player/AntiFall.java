@@ -1,14 +1,12 @@
 package client.rapid.module.modules.player;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
-import client.rapid.util.module.MoveUtil;
 import net.minecraft.util.BlockPos;
 
 @ModuleInfo(getName = "Anti Fall", getCategory = Category.PLAYER)
@@ -24,7 +22,7 @@ public class AntiFall extends Module {
     }
 
     @Override
-    public void onSettingChange(EventSettingChange e) {
+    public void onSettingChange() {
         height.setVisible(!mode.getMode().equals("Teleport"));
     }
 

@@ -55,6 +55,7 @@ public class PanelGui extends GuiScreen {
         width2 = posX + 150 * 2;
         height2 = height2 + 200;
         selectedCategory = Category.COMBAT;
+        offset = 3;
     }
 
     @Override
@@ -112,6 +113,7 @@ public class PanelGui extends GuiScreen {
         }
         int i2 = 3;
         for (Comp comp : comps) {
+            comp.setting.check();
             if(comp.setting.isVisible()) {
                 comp.drawScreen(mouseX, mouseY);
                 comp.setY(i2);
@@ -178,13 +180,13 @@ public class PanelGui extends GuiScreen {
                         bindingModule = m;
                         binding = true;
                     } else if(mouseButton == 1) {
-                        int offset = 3;
+                        offset = 3;
                         comps.clear();
                         if (Wrapper.getSettingsManager().getSettingsByMod(m) != null)
                             for (Setting setting : Wrapper.getSettingsManager().getSettingsByMod(m)) {
                                 selectedModule = m;
 
-                                if(setting.isVisible()) {
+                                if (setting.isVisible()) {
                                     if (setting.isCheck()) {
                                         comps.add(new PanelCheckbox(275, offset, this, selectedModule, setting));
                                     }
@@ -198,7 +200,6 @@ public class PanelGui extends GuiScreen {
                                     }
                                     offset += 20;
                                 }
-
                             }
                     }
                 }
@@ -237,6 +238,7 @@ public class PanelGui extends GuiScreen {
     public void initGui() {
         super.initGui();
         dragging = false;
+
     }
 
     public boolean isInside(int mouseX, int mouseY, double x, double y, double x2, double y2) {

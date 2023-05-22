@@ -6,6 +6,10 @@
 + Added Move Tower to Scaffold.
 + Added Normal2 Rotations to Scaffold.
 + Added Ticks to Velocity.
++ Added Matrix Tower to Scaffold.
++ Added Vulcan Criticals.
++ Added Jump to Collide Flight.
++ Added Omni Sprint to Disabler.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -16,7 +20,11 @@
 / Separated Auto Pot from Auto Heal again lol.
 / Fixed Inventory Manager dropping all at once.
 / Unpatched and improved Vulcan Long Jump.
+/ Made settings hide if not used.
+/ Fixed Top Box not showing in Enabled Modules.
+/ Fixed Outline Top being wrong color.
+- Removed Position from Flight.
 
-/ Made settings hide if not used (some atleast)
+ Added Fences Module.
 
-This update is to clean my shitty code a bit.
+ This update is to clean my shitty code a bit.

@@ -30,6 +30,7 @@ public class Notification {
         this.title = title;
         this.message = message;
         this.seconds = seconds * 1000;
+        timer.reset();
     }
 
     public void start() {

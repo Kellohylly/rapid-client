@@ -3,8 +3,6 @@ package client.rapid.config;
 import client.rapid.config.configs.HudConfig;
 import client.rapid.config.configs.ModKeyConfig;
 import client.rapid.config.configs.ModuleConfig;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 

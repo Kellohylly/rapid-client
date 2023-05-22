@@ -9,7 +9,6 @@ import client.rapid.gui.GuiPosition;
 import client.rapid.module.*;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.combat.KillAura;
-import client.rapid.module.modules.visual.Watermark;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.font.*;
 import net.minecraft.client.gui.Gui;

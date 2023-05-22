@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventSettingChange;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventRotation;
@@ -26,7 +25,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 
@@ -75,7 +73,7 @@ public class KillAura extends Module {
     }
 
     @Override
-    public void onSettingChange(EventSettingChange e) {
+    public void onSettingChange() {
         viewLock.setVisible(!rotate.getMode().equals("None"));
         autoblockperc.setVisible(!autoBlock.getMode().equals("None"));
         useGcd.setVisible(!rotate.getMode().equals("None"));

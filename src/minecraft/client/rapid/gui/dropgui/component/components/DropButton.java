@@ -43,7 +43,7 @@ public class DropButton extends DropComponent {
 				opY += 12;
 			}
 		}
-		this.subcomponents.add(new DropKeybind(this, opY));
+		//this.subcomponents.add(new DropKeybind(this, opY));
 
 	}
 	
@@ -72,8 +72,9 @@ public class DropButton extends DropComponent {
 		if(this.open && !this.subcomponents.isEmpty()) {
 			if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled())
 				Gui.drawRect(parent.getX() - 1.5, parent.getY() + this.offset + 12, parent.getX() + 106.5, parent.getY() + this.offset + ((this.subcomponents.size() + 1) * 12) + 0.5, DropdownGui.hud.getColor(offset / 2));
-			for(DropComponent comp : this.subcomponents)
+			for(DropComponent comp : this.subcomponents) {
 				comp.renderComponent();
+			}
 		}
 	}
 	
@@ -86,8 +87,11 @@ public class DropButton extends DropComponent {
 	public void updateComponent(int mouseX, int mouseY) {
 		this.hovered = isMouseOnButton(mouseX, mouseY);
 		if(!this.subcomponents.isEmpty()) {
-			for(DropComponent comp : this.subcomponents)
-				comp.updateComponent(mouseX, mouseY);
+			for(DropComponent comp : this.subcomponents) {
+				if(comp.set != null && comp.set.isVisible()) {
+					comp.updateComponent(mouseX, mouseY);
+				}
+			}
 		}
 	}
 	
@@ -99,18 +103,22 @@ public class DropButton extends DropComponent {
 			this.open = !this.open;
 			this.parent.refresh();
 		}
-		for(DropComponent comp : this.subcomponents)
+		for(DropComponent comp : this.subcomponents) {
 			comp.mouseClicked(mouseX, mouseY, button);
+		}
 	}
 	
 	public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-		for(DropComponent comp : this.subcomponents)
+		for (DropComponent comp : this.subcomponents) {
 			comp.mouseReleased(mouseX, mouseY, mouseButton);
+
+		}
 	}
 	
 	public void keyTyped(char typedChar, int key) {
-		for(DropComponent comp : this.subcomponents)
+		for(DropComponent comp : this.subcomponents) {
 			comp.keyTyped(typedChar, key);
+		}
 	}
 	
 	public boolean isMouseOnButton(int x, int y) {
