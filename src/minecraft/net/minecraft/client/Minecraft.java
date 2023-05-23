@@ -475,6 +475,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     private void startGame() throws LWJGLException, IOException
     {
+        Client.getInstance().preinit();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
@@ -570,8 +571,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
-        
-        Client.getInstance().init();
 
         if (this.serverName != null)
         {
@@ -591,6 +590,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.toggleFullscreen();
         }
 
+        Client.getInstance().init();
+
         try
         {
             Display.setVSyncEnabled(this.gameSettings.enableVsync);
@@ -602,6 +603,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
 
         this.renderGlobal.makeEntityOutlineShader();
+
     }
 
     private void registerMetadataSerializers()

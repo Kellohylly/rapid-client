@@ -490,6 +490,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
 
    public void onDeath(DamageSource cause) {
       super.onDeath(cause);
+
       this.setSize(0.2F, 0.2F);
       this.setPosition(this.posX, this.posY, this.posZ);
       this.motionY = 0.10000000149011612D;

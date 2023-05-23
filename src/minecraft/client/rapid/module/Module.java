@@ -28,7 +28,7 @@ public class Module {
 	public void onEnable() {}
 	public void onDisable() {}
 	public void onEvent(Event e) {}
-	public void onSettingChange() {}
+	public void settingCheck() {}
 	
 	public void toggle() {
 		setEnabled(!enabled);

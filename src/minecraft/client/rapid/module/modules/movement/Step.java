@@ -26,7 +26,7 @@ public class Step extends Module {
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		height.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Packet"));
 	}
 

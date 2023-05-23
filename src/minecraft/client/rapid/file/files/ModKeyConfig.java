@@ -1,13 +1,13 @@
-package client.rapid.config.configs;
+package client.rapid.file.files;
 
 import client.rapid.Wrapper;
 import client.rapid.module.Module;
-import client.rapid.config.Config;
+import client.rapid.file.File;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class ModKeyConfig extends Config {
+public class ModKeyConfig extends File {
 
     public ModKeyConfig() {
         super("keybinds.keyb");

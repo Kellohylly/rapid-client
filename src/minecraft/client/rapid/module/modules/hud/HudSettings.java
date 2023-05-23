@@ -30,7 +30,7 @@ public class HudSettings extends Draggable {
     }
 
     @Override
-    public void onSettingChange() {
+    public void settingCheck() {
         red1.setVisible(colorMode.getMode().equals("Gradient"));
         green1.setVisible(colorMode.getMode().equals("Gradient"));
         blue1.setVisible(colorMode.getMode().equals("Gradient"));

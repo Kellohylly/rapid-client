@@ -25,7 +25,7 @@ public class Velocity extends Module {
 	private int tickss;
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		ticks.setVisible(mode.getMode().equals("Ticks"));
 	}
 

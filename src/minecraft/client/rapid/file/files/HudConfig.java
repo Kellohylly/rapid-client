@@ -1,15 +1,15 @@
-package client.rapid.config.configs;
+package client.rapid.file.files;
 
 import client.rapid.Wrapper;
 import client.rapid.module.Draggable;
 import client.rapid.module.modules.hud.Watermark;
-import client.rapid.config.Config;
+import client.rapid.file.File;
 import client.rapid.util.console.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class HudConfig extends Config {
+public class HudConfig extends File {
 
     public HudConfig() {
         super("draggables.conf");

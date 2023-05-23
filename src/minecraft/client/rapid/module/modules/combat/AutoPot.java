@@ -17,6 +17,7 @@ import net.minecraft.potion.PotionEffect;
 @ModuleInfo(getName = "Auto Pot", getCategory = Category.COMBAT)
 public class AutoPot extends Module {
     private final Setting mode = new Setting("Mode", this, "Down");
+    private final Setting health = new Setting("Health", this, 8, 1, 19, true);
     private final Setting delay = new Setting("Delay", this, 100, 10, 200, true);
 
     private final TimerUtil timer = new TimerUtil();
@@ -24,16 +25,18 @@ public class AutoPot extends Module {
 
     private boolean hasBadEffect;
     private boolean throwing;
+    private boolean hasHealing;
 
     private int prevSlot;
 
     public AutoPot() {
-        add(delay);
+        add(mode, health, delay);
     }
 
     @Override
     public void onEnable() {
         hasBadEffect = false;
+        hasHealing = false;
         throwing = false;
         downTime.reset();
     }
@@ -41,6 +44,7 @@ public class AutoPot extends Module {
     @Override
     public void onDisable() {
         hasBadEffect = false;
+        hasHealing = false;
         throwing = false;
         downTime.reset();
     }
@@ -49,7 +53,6 @@ public class AutoPot extends Module {
     public void onEvent(Event e) {
         if(e instanceof EventRotation) {
             EventRotation event = (EventRotation) e;
-
 
             if(throwing && !hasBadEffect) {
                 switch(mode.getMode()) {
@@ -73,17 +76,25 @@ public class AutoPot extends Module {
                         for (PotionEffect effect : potion.getEffects(stack)) {
                             Potion pot = Potion.potionTypes[effect.getPotionID()];
 
+                            // Check if the potion has bad effect (slowness, damage, blindness, etc).
                             if (pot.isBadEffect()) {
                                 hasBadEffect = true;
                                 break;
                             }
                         }
                         if (!hasBadEffect) {
+
+                            // Check if player has instant health pots
+                            if(potion.getEffects(stack).toString().contains("potion.heal") && !potion.getEffects(stack).toString().contains("boost") && mc.thePlayer.getHealth() > health.getValue())
+                                continue;
+
                             if (!throwing) {
                                 prevSlot = mc.thePlayer.inventory.currentItem;
                                 throwing = true;
                                 downTime.reset();
                             } else {
+
+                                // Try throw
                                 if (downTime.reached(60)) {
                                     this.throwPot(i, stack);
                                     throwing = false;

@@ -29,7 +29,7 @@ public class NoSlow extends Module {
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		delay.setVisible(!mode.getMode().equals("Vanilla"));
 	}
 

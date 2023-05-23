@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.events.player.EventKilledPlayer;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
-import client.rapid.util.MathUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.network.play.server.S02PacketChat;
 
@@ -18,6 +18,13 @@ public class KillInsults extends Module {
 
 	@Override
 	public void onEvent(Event e) {
+		if(e instanceof EventKilledPlayer && e.isPre()) {
+			EventKilledPlayer event = (EventKilledPlayer) e;
+			if(event.getEntity().getName().equals(mc.thePlayer.getName())) {
+				System.out.println("RIP " + ((EventKilledPlayer) e).getEntity().getName());
+			}
+			System.out.println(event.getEntity().getName());
+		}
 		if(e instanceof EventPacket && e.isPre()) {
 			if (((EventPacket)e).getPacket() instanceof S02PacketChat) {
 
@@ -31,7 +38,7 @@ public class KillInsults extends Module {
 				};
 
 				String unformattedText = ((S02PacketChat) ((EventPacket)e).getPacket()).getChatComponent().getUnformattedText();
-				
+
 				String[] str = new String[255];
 				for(String s : look) {
 					if (unformattedText.contains(s)) {
@@ -51,8 +58,8 @@ public class KillInsults extends Module {
 							}
 							
 							// goofy ahh moment
-							if(timer.sleep(100))
-								mc.thePlayer.sendChatMessage(str[(int) MathUtil.randomNumber(i, 0)]);
+							/*if(timer.sleep(100))
+								mc.thePlayer.sendChatMessage(str[(int) MathUtil.randomNumber(i, 0)]);*/
 						}
 					}
 				}

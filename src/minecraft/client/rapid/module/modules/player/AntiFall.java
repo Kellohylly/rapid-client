@@ -22,7 +22,7 @@ public class AntiFall extends Module {
     }
 
     @Override
-    public void onSettingChange() {
+    public void settingCheck() {
         height.setVisible(!mode.getMode().equals("Teleport"));
     }
 

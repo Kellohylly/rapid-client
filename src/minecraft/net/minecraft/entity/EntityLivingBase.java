@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
@@ -702,7 +703,14 @@ public abstract class EntityLivingBase extends Entity {
 
    public void onDeath(DamageSource cause) {
       Entity entity = cause.getEntity();
+
+      if(cause.getSourceOfDamage() instanceof EntityPlayerSP) {
+         System.out.println("yes");
+      }
+
       EntityLivingBase entitylivingbase = this.func_94060_bK();
+
+      System.out.println(entitylivingbase.getName());
       if(this.scoreValue >= 0 && entitylivingbase != null) {
          entitylivingbase.addToPlayerScore(this, this.scoreValue);
       }
@@ -1329,8 +1337,12 @@ public abstract class EntityLivingBase extends Entity {
    }
 
    public void onLivingUpdate() {
-      if(this.jumpTicks > 0) {
-         --this.jumpTicks;
+      if(Wrapper.getModuleManager().getModule("No Jump Delay").isEnabled()) {
+         this.jumpTicks = 0;
+      } else {
+         if (this.jumpTicks > 0) {
+            --this.jumpTicks;
+         }
       }
 
       if(this.newPosRotationIncrements > 0) {
@@ -1382,7 +1394,10 @@ public abstract class EntityLivingBase extends Entity {
             this.handleJumpLava();
          } else if(this.onGround && this.jumpTicks == 0) {
             this.jump();
-            this.jumpTicks = 10;
+
+            if(!Wrapper.getModuleManager().getModule("No Jump Delay").isEnabled()) {
+               this.jumpTicks = 10;
+            }
          }
       } else {
          this.jumpTicks = 0;

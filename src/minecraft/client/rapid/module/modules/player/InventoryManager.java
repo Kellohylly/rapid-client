@@ -36,7 +36,7 @@ public class InventoryManager extends Module {
     }
 
     @Override
-    public void onSettingChange() {
+    public void settingCheck() {
         keepAxe.setVisible(clean.isEnabled());
         keepPickaxe.setVisible(clean.isEnabled());
         keepShovel.setVisible(clean.isEnabled());

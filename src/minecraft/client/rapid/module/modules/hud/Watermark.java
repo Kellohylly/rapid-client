@@ -29,12 +29,12 @@ public class Watermark extends Draggable {
 	MCFontRenderer font = Fonts.normal2;
 
 	public Watermark() {
-		super(100, 100, 100, 20);
+		super(3, 3, 100, 20);
 		add(watermarkMode, watermarkOpacity);
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		watermarkOpacity.setVisible(watermarkMode.getMode().equals("Cool"));
 	}
 
@@ -45,11 +45,6 @@ public class Watermark extends Draggable {
 					.replace("{fps}", String.valueOf(Minecraft.getDebugFPS()))
 					.replace("{time}", new SimpleDateFormat("kk:mm").format(new Date()))
 					.replace("{mcversion}", Minecraft.getMinecraft().getVersion());
-
-			// remove the stupid space at the end thanks to the args in the command system.
-			if (text1.charAt(text1.length() - 1) == ' ')
-				text1.replace(text1.substring(text1.length() - 1), "");
-
 			drawWatermark(text1, x, y);
 		}
 	}
@@ -64,19 +59,19 @@ public class Watermark extends Draggable {
 				break;
 			case "Cool":
 				if(mcFont.isEnabled()) {
-					Gui.drawRect(2 + x, 2 + y, 3 + mc.fontRendererObj.getStringWidth(text) + x, 15 + y, new Color(0, 0, 0, (int)watermarkOpacity.getValue()).getRGB());
-					Gui.drawRect(2 + x, 2 + y, 3 + mc.fontRendererObj.getStringWidth(text) + x, 3 + y, getColor((long)rainbow.getValue()));
-					mc.fontRendererObj.drawStringWithShadow(text, 5 + x, 5 + y, -1);
+					Gui.drawRect(2 + x, 2 + y, 3 + mc.fontRendererObj.getStringWidth(text) + x + 2, 15 + y, new Color(0, 0, 0, (int)watermarkOpacity.getValue()).getRGB());
+					Gui.drawRect(2 + x, 2 + y, 3 + mc.fontRendererObj.getStringWidth(text) + x + 2, 3 + y, getColor((long)rainbow.getValue()));
+					mc.fontRendererObj.drawStringWithShadow(text, 5 + x, 5 + y, getColor((long)rainbow.getValue()));
 				} else {
-					Gui.drawRect(2 + x, 2 + y, font.getStringWidth(text) + 6 + x, 15 + y, new Color(0, 0, 0, (int)watermarkOpacity.getValue()).getRGB());
-					Gui.drawRect(2 + x, 2 + y, font.getStringWidth(text) + 6 + x, 3 + y, getColor((long)rainbow.getValue()));
-					font.drawStringWithShadow(text, 5 + x, 6 + y, -1);
+					Gui.drawRect(2 + x, 2 + y, font.getStringWidth(text) + 8 + x, 15 + y, new Color(0, 0, 0, (int)watermarkOpacity.getValue()).getRGB());
+					Gui.drawRect(2 + x, 2 + y, font.getStringWidth(text) + 8 + x, 3 + y, getColor((long)rainbow.getValue()));
+					font.drawStringWithShadow(text, 5 + x, 6 + y, getColor((long)rainbow.getValue()));
 				}
 				break;
 			case "Sense":
-				Gui.drawRect(3.5 + x, 3.5 + y, 3.5 + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(text) + 4 : font.getStringWidth(text) + 5) + x, 20.5 + y, 0xFF3D3F45);
-				Gui.drawRect(5 + x, 5 + y, 4 + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(text) + 2 : font.getStringWidth(text) + 3) + x, 19 + y, 0xFF1F201C);
-				Gui.drawRect(5 + x, 4.5 + y, 4 + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(text) + 2 : font.getStringWidth(text) + 3) + x, 5.5 + y, getColor((int)rainbow.getValue()));
+				Gui.drawRect(3.5 + x, 3.5 + y, 3.5 + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(text) + 6 : font.getStringWidth(text) + 7) + x, 20.5 + y, 0xFF3D3F45);
+				Gui.drawRect(5 + x, 5 + y, 4 + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(text) + 4 : font.getStringWidth(text) + 5) + x, 19 + y, 0xFF1F201C);
+				Gui.drawRect(5 + x, 4.5 + y, 4 + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(text) + 4 : font.getStringWidth(text) + 5) + x, 5.5 + y, getColor((int)rainbow.getValue()));
 				if(mcFont.isEnabled())
 					mc.fontRendererObj.drawStringWithShadow(text, 7.5f + x, 8.5f + y, getColor((int)rainbow.getValue()));
 				else

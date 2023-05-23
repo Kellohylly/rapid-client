@@ -10,6 +10,7 @@ import client.rapid.module.modules.Category;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.potion.Potion;
@@ -23,7 +24,9 @@ public class Effects extends Draggable {
     MCFontRenderer font = Fonts.normal2;
 
     public Effects() {
-        super(300, 100, 100, 40);
+        super(0, 0, 100, 40);
+        setX(new ScaledResolution(mc).getScaledWidth() - this.getWidth() - 2);
+        setY(new ScaledResolution(mc).getScaledHeight() - this.getHeight() - 2);
     }
 
     public void drawDummy(int mouseX, int mouseY) {

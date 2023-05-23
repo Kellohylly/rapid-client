@@ -75,7 +75,7 @@ public class Scaffold extends Module {
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		towerMove.setVisible(!tower.getMode().equals("None"));
 	}
 
@@ -254,6 +254,7 @@ public class Scaffold extends Module {
 								mc.thePlayer.swingItem();
 							else
 								PacketUtil.sendPacket(new C0APacketAnimation());
+
 							rotated = true;
 
 						}

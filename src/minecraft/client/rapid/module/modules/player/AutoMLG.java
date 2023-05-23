@@ -39,7 +39,7 @@ public class AutoMLG extends Module {
     }
 
     @Override
-    public void onSettingChange() {
+    public void settingCheck() {
         pickupWater.setVisible(waterBucket.isEnabled());
         leaveBoat.setVisible(boat.isEnabled());
     }

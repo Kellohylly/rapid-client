@@ -20,7 +20,9 @@ public class Notifications extends Draggable {
     private final Setting amount = new Setting("Amount", this, 3, 1, 12, true);
 
     public Notifications() {
-        super(400, 200, 100, 34);
+        super(0, 0, 100, 34);
+        setX(new ScaledResolution(mc).getScaledWidth() - this.getWidth());
+        setY(new ScaledResolution(mc).getScaledHeight() - this.getHeight() - 44);
         add(amount);
     }
 

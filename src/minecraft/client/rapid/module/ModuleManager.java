@@ -49,6 +49,7 @@ public class ModuleManager {
 
 			// MOVEMENT
 			new CorrectMovement(),
+			new NoJumpDelay(),
 			new InventoryMove(),
 			new TargetStrafe(),
 			new CustomSpeed(),

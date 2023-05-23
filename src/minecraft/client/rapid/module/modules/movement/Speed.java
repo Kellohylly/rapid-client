@@ -39,7 +39,7 @@ public class Speed extends Module {
 		add(mode, speed, damageBoost, groundStrafe, disableOnFlag);
 	}
 
-	public void onSettingChange() {
+	public void settingCheck() {
 		groundStrafe.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Strafe"));
 		damageBoost.setVisible(!mode.getMode().equals("Vanilla") && !mode.getMode().equals("Verus Ground") && !mode.getMode().equals("Vulcan"));
 		speed.setVisible(mode.getMode().equals("Vanilla"));
@@ -215,16 +215,17 @@ public class Speed extends Module {
 						if (mc.thePlayer.onGround) {
 							if (!mc.gameSettings.keyBindJump.isKeyDown() && mc.thePlayer.ticksExisted % 13 == 0) {
 								mc.thePlayer.jump();
-								setMoveSpeed(0.5);
+								setMoveSpeed(getBaseMoveSpeed() + 0.2125);
 							} else
-								setMoveSpeed(0.4);
+								setMoveSpeed(getBaseMoveSpeed() + 0.1125);
 						} else {
 							if (!mc.gameSettings.keyBindJump.isKeyDown() && isMoving()) {
 								mc.thePlayer.motionY = -0.0980000019;
-								setMoveSpeed(0.37);
+								setMoveSpeed(getBaseMoveSpeed() + 0.08);
 							}
 						}
 					}
+					setMoveSpeed(getMoveSpeed() + (mc.thePlayer.hurtTime != 0 ? damageBoost.getValue() : 0));
 					strafe();
 					break;
 			}

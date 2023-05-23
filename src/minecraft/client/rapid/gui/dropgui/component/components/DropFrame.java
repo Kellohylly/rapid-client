@@ -7,6 +7,7 @@ import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.module.Module;
 import client.rapid.module.modules.Category;
+import client.rapid.util.animation.Animation;
 import client.rapid.util.font.*;
 import net.minecraft.client.gui.*;
 

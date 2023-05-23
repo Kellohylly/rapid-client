@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.gui.dropgui.component.DropComponent;
+import client.rapid.util.animation.Animation;
 import net.minecraft.util.ResourceLocation;
 
 import client.rapid.Wrapper;
@@ -43,7 +44,6 @@ public class DropButton extends DropComponent {
 				opY += 12;
 			}
 		}
-		//this.subcomponents.add(new DropKeybind(this, opY));
 
 	}
 	
@@ -64,7 +64,7 @@ public class DropButton extends DropComponent {
 		Gui.drawRect(parent.getX(), this.parent.getY() + this.offset, parent.getX() + parent.getWidth(), this.parent.getY() + 12 + this.offset, this.hovered ? (mod.isEnabled() ? new Color(DropdownGui.hud.getColor(offset / 2)).darker().getRGB() : 0xFF0D0E11) : (mod.isEnabled() ? DropdownGui.hud.getColor(offset / 2) : new Color(0xFF0F0F13).brighter().getRGB()));
 		parent.font.drawString(this.mod.getName(), (parent.getX() + 2) + 2, (parent.getY() + offset + 2) + 1, -1);
 
-		if(this.subcomponents.size() > 1) {
+		if(this.subcomponents.size() > 0) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(this.open ? "rapid/images/up.png": "rapid/images/down.png"));
 			Gui.drawModalRectWithCustomSizedTexture((parent.getX() + parent.getWidth() - 12), (parent.getY() + offset + 14) - 12, 0, 0, 9, 9, 9, 9);
 		}
@@ -79,8 +79,9 @@ public class DropButton extends DropComponent {
 	}
 	
 	public int getHeight() {
-		if(this.open)
+		if(this.open) {
 			return (12 * (this.subcomponents.size() + 1));
+		}
 		return 12;
 	}
 	
@@ -88,9 +89,7 @@ public class DropButton extends DropComponent {
 		this.hovered = isMouseOnButton(mouseX, mouseY);
 		if(!this.subcomponents.isEmpty()) {
 			for(DropComponent comp : this.subcomponents) {
-				if(comp.set != null && comp.set.isVisible()) {
-					comp.updateComponent(mouseX, mouseY);
-				}
+				comp.updateComponent(mouseX, mouseY);
 			}
 		}
 	}
@@ -122,7 +121,7 @@ public class DropButton extends DropComponent {
 	}
 	
 	public boolean isMouseOnButton(int x, int y) {
-		return x > parent.getX() && x < parent.getX() + parent.getWidth() && y > this.parent.getY() + this.offset && y < this.parent.getY() + 12 + this.offset;
+		return x > parent.getX() && x < parent.getX() + parent.getWidth() && y > this.parent.getY() + this.offset && y < this.parent.getY() + 13 + this.offset;
 	}
 
 }

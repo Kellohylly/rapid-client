@@ -34,4 +34,5 @@ public class Event extends EventCancel {
 	public boolean isPost() {
 		return type != null && type == EventType.POST;
 	}
+
 }

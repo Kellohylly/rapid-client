@@ -16,7 +16,12 @@ public class WatermarkCommand extends Command {
 	public void onCommand(String[] args, String command) {
 		if(args.length > 0) {
 			String text = "";
-			for(String arg : args) text += arg + " ";
+
+			int i = 0;
+			for(String arg : args) {
+				text += (i == 0 ? "" : " ") + arg;
+				i++;
+			}
 			
 			if(Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled()) {
 				text = text.replace("&", "\u00a7");

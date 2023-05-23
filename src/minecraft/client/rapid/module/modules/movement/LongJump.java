@@ -30,7 +30,7 @@ public class LongJump extends Module {
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		height.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Vanilla"));
 		slowdown.setVisible(mode.getMode().equals("Old NCP"));
 		speed.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Old NCP"));

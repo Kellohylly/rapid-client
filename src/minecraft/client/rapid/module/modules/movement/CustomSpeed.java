@@ -27,7 +27,7 @@ public class CustomSpeed extends Module {
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		fallTicks.setVisible(fallMode.getMode().equals("Ticks"));
 	}
 

@@ -10,6 +10,7 @@
 + Added Vulcan Criticals.
 + Added Jump to Collide Flight.
 + Added Omni Sprint to Disabler.
++ Added Health to Auto Pot.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -23,8 +24,12 @@
 / Made settings hide if not used.
 / Fixed Top Box not showing in Enabled Modules.
 / Fixed Outline Top being wrong color.
+/ Improved Auto Pot for Instant Health potions.
+/ Animations to Target Hud.
+
 - Removed Position from Flight.
 
  Added Fences Module.
+ Added No Jump Delay Module.
 
  This update is to clean my shitty code a bit.

@@ -25,7 +25,7 @@ public class Criticals extends Module {
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		delay.setVisible(!mode.getMode().equals("No Ground"));
 	}
 

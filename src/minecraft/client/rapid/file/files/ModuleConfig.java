@@ -1,16 +1,15 @@
-package client.rapid.config.configs;
+package client.rapid.file.files;
 
 import client.rapid.Wrapper;
-import client.rapid.gui.panelgui.component.Comp;
 import client.rapid.module.Module;
 import client.rapid.module.settings.Setting;
-import client.rapid.config.Config;
+import client.rapid.file.File;
 import client.rapid.util.console.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class ModuleConfig extends Config {
+public class ModuleConfig extends File {
 
     public ModuleConfig() {
         super("config.conf");
@@ -58,7 +57,7 @@ public class ModuleConfig extends Config {
         super.load();
     }
 
-    public void load(File file) {
+    public void load(java.io.File file) {
         ArrayList<String> lines = new ArrayList<>();
 
         try {

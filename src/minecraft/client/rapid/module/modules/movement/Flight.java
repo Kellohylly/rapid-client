@@ -25,7 +25,6 @@ public class Flight extends Module {
 	private final Setting speed = new Setting("Speed", this, 2, 0.2, 10, false);
 	private final Setting fast = new Setting("Fast", this, false);
 	private final Setting jump = new Setting("Jump", this, false);
-	private final Setting autoDisable = new Setting("Auto Disable", this, true);
 	private final Setting bobbing = new Setting("Bobbing", this, true);
 
 	private double moveSpeed;
@@ -37,11 +36,11 @@ public class Flight extends Module {
 	private final TimerUtil timer = new TimerUtil();
 
 	public Flight() {
-		add(mode, damage, speed, fast, jump, autoDisable, bobbing);
+		add(mode, damage, speed, fast, jump, bobbing);
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		speed.setVisible(!mode.getMode().equals("Creative") && !mode.getMode().equals("Collide"));
 		fast.setVisible(mode.getMode().equals("Verus") || mode.getMode().equals("Old NCP"));
 		bobbing.setVisible(mode.getMode().equals("Old NCP"));

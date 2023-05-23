@@ -12,10 +12,12 @@ import client.rapid.module.settings.Setting;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @ModuleInfo(getName = "Enabled Modules", getCategory = Category.HUD)
@@ -26,7 +28,6 @@ public class EnabledModules extends Draggable {
     private final Setting lowercased = new Setting("Lowercased", this, false);
     private final Setting modeTags = new Setting("Mode Tags", this, true);
     private final Setting flipHorizontally = new Setting("Flip Horizontally", this, false);
-    /*flipVertically = new Setting("Flip Vertically", this, false),*/
     private final Setting hideVisual = new Setting("Hide Visuals", this, false);
     private final Setting flipTags = new Setting("Flip Mode Tags", this, false);
 
@@ -40,8 +41,9 @@ public class EnabledModules extends Draggable {
     private CopyOnWriteArrayList<Module> modules;
 
     public EnabledModules() {
-        super(100, 100, 50, 110);
-        add(listBarMode, listOpacity, listHeight, lowercased, modeTags, flipHorizontally, /*flipVertically,*/ hideVisual, flipTags);
+        super(0, 10, 80, 110);
+        setX(new ScaledResolution(mc).getScaledWidth() - this.getWidth() - 10);
+        add(listBarMode, listOpacity, listHeight, lowercased, modeTags, flipHorizontally, hideVisual, flipTags);
     }
 
     @Override
@@ -64,10 +66,27 @@ public class EnabledModules extends Draggable {
         if(e instanceof EventRender && e.isPre()) {
             int i = 0, i2 = 0, height = (int)listHeight.getValue();
 
-            if(modules == null)
+            if(modules == null) {
                 modules = new CopyOnWriteArrayList<>(Wrapper.getModuleManager().getModules());
+            }
 
-            int width = getWidth() / 2;
+            int width = getWidth() - 1;
+
+            if(flipHorizontally.isEnabled()) {
+                width = 0;
+            } else {
+                if(width != getWidth() - 1) {
+                    width = getWidth() - 1;
+                }
+            }
+
+            switch(listBarMode.getMode()) {
+                case "Outline":
+                case "Back":
+                case "Back2":
+                    width = width - 1;
+                    break;
+            }
 
             modules.sort(Comparator.comparingInt(mod -> lowercased.isEnabled() ? (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth((((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")).toLowerCase()) : font.getStringWidth((((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")).toLowerCase())) : mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : "")) : font.getStringWidth(((Module)mod).getName() + (modeTags.isEnabled() ? ((Module)mod).getTag2() : ""))).reversed());
 
@@ -75,12 +94,12 @@ public class EnabledModules extends Draggable {
                 if(m.isEnabled() && m.getCategory() != Category.HUD) {
                     if(hideVisual.isEnabled() && m.getCategory() == Category.VISUAL)
                         continue;
-                    String sep = (modeTags.isEnabled() ? (m.getTag() != "" ? " ": "") + m.getTag() : "");
+                    String sep = (modeTags.isEnabled() ? (!Objects.equals(m.getTag(), "") ? " ": "") + m.getTag() : "");
 
                     String modText = m.getName() + (!mcFont.isEnabled() ? "&7" : "\u00a77") + sep;
 
                     if(flipTags.isEnabled())
-                        modText = (!mcFont.isEnabled() ? "&7" : "\u00a77") + (modeTags.isEnabled() ? m.getTag() + (m.getTag() != "" ? " ": "") : "") + (!mcFont.isEnabled() ? "&r" : "\u00a7r") + m.getName() + (!mcFont.isEnabled() ? "&f" : "\u00a7r");
+                        modText = (!mcFont.isEnabled() ? "&7" : "\u00a77") + (modeTags.isEnabled() ? m.getTag() + (!Objects.equals(m.getTag(), "") ? " ": "") : "") + (!mcFont.isEnabled() ? "&r" : "\u00a7r") + m.getName() + (!mcFont.isEnabled() ? "&f" : "\u00a7r");
 
 
                     if(lowercased.isEnabled())
@@ -138,10 +157,11 @@ public class EnabledModules extends Draggable {
                                 Gui.drawRect(x + width + 1, y + i + 1, x + width + 2, 8 + y + i + height, getColor(i2));
                             break;
                         case "Top":
-                            if(!flipHorizontally.isEnabled())
+                            if(flipHorizontally.isEnabled()) {
+                                Gui.drawRect(x + width, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y - 1, getColor(0));
+                            } else {
                                 Gui.drawRect(x + width + 1, y, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 4 : font.getStringWidth(modText) + 3), y - 1, getColor(0));
-                            else
-                                Gui.drawRect(x + width, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y + 1, getColor(0));
+                            }
                             break;
                         case "Outline":
                             // Front
@@ -160,7 +180,7 @@ public class EnabledModules extends Draggable {
                             if(!flipHorizontally.isEnabled())
                                 Gui.drawRect(x + width + 1, y, x + width - (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y - 1, getColor(0));
                             else
-                                Gui.drawRect(x + width - 1, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 5 : font.getStringWidth(modText) + 4), y + 1, getColor(0));
+                                Gui.drawRect(x + width - 1, y, x + width + (mcFont.isEnabled() ? mc.fontRendererObj.getStringWidth(modText) + 6 : font.getStringWidth(modText) + 5), y - 1, getColor(0));
 
                             // Bottom thing.
                             ArrayList<Module> enabled = new ArrayList<>(modules);
@@ -168,7 +188,7 @@ public class EnabledModules extends Draggable {
                             int index = enabled.indexOf(m);
 
                             if(index != enabled.size() - 1) {
-                                String sep2 = (modeTags.isEnabled() ? (enabled.get(index + 1).getTag() != "" ? " ": "") + enabled.get(index + 1).getTag() : "");
+                                String sep2 = (modeTags.isEnabled() ? (!Objects.equals(enabled.get(index + 1).getTag(), "") ? " ": "") + enabled.get(index + 1).getTag() : "");
                                 String modText2 = enabled.get(index + 1).getName() +  (!mcFont.isEnabled() ? "&7" : "\u00a77") + sep2;
 
                                 if(lowercased.isEnabled())

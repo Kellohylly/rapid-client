@@ -19,6 +19,6 @@ public class DropComponent {
 	}
 
 	public boolean isMouseOnButton(int mouseX, int mouseY, int x, int y) {
-		return x > mouseX && x < mouseX + 105 && y > mouseY && y < mouseY + 12;
+		return x > mouseX && x < mouseX + 105 && y > mouseY && y < mouseY + 13;
 	}
 }

@@ -1,7 +1,6 @@
 package client.rapid.module;
 
 import client.rapid.Wrapper;
-import client.rapid.config.configs.HudConfig;
 import org.lwjgl.input.Mouse;
 
 public class Draggable extends Module {

@@ -5,6 +5,10 @@ import client.rapid.module.Module;
 public class Client {
 	private static final Client INSTANCE = new Client();
 
+	public void preinit() {
+		Wrapper.preinit();
+	}
+
 	public void init() {
 		Wrapper.init();
 	}

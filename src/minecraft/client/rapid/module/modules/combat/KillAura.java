@@ -42,7 +42,6 @@ public class KillAura extends Module {
     private final Setting rotate = new Setting("Rotate", this, "None", "Instant", "Fixed");
     private final Setting viewLock = new Setting("View Lock", this, false);
     private final Setting rayCast = new Setting("Ray Cast", this, true);
-    private final Setting autoDisable = new Setting("Auto Disable", this, true);
     private final Setting useGcd = new Setting("Use GCD", this, false);
     private final Setting shakeX = new Setting("Random X", this, 0, 0, 5, false);
     private final Setting shakeY = new Setting("Random Y", this, 0, 0, 5, false);
@@ -69,11 +68,11 @@ public class KillAura extends Module {
     private int index;
 
     public KillAura() {
-        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, autoDisable, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
+        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
     }
 
     @Override
-    public void onSettingChange() {
+    public void settingCheck() {
         viewLock.setVisible(!rotate.getMode().equals("None"));
         autoblockperc.setVisible(!autoBlock.getMode().equals("None"));
         useGcd.setVisible(!rotate.getMode().equals("None"));
@@ -143,15 +142,7 @@ public class KillAura extends Module {
         }
 
         // Auto Disable
-        if(autoDisable.isEnabled()) {
-            if(e instanceof EventUpdate && e.isPre()) {
-                if(mc.thePlayer.getHealth() <= 0)
-                    setEnabled(false);
-            }
-            if (e instanceof EventWorldLoad) {
-                setEnabled(false);
-            }
-        }
+        autoDisable(e);
     }
 
     private void collectTargets() {
@@ -202,7 +193,10 @@ public class KillAura extends Module {
         if (entity.isOnSameTeam(mc.thePlayer) && teams.isEnabled())
             return false;
 
-        return entity != mc.thePlayer && !(entity.getDistanceToEntity(mc.thePlayer) > reach.getValue() && mc.thePlayer.isEntityAlive());
+        if(!entity.isEntityAlive())
+            return false;
+
+        return entity != mc.thePlayer && !(entity.getDistanceToEntity(mc.thePlayer) > reach.getValue());
     }
 
     private boolean isInFieldOfView(EntityLivingBase entity, double angle) {

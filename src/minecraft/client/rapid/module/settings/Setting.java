@@ -117,7 +117,7 @@ public class Setting {
     }
 
 	public void check() {
-		parent.onSettingChange();
+		parent.settingCheck();
 	}
 
 }

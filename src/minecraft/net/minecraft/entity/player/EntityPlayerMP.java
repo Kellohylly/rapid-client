@@ -382,6 +382,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting {
       }
 
       this.triggerAchievement(StatList.deathsStat);
+
       this.func_175145_a(StatList.timeSinceDeathStat);
       this.getCombatTracker().reset();
    }

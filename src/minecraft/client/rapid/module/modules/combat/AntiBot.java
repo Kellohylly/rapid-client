@@ -32,7 +32,7 @@ public class AntiBot extends Module {
 	}
 
 	@Override
-	public void onSettingChange() {
+	public void settingCheck() {
 		maxDistance.setVisible(!mode.getMode().equals("Tab"));
 	}
 

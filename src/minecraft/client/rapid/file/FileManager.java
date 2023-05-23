@@ -1,24 +1,23 @@
-package client.rapid.config;
+package client.rapid.file;
 
-import client.rapid.config.configs.HudConfig;
-import client.rapid.config.configs.ModKeyConfig;
-import client.rapid.config.configs.ModuleConfig;
+import client.rapid.file.files.HudConfig;
+import client.rapid.file.files.ModKeyConfig;
+import client.rapid.file.files.ModuleConfig;
 import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ConfigManager {
+public class FileManager {
     private final ModuleConfig moduleConfig;
     private final ModKeyConfig modKeyConfig;
     private final HudConfig hudConfig;
 
-    private final File dir;
+    private final java.io.File dir;
 
-    public ConfigManager() {
-        this.dir = new File(Minecraft.getMinecraft().mcDataDir, "Rapid");
+    public FileManager() {
+        this.dir = new java.io.File(Minecraft.getMinecraft().mcDataDir, "Rapid");
 
         this.generateFiles();
 
@@ -26,7 +25,7 @@ public class ConfigManager {
         this.modKeyConfig = new ModKeyConfig();
         this.hudConfig = new HudConfig();
 
-        for(Config config : new Config[] {moduleConfig, modKeyConfig, hudConfig}) {
+        for(File config : new File[] {moduleConfig, modKeyConfig, hudConfig}) {
             if(!config.getData().exists()) {
                 try {
                     config.getData().createNewFile();
@@ -60,7 +59,7 @@ public class ConfigManager {
     public void generateFiles() {
 
         // Insults File
-        File file = new File(dir, File.separator + "insults.txt");
+        java.io.File file = new java.io.File(dir, java.io.File.separator + "insults.txt");
 
         if(!file.exists()) {
             try {
@@ -80,7 +79,7 @@ public class ConfigManager {
         }
 
         // Spammer File
-        file = new File(dir, File.separator + "spammer.txt");
+        file = new java.io.File(dir, java.io.File.separator + "spammer.txt");
 
         if(!file.exists()) {
             try {

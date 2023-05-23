@@ -1,7 +1,7 @@
 package client.rapid;
 
 import client.rapid.command.CommandManager;
-import client.rapid.config.ConfigManager;
+import client.rapid.file.FileManager;
 import client.rapid.module.ModuleManager;
 import client.rapid.module.settings.SettingsManager;
 import client.rapid.rpc.RichPresence;
@@ -12,16 +12,19 @@ public class Wrapper {
 	private static SettingsManager settingsManager;
 	private static ModuleManager moduleManager;
 
-	private static ConfigManager configManager;
+	private static FileManager configManager;
 
 	private static RichPresence richPresence;
+
+	public static void preinit() {
+		Wrapper.richPresence = new RichPresence();
+	}
 
 	public static void init() {
 		Wrapper.settingsManager = new SettingsManager();
 		Wrapper.moduleManager = new ModuleManager();
-		Wrapper.configManager = new ConfigManager();
+		Wrapper.configManager = new FileManager();
 		Wrapper.commandManager = new CommandManager();
-		Wrapper.richPresence = new RichPresence();
 
 		try {
 			ViaMCP.getInstance().start();
@@ -47,7 +50,7 @@ public class Wrapper {
 		return commandManager;
 	}
 
-	public static ConfigManager getConfigManager() {
+	public static FileManager getConfigManager() {
 		return configManager;
 	}
 
