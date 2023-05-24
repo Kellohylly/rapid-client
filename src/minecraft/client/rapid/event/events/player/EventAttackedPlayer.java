@@ -4,10 +4,10 @@ import client.rapid.event.events.Event;
 import net.minecraft.entity.Entity;
 
 // WHERE IN THE FLYING FUCK DO I HOOK THIS??
-public class EventKilledPlayer extends Event {
+public class EventAttackedPlayer extends Event {
     private final Entity entity;
 
-    public EventKilledPlayer(Entity entity) {
+    public EventAttackedPlayer(Entity entity) {
         this.entity = entity;
     }
 

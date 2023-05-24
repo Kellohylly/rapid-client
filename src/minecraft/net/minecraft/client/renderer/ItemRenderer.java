@@ -328,30 +328,38 @@ public class ItemRenderer {
             			break;
             		case "Rotate":
                         this.transformFirstPersonItem(0, 0);
-                        GlStateManager.rotate((System.currentTimeMillis() / (int)(Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() - 3) % 360), 0, 1f, 0);
+                        GlStateManager.rotate(System.currentTimeMillis() / (int)(Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() - 3) % 360, 0, 1f, 0);
                         break;
-            		case "Spin":
+            		case "Astolfo":
                        GlStateManager.rotate((System.currentTimeMillis() / (int)(Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() - 3)% 360), 0, 0, 1);
                        this.transformFirstPersonItem(0, 0);
                        this.func_178103_d();
-
-            			break;
-            		case "Exhibition":
-                       float f6 = MathHelper.sin((float) (MathHelper.sqrt_float(f1) * 3.1));
-                       GL11.glTranslated(-0.1D, 0.1D, 0.0D);
-                       this.transformFirstPersonItem(f, 0.0f);
-                       GlStateManager.rotate(-f6 * 40.0F / 2.0F, f6 / 2.0F, -0.0F, 9.0F);
-                       GlStateManager.rotate(-f6 * 30.0F, 1.0F, f6 / 2.0F, -0.0F);
-                       this.func_178103_d();
                        break;
-                      case "Geuxy":
-                         float f7 = MathHelper.sin((float) (MathHelper.sqrt_float(f1) * 3.1));
-                         GL11.glTranslated(-0.05D, 0, 0.0D);
-                         this.transformFirstPersonItem(f / 2, 0.0f);
-                         GlStateManager.rotate(-f7 * 40, 0.1f, 0.5f, 0.8f);
-                         GlStateManager.rotate(-f7 * 45.0F, 30.0F, 1, 0);
-                         this.func_178103_d();
-                         break;
+                   case "Spin":
+                      GlStateManager.translate(0.33D, -0.4, -0.8);
+                      GlStateManager.rotate(30.0F, -60.0F, -20.0F, 30.0F);
+                      GlStateManager.rotate(45.0F, 0.0F, -20.0F, 30.0F);
+                      GlStateManager.rotate((System.currentTimeMillis() / (int)(Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() - 3)% 360), 1.0F, 0.4F, 1.0F);
+                      GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
+                      GlStateManager.scale(0.4, 0.4, 0.4);
+                      GlStateManager.scale(0.8f, 0.8f, 0.8f);
+                      break;
+                   case "Exhibition":
+                      float f6 = MathHelper.sin((float) (MathHelper.sqrt_float(f1) * 3.1));
+                      GL11.glTranslated(-0.1D, 0.1D, 0.0D);
+                      this.transformFirstPersonItem(f, 0.0f);
+                      GlStateManager.rotate(-f6 * 40.0F / 2.0F, f6 / 2.0F, -0.0F, 9.0F);
+                      GlStateManager.rotate(-f6 * 30.0F, 1.0F, f6 / 2.0F, -0.0F);
+                      this.func_178103_d();
+                      break;
+                   case "Geuxy":
+                      float f7 = MathHelper.sin((float) (MathHelper.sqrt_float(f1) * 3.1));
+                      GL11.glTranslated(-0.05D, 0, 0.0D);
+                      this.transformFirstPersonItem(f / 2, 0.0f);
+                      GlStateManager.rotate(-f7 * 40, 0.1f, 0.5f, 0.8f);
+                      GlStateManager.rotate(-f7 * 45.0F, 30.0F, 1, 0);
+                      this.func_178103_d();
+                      break;
                       case "What":
                          float f8 = MathHelper.sin((float) (MathHelper.sqrt_float(f1) * 3.1));
                          GL11.glTranslated(0, 0.12D, 0.0D);

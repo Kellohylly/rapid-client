@@ -63,7 +63,7 @@ public class Effects extends Draggable {
                     if(Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled())
                         Gui.drawCenteredString(mc.fontRendererObj, text, x + width + 2 - mc.fontRendererObj.getStringWidth(text) / 2 - 5, y + 14 + i2, potion.getLiquidColor());
                     else
-                        font.drawCenteredStringWithShadow(text, x + width + 2 - font.getStringWidth(text) / 2 + 5, y + 14 + i2, potion.getLiquidColor());
+                        font.drawCenteredStringWithShadow(text, x + width + 2 - (float) font.getStringWidth(text) / 2 + 5, y + 14 + i2, potion.getLiquidColor());
                     i2 -= 10;
                 }
             }

@@ -186,20 +186,18 @@ public class PanelGui extends GuiScreen {
                             for (Setting setting : Wrapper.getSettingsManager().getSettingsByMod(m)) {
                                 selectedModule = m;
 
-                                if (setting.isVisible()) {
-                                    if (setting.isCheck()) {
-                                        comps.add(new PanelCheckbox(275, offset, this, selectedModule, setting));
-                                    }
-
-                                    if (setting.isCombo()) {
-                                        comps.add(new PanelCombo(275, offset, this, selectedModule, setting));
-                                    }
-
-                                    if (setting.isSlider()) {
-                                        comps.add(new PanelSlider(275, offset, this, selectedModule, setting));
-                                    }
-                                    offset += 20;
+                                if (setting.isCheck()) {
+                                    comps.add(new PanelCheckbox(275, offset, this, selectedModule, setting));
                                 }
+
+                                if (setting.isCombo()) {
+                                    comps.add(new PanelCombo(275, offset, this, selectedModule, setting));
+                                }
+
+                                if (setting.isSlider()) {
+                                    comps.add(new PanelSlider(275, offset, this, selectedModule, setting));
+                                }
+                                offset += 20;
                             }
                     }
                 }

@@ -8,7 +8,6 @@ import java.util.concurrent.Callable;
 import client.rapid.Wrapper;
 import client.rapid.event.EventType;
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventTick;
 import client.rapid.event.events.player.EventSafewalk;
 import client.rapid.event.events.player.EventStep;
 import client.rapid.event.events.player.EventStrafe;

@@ -4,7 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.block.material.Material;
@@ -51,6 +54,15 @@ public class PlayerUtil extends MinecraftUtil {
             }
         }
         return false;
+    }
+
+    public static boolean hasArmorEquipped(EntityPlayer entity) {
+        ItemStack boots = entity.inventory.armorInventory[0];
+        ItemStack pants = entity.inventory.armorInventory[1];
+        ItemStack chest = entity.inventory.armorInventory[2];
+        ItemStack head = entity.inventory.armorInventory[3];
+
+        return boots != null || pants != null || chest != null || head != null;
     }
     
     public static boolean isBlockUnder() {

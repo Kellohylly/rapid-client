@@ -1,5 +1,8 @@
 package net.minecraft.client.entity;
 
+import client.rapid.event.EventType;
+import client.rapid.event.events.Event;
+import client.rapid.event.events.player.EventAttackedPlayer;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -27,6 +30,13 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer {
    }
 
    public boolean attackEntityFrom(DamageSource source, float amount) {
+      if(source.getSourceOfDamage() == Minecraft.getMinecraft().thePlayer) {
+         EventAttackedPlayer eventAttacked = new EventAttackedPlayer(this);
+         eventAttacked.setType(EventType.PRE);
+         Event.dispatch(eventAttacked);
+      }
+
+
       return true;
    }
 
@@ -123,4 +133,5 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer {
    public BlockPos getPosition() {
       return new BlockPos(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D);
    }
+
 }

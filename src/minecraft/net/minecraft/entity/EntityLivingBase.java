@@ -19,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
@@ -609,6 +608,7 @@ public abstract class EntityLivingBase extends Entity {
                amount *= 0.75F;
             }
 
+
             this.limbSwingAmount = 1.5F;
             boolean flag = true;
             if((float)this.hurtResistantTime > (float)this.maxHurtResistantTime / 2.0F) {
@@ -704,13 +704,8 @@ public abstract class EntityLivingBase extends Entity {
    public void onDeath(DamageSource cause) {
       Entity entity = cause.getEntity();
 
-      if(cause.getSourceOfDamage() instanceof EntityPlayerSP) {
-         System.out.println("yes");
-      }
-
       EntityLivingBase entitylivingbase = this.func_94060_bK();
 
-      System.out.println(entitylivingbase.getName());
       if(this.scoreValue >= 0 && entitylivingbase != null) {
          entitylivingbase.addToPlayerScore(this, this.scoreValue);
       }

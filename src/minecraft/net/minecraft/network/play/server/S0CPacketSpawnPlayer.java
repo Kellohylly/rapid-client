@@ -14,6 +14,7 @@ import net.minecraft.util.MathHelper;
 
 public class S0CPacketSpawnPlayer implements Packet<INetHandlerPlayClient> {
    private int entityId;
+   private EntityPlayer entity;
    private UUID playerId;
    private int x;
    private int y;
@@ -29,6 +30,7 @@ public class S0CPacketSpawnPlayer implements Packet<INetHandlerPlayClient> {
 
    public S0CPacketSpawnPlayer(EntityPlayer player) {
       this.entityId = player.getEntityId();
+      this.entity = player;
       this.playerId = player.getGameProfile().getId();
       this.x = MathHelper.floor_double(player.posX * 32.0D);
       this.y = MathHelper.floor_double(player.posY * 32.0D);
@@ -62,6 +64,10 @@ public class S0CPacketSpawnPlayer implements Packet<INetHandlerPlayClient> {
       buf.writeByte(this.pitch);
       buf.writeShort(this.currentItem);
       this.watcher.writeTo(buf);
+   }
+
+   public EntityPlayer getEntity() {
+      return entity;
    }
 
    public void processPacket(INetHandlerPlayClient handler) {

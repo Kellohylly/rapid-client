@@ -11,6 +11,7 @@
 + Added Jump to Collide Flight.
 + Added Omni Sprint to Disabler.
 + Added Health to Auto Pot.
++ Added Has Armor to Anti Bot.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -31,5 +32,3 @@
 
  Added Fences Module.
  Added No Jump Delay Module.
-
- This update is to clean my shitty code a bit.
