@@ -6,77 +6,85 @@ import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.movement.longjumps.LongJumpBase;
+import client.rapid.module.modules.movement.longjumps.LongJumpMode;
+import client.rapid.module.modules.movement.speeds.SpeedMode;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
 import client.rapid.util.TimerUtil;
+import client.rapid.util.module.MoveUtil;
+import net.minecraft.util.BlockPos;
 
 @ModuleInfo(getName = "Long Jump", getCategory = Category.MOVEMENT)
 public class LongJump extends Module {
-	private final Setting mode = new Setting("Mode", this, "Vanilla", "Old NCP", "NCP", "Vulcan");
+	private final Setting mode = new Setting("Mode", this, "Vanilla", "NCP", "Vulcan");
+
+	private final Setting ncpMode = new Setting("NCP", this, "Old NCP", "NCP Dev");
+
 	private final Setting damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait");
 	private final Setting speed = new Setting("Speed", this, 1.6, 0.2, 10, false);
 	private final Setting height = new Setting("Height", this, 1.6, 0.2, 10, false);
 	private final Setting slowdown = new Setting("Slowdown Speed", this, 0.02, 0.01, 0.2, false);
 	private final Setting autoDisable = new Setting("Auto Disable", this, false);
-	
-	private double moveSpeed;
-	private boolean jumped, canJump, damaged;
-	private int ticks, jumps;
 
-	private final TimerUtil glideTime = new TimerUtil();
+	private LongJumpBase currentMode;
+
+	private boolean damaged;
+	private boolean jumped;
+	private int ticks;
 
 	public LongJump() {
-		add(mode, damage, speed, height, slowdown, autoDisable);
+		add(mode, ncpMode, damage, speed, height, slowdown, autoDisable);
 	}
 
 	@Override
 	public void settingCheck() {
 		height.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Vanilla"));
-		slowdown.setVisible(mode.getMode().equals("Old NCP"));
-		speed.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Old NCP"));
+		slowdown.setVisible(mode.getMode().equals("NCP") && ncpMode.getMode().equals("Old NCP"));
+		speed.setVisible(mode.getMode().equals("Vanilla") || (mode.getMode().equals("NCP") && ncpMode.getMode().equals("Old NCP")));
+		ncpMode.setVisible(mode.getMode().equals("NCP"));
 	}
 
 	@Override
 	public void onEnable() {
-		if(mode.getMode().equals("Vulcan"))
-			moveSpeed = 0;
-		else
-			moveSpeed = speed.getValue();
-
 		damaged = mc.thePlayer.hurtTime != 0;
-		canJump = false;
 		jumped = false;
 		ticks = 0;
-		jumps = 0;
-		glideTime.reset();
+
+		this.setMode();
+
+		currentMode.onEnable();
 	}
 
 	@Override
 	public void onDisable() {
 		jumped = false;
-		moveSpeed = 0;
 		mc.timer.timerSpeed = 1f;
-		canJump = false;
 		mc.thePlayer.speedInAir = 0.02f;
 		ticks = 0;
 		damaged = false;
-		jumps = 0;
+
+		currentMode.onDisable();
 	}
 
 	@Override
 	public void onEvent(Event e) {
 		setTag(mode.getMode());
 
+		this.setMode();
 
 		if(e instanceof EventUpdate && e.isPre()) {
-			if(mc.thePlayer.hurtTime != 0)
+			if(mc.thePlayer.hurtTime != 0) {
 				damaged = true;
+			}
 
-			if(autoDisable.isEnabled() && mc.thePlayer.getHealth() <= 0)
+			if(autoDisable.isEnabled() && mc.thePlayer.getHealth() <= 0) {
 				setEnabled(false);
+			}
 		}
-		if(e instanceof EventWorldLoad && e.isPre() && autoDisable.isEnabled())
+		if(e instanceof EventWorldLoad && e.isPre() && autoDisable.isEnabled()) {
 			setEnabled(false);
+		}
 
 		if(!damaged && !damage.getMode().equals("None")) {
 			if(e instanceof EventUpdate && e.isPre()) {
@@ -99,115 +107,44 @@ public class LongJump extends Module {
 			}
 			return;
 		}
-		if(e instanceof EventUpdate && e.isPre()) {
-			switch(mode.getMode()) {
-				case "Vanilla":
-					if (mc.thePlayer.onGround) {
-						setMoveSpeed(0);
-						if (jumped && autoDisable.isEnabled())
-							setEnabled(false);
-						else {
-							mc.thePlayer.jump();
-							mc.thePlayer.motionY *= height.getValue();
-						}
-					} else {
-						jumped = true;
-						this.setMoveSpeed(speed.getValue());
-					}
-					break;
-				case "Old NCP":
-					if (mc.thePlayer.onGround) {
-						if (jumped && autoDisable.isEnabled()) {
-							setMoveSpeed(0);
-							setEnabled(false);
-						} else {
-							if (!autoDisable.isEnabled())
-								moveSpeed = speed.getValue();
 
-							mc.thePlayer.jump();
-						}
-					} else {
-						jumped = true;
-						if (moveSpeed > getBaseMoveSpeed())
-							moveSpeed -= slowdown.getValue() / 10;
-
-						this.setMoveSpeed(moveSpeed);
-					}
-					break;
-				case "NCP":
-					if (!canJump) {
-						mc.gameSettings.keyBindForward.pressed = true;
-						mc.gameSettings.keyBindJump.pressed = false;
-
-						if (!mc.thePlayer.isUsingItem())
-							setMoveSpeed(-0.1275);
-						else
-							setMoveSpeed(-0.02);
-
-						mc.thePlayer.moveStrafing *= 0;
-						mc.thePlayer.moveForward *= 0;
-
-						if (mc.thePlayer.hurtTime > 0)
-							canJump = true;
-						return;
-					}
-					if (mc.thePlayer.onGround) {
-						if (canJump && !jumped) {
-							mc.thePlayer.jump();
-							mc.thePlayer.motionY *= 1.04f;
-							mc.thePlayer.speedInAir = 0.022f;
-							moveSpeed = 0.69;
-							mc.timer.timerSpeed = 0.85f;
-						} else if (canJump) {
-							mc.timer.timerSpeed = 1f;
-							setEnabled(false);
-						}
-					} else {
-						moveSpeed = getMoveSpeed();
-						jumped = true;
-
-						if (moveSpeed <= 0.52 && !(mc.thePlayer.fallDistance > 0))
-							moveSpeed = 0.52;
-
-					}
-					setMoveSpeed(moveSpeed);
-					break;
-				case "Vulcan":
-					if(mc.thePlayer.onGround) {
-						if(jumped && autoDisable.isEnabled()) {
-							setEnabled(false);
-						} else {
-							if(!jumped) {
-								mc.thePlayer.jump();
-							}
-						}
-					} else if(mc.thePlayer.fallDistance > 0){
-						if(!jumped && jumps < 3) {
-								mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + (jumps == 0 ? 10 : height.getValue()), mc.thePlayer.posZ);
-							jumps += 1;
-
-							if(jumps >= 3)
-								jumped = true;
-						} else {
-							if(glideTime.sleep(146))
-								mc.thePlayer.motionY = -0.1476;
-							else
-								mc.thePlayer.motionY = -0.0975;
-
-							if(isEnabled("Disabler") && getBoolean("Disabler", "Old Vulcan Strafe"))
-								setMoveSpeed(getBaseMoveSpeed());
-							else {
-								if(mc.thePlayer.ticksExisted % 11 == 0) {
-									if(mc.thePlayer.ticksExisted % 5.5 == 0)
-										mc.thePlayer.onGround = true;
-									setMoveSpeed(0.48);
-								}
-							}
-
-					}
+		if(autoDisable.isEnabled()) {
+			if(jumped) {
+				BlockPos below = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1D, mc.thePlayer.posZ);
+				if(!mc.theWorld.isAirBlock(below) && mc.theWorld.getBlockState(below).getBlock().isFullBlock() && mc.thePlayer.onGround) {
+					setMoveSpeed(0);
+					this.setEnabled(false);
 				}
-				break;
+			} else {
+				if(!mc.thePlayer.onGround) {
+					jumped = true;
+				}
+			}
+		}
+
+		currentMode.updateValues();
+		currentMode.onEvent(e);
+
+	}
+
+	private void setMode() {
+		for(LongJumpMode lm : LongJumpMode.values()) {
+			if(currentMode != lm.getBase()) {
+				switch(mode.getMode()) {
+					case "Vanilla":
+					case "Vulcan":
+						if (mode.getMode().equals(lm.getName())) {
+							currentMode = lm.getBase();
+						}
+						break;
+					case "NCP":
+						if (ncpMode.getMode().equals(lm.getName())) {
+							currentMode = lm.getBase();
+						}
+						break;
+				}
 			}
 		}
 	}
+
 }

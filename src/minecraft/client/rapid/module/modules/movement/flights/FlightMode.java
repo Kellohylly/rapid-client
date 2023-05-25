@@ -1,5 +1,7 @@
 package client.rapid.module.modules.movement.flights;
 
+import client.rapid.module.modules.movement.flights.loyisa.IncognitoFlight;
+import client.rapid.module.modules.movement.flights.loyisa.VenomFlight;
 import client.rapid.module.modules.movement.flights.vanilla.CreativeFlight;
 import client.rapid.module.modules.movement.flights.vanilla.MotionFlight;
 import client.rapid.module.modules.movement.flights.verus.CollideFlight;
@@ -10,7 +12,9 @@ public enum FlightMode {
     CREATIVE("Creative", new CreativeFlight(), "Vanilla"),
     OLDNCP("Old NCP", new OldNCPFlight(), "Old NCP"),
     COLLIDE("Collide", new CollideFlight(), "Verus"),
-    VERUSFAST("Verus Fast", new VerusFastFlight(), "Verus");
+    VERUSFAST("Verus Fast", new VerusFastFlight(), "Verus"),
+    VENOM("Venom", new VenomFlight(), "Loyisa"),
+    INCOGNITO("Incognito", new IncognitoFlight(), "Loyisa");
 
     private final String name;
     private final FlightBase base;

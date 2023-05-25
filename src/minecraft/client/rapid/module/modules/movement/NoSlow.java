@@ -50,10 +50,10 @@ public class NoSlow extends Module {
 						break;
 					case "Packet":
 						if(KillAura.target == null) {
-							if (e.isPre())
+							if (e.isPost())
 								PacketUtil.sendPacketSilent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
 
-							if (e.isPost() && timer.sleep((int) delay.getValue())) {
+							if (e.isPre() && timer.sleep((int) delay.getValue())) {
 								mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), 71999999);
 								mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem());
 							}
@@ -66,10 +66,10 @@ public class NoSlow extends Module {
 								if(mc.thePlayer.onGround)
 									event.cancel();
 
-								if (e.isPre() && timer.sleep((int)delay.getValue()))
+								if (e.isPost() && timer.sleep((int)delay.getValue()))
 									PacketUtil.sendPacketSilent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
 
-								if (e.isPost()) {
+								if (e.isPre()) {
 									PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 1));
 									PacketUtil.sendPacketSilent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
 								}

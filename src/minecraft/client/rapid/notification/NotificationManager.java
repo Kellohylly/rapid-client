@@ -8,6 +8,10 @@ public class NotificationManager {
     private static final LinkedBlockingQueue<Notification> queue = new LinkedBlockingQueue<>();
     private static final Notification[] nots = new Notification[100];
 
+    public static void add(String title, String message, NotificationType type, int time) {
+        addToQueue(new Notification(title, message, type, time));
+    }
+
     public static void addToQueue(Notification notification) {
         queue.add(notification);
     }

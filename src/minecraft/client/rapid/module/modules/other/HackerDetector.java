@@ -11,10 +11,12 @@ import client.rapid.notification.NotificationManager;
 import client.rapid.notification.NotificationType;
 import client.rapid.util.PlayerUtil;
 import client.rapid.util.TimerUtil;
+import client.rapid.util.module.MoveUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -65,6 +67,8 @@ public class HackerDetector extends Module {
                     return;
 
                 Block blockUnder = mc.theWorld.getBlockState(new BlockPos(entity.posX, entity.posY - 1, entity.posZ)).getBlock();
+                Block blockAbove = mc.theWorld.getBlockState(new BlockPos(entity.posX, entity.posY + 2, entity.posZ)).getBlock();
+
                 float speed = (float) Math.sqrt(entity.motionX * entity.motionX + entity.motionZ * entity.motionZ);
 
                 if(!hackers.contains(entity) && entity.ticksExisted > 20) {
@@ -84,13 +88,35 @@ public class HackerDetector extends Module {
                     if (blockUnder instanceof BlockAir && entity.fallDistance == 0 && airTime.reached(500))
                         flag(entity, "Flight");
 
-                    // Speed A (Max)
-                    if(speed > 0.45 && !entity.isPotionActive(Potion.moveSpeed) && entity.hurtTime == 0 && entity.moveForward > 0)
-                        flag(entity, "Speed (A)");
+                    // Speed
+                    double base = entity.onGround ? 0.292 : 0.36;
+                    if(entity.isPotionActive(Potion.moveSpeed)) {
+                        PotionEffect effect = entity.getActivePotionEffect(Potion.moveSpeed);
 
-                    // Speed B (Sprint-Block)
-                    if(entity.isUsingItem() && (entity.isSprinting() || speed > 0.12) && useTime.reached(500))
-                        flag(entity, "Speed (B)");
+                        if (effect.getAmplifier() == 0) {
+                            base *= 0.8 + 0.2 * (effect.getAmplifier() + 1);
+
+                        } else if (effect.getAmplifier() == 1) {
+                            base *= 0.8 + 0.2 * (effect.getAmplifier() + 0.6);
+                        }
+
+                    }
+
+                    if(entity.hurtTime != 0) {
+                        if(entity.moveForward > 0) {
+                            base = 0.6;
+                        } else {
+                            base = 1.5;
+                        }
+                    }
+
+                    if(speed > base && blockAbove instanceof BlockAir && entity.moveForward > 0) {
+                        flag(entity, "Speed");
+                    }
+
+                    // No Slow
+                    if(entity.isUsingItem() && speed > 0.1 && useTime.reached(500))
+                        flag(entity, "No Slow");
 
                     // Sprint
                     if((entity.isSprinting() && ((entity.isCollidedHorizontally && collideTime.reached(500)) || (entity.isSneaking() && collideTime.reached(500)) || entity.getFoodStats().getFoodLevel() <= 6))
@@ -106,7 +132,7 @@ public class HackerDetector extends Module {
         gray = EnumChatFormatting.GRAY,
         red = EnumChatFormatting.RED;
 
-        if (cooldown.sleep(mode.getMode().equals("Server Side") ? 5000 : 1000)) {
+        if (cooldown.sleep(mode.getMode().equals("Server Side") ? 3000 : 1000)) {
             switch(mode.getMode()) {
                 case "Notifications":
                     NotificationManager.addToQueue(new Notification("Hacker Alert", player.getName() + " failed " + check + "!", NotificationType.WARNING, 3));

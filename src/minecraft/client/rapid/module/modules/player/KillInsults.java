@@ -15,6 +15,25 @@ import net.minecraft.network.play.server.S02PacketChat;
 @ModuleInfo(getName = "Insults", getCategory = Category.PLAYER)
 public class KillInsults extends Module {
 	private String unformattedText;
+	private final String[] insults = new String[255];
+
+	public KillInsults() {
+		Scanner scanner = null;
+
+		try {
+			scanner = new Scanner(new File(mc.mcDataDir + File.separator + "Rapid" + File.separator + "insults.txt"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		int i = 0;
+		if(scanner != null) {
+			while(scanner.hasNextLine()) {
+				insults[i] = scanner.nextLine();
+				i++;
+			}
+		}
+	}
 
 	@Override
 	public void onEnable() {
@@ -32,6 +51,8 @@ public class KillInsults extends Module {
 			String name = mc.thePlayer.getName();
 
 			String[] look = {
+					"wurde von " + name,
+					name + " killed ",
 					"killed by " + name,
 					"slain by " + name,
 					"You received a reward for killing ",
@@ -42,25 +63,9 @@ public class KillInsults extends Module {
 				return;
 			}
 
-			String[] str = new String[255];
 			for(String s : look) {
 				if (unformattedText.contains(s)) {
-					Scanner scanner = null;
-
-					try {
-						scanner = new Scanner(new File(mc.mcDataDir + File.separator + "Rapid" + File.separator + "insults.txt"));
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-
-					int i = 0;
-					if(scanner != null) {
-						while(scanner.hasNextLine()) {
-							str[i] = scanner.nextLine().replace("{name}", (((EventAttackedPlayer) e).getEntity().getName()));
-							i++;
-						}
-						mc.thePlayer.sendChatMessage(str[(int) MathUtil.randomNumber(i, 0)]);
-					}
+					mc.thePlayer.sendChatMessage(insults[(int) MathUtil.randomNumber(insults.length - 1, 0)].replace("{name}", (((EventAttackedPlayer) e).getEntity().getName())));
 				}
 			}
 		}

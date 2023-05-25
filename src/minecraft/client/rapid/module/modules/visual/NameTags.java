@@ -1,11 +1,14 @@
 package client.rapid.module.modules.visual;
 
+import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventRenderWorld;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.font.Fonts;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,8 +27,10 @@ public class NameTags extends Module {
     public NameTags() {
         add(scale);
     }
+
+    @Override
     public void onEvent(Event e) {
-        if(e instanceof EventRenderWorld && e.isPre()) {
+        if(e instanceof EventRenderWorld) {
             EventRenderWorld event = (EventRenderWorld) e;
             mc.theWorld.loadedEntityList.forEach(p -> {
                 if(p instanceof EntityPlayer && p != mc.thePlayer) {
@@ -37,7 +42,7 @@ public class NameTags extends Module {
 
                     try {
                         renderLivingLabel(p, p.getDisplayName().getFormattedText(), tickX - render.renderPosX, tickY - render.renderPosY, tickZ - render.renderPosZ, render, render.getFontRenderer());
-                    } catch(NullPointerException ex) {
+                    } catch(Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -45,7 +50,9 @@ public class NameTags extends Module {
         }
     }
 
-    protected void renderLivingLabel(Entity entityIn, String str, double x, double y, double z, RenderManager renderManager, FontRenderer fontRenderer) {
+    public void renderLivingLabel(Entity entityIn, String str, double x, double y, double z, RenderManager renderManager, FontRenderer fontRenderer) {
+        Minecraft mc = Minecraft.getMinecraft();
+
         double distance = mc.thePlayer.getDistanceToEntity(entityIn);
 
         str += EnumChatFormatting.GRAY + " (" + Math.round(distance) + "m)";
@@ -83,12 +90,16 @@ public class NameTags extends Module {
         tessellator.draw();
         GlStateManager.enableTexture2D();
         fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
-        GlStateManager.enableDepth();
-        GlStateManager.depthMask(true);
+
+        //GlStateManager.enableDepth();
+        //GlStateManager.depthMask(true);
+
         fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
-        GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableDepth();
+        GlStateManager.depthMask(true);
         GlStateManager.popMatrix();
     }
+
 }

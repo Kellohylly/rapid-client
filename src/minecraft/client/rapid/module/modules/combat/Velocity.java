@@ -69,8 +69,9 @@ public class Velocity extends Module {
 				if(event.getPacket() instanceof C0FPacketConfirmTransaction) {
 					C0FPacketConfirmTransaction transaction = event.getPacket();
 
-					if (transaction.getUid() >= -31767 && transaction.getUid() <= -30769)
+					if (transaction.getUid() >= -31767 && transaction.getUid() <= -30769) {
 						event.cancel();
+					}
 				}
 				break;
 			case "Ground Only":
@@ -110,4 +111,5 @@ public class Velocity extends Module {
 				event.cancel();
 		}
 	}
+
 }

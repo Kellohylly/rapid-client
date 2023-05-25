@@ -97,6 +97,13 @@ public class FileManager {
                 Logger.error("Cant generate spammer.txt");
             }
         }
+
+        file = new java.io.File(dir, java.io.File.separator + "Configs");
+
+        if(!file.exists()) {
+            file.mkdir();
+        }
+
     }
 
 }

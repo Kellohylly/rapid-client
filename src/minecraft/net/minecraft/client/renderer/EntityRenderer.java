@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
+import client.rapid.event.events.game.EventRender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Mouse;
@@ -1516,8 +1517,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
         {
             this.renderCloudsCheck(renderglobal, partialTicks, pass);
         }
-        
-        EventRenderWorld eventRenderWorld = new EventRenderWorld(partialTicks);
 
         this.mc.mcProfiler.endStartSection("prepareterrain");
         this.setupFog(0, partialTicks);
@@ -1554,9 +1553,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
         Lagometer.timerTerrain.end();
         GlStateManager.shadeModel(7424);
         GlStateManager.alphaFunc(516, 0.1F);
-        
-        eventRenderWorld.setType(EventType.PRE);
-        Event.dispatch(eventRenderWorld);
 
         if (!this.debugView)
         {
@@ -1681,6 +1677,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("forge_render_last");
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
+
+        EventRenderWorld eventRenderWorld = new EventRenderWorld(partialTicks);
+        eventRenderWorld.setType(EventType.PRE);
+        Event.dispatch(eventRenderWorld);
 
         this.mc.mcProfiler.endStartSection("hand");
 

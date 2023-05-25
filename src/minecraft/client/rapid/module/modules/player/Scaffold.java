@@ -83,7 +83,7 @@ public class Scaffold extends Module {
 	public void onEnable() {
 		rotated = false;
 		yaw = mc.thePlayer.rotationYaw - 180;
-		pitch = 88;
+		pitch = 84;
 
 		oldSlot = mc.thePlayer.inventory.currentItem;
 	}
@@ -136,7 +136,7 @@ public class Scaffold extends Module {
 						break;
 					case "Keep":
 						event.setYaw(yaw);
-						event.setPitch(rots[1]);
+						event.setPitch(pitch);
 						break;
 					case "Simple":
 						event.setYaw(mc.thePlayer.rotationYaw - 180);
@@ -227,8 +227,9 @@ public class Scaffold extends Module {
 									mc.thePlayer.jump();
 								}
 
-								if(rotated)
+								if(rotated) {
 									mc.thePlayer.motionY = 0;
+								}
 								break;
 							case "NCP":
 							case "Slow":

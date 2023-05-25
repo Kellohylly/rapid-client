@@ -13,8 +13,8 @@ import net.minecraft.util.EnumChatFormatting;
 @ModuleInfo(getName = "High Jump", getCategory = Category.MOVEMENT)
 public class HighJump extends Module {
     private final Setting mode = new Setting("Mode", this, "Boat", "Water");
-    private final Setting height = new Setting("Height", this, 1, 0.5, 10, false);
-    private final Setting speed = new Setting("Speed", this, 1, 0.5, 10, false);
+    private final Setting height = new Setting("Height", this, 1, 0.42, 10, false);
+    private final Setting speed = new Setting("Speed", this, 1, 0.2, 10, false);
 
     public HighJump() {
         add(mode, height, speed);

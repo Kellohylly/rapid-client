@@ -15,7 +15,6 @@ public class VulcanHopSpeed extends SpeedBase {
         if(e instanceof EventUpdate && e.isPre()) {
             if (MoveUtil.isMovingOnGround()) {
                 mc.thePlayer.jump();
-                mc.timer.timerSpeed = 1.15f;
 
                 if (mc.thePlayer.moveForward != 0 && mc.thePlayer.moveStrafing == 0) {
                     moveSpeed = 0.522;
@@ -35,7 +34,6 @@ public class VulcanHopSpeed extends SpeedBase {
 
                 MoveUtil.setMoveSpeed(moveSpeed);
             } else {
-                mc.timer.timerSpeed = 1f;
 
                 if (MoveUtil.getMoveSpeed() > 0.332) {
                     MoveUtil.setMoveSpeed(0.331);

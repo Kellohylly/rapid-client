@@ -9,14 +9,14 @@ import client.rapid.module.modules.movement.flights.FlightBase;
 import client.rapid.module.modules.movement.flights.FlightMode;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
-import client.rapid.util.TimerUtil;
 
 @ModuleInfo(getName = "Flight", getCategory = Category.MOVEMENT)
 public class Flight extends Module {
-	private final Setting mode = new Setting("Mode", this, "Vanilla", "Old NCP", "Verus");
+	private final Setting mode = new Setting("Mode", this, "Vanilla", "Old NCP", "Verus", "Loyisa");
 
 	private final Setting vanillaMode = new Setting("Vanilla", this, "Motion", "Creative");
 	private final Setting verusMode = new Setting("Verus", this, "Collide", "Verus Fast");
+	private final Setting loyisaMode = new Setting("Loyisa", this, "Venom", "Incognito");
 
 	private final Setting damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait", "Vulcant");
 	private final Setting speed = new Setting("Speed", this, 2, 0.2, 10, false);
@@ -29,10 +29,9 @@ public class Flight extends Module {
 	public static boolean damaged;
 	private int ticks;
 
-	private final TimerUtil timer = new TimerUtil();
-
 	public Flight() {
-		add(mode, vanillaMode, verusMode, damage, speed, fast, jump, bobbing);
+		add(mode, vanillaMode, verusMode, loyisaMode, damage, speed, fast, jump, bobbing);
+		this.setMode();
 	}
 
 	@Override
@@ -43,6 +42,7 @@ public class Flight extends Module {
 		jump.setVisible((mode.getMode().equals("Verus") && verusMode.getMode().equals("Collide")));
 		verusMode.setVisible(mode.getMode().equals("Verus"));
 		vanillaMode.setVisible(mode.getMode().equals("Vanilla"));
+		loyisaMode.setVisible(mode.getMode().equals("Loyisa"));
 	}
 
 	@Override
@@ -98,12 +98,14 @@ public class Flight extends Module {
 						break;
 					case "Vulcant":
 						if (mc.thePlayer.onGround) {
-							if(ticks == 1)
+							if(ticks == 1) {
 								mc.thePlayer.jump();
+							}
 						}
 
-						if(ticks == 8)
+						if(ticks == 8) {
 							mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + 10, mc.thePlayer.posZ);
+						}
 
 						ticks++;
 						break;
@@ -132,6 +134,11 @@ public class Flight extends Module {
 						break;
 					case "Verus":
 						if (verusMode.getMode().equals(fm.getName())) {
+							currentMode = fm.getBase();
+						}
+						break;
+					case "Loyisa":
+						if(loyisaMode.getMode().equals(fm.getName())) {
 							currentMode = fm.getBase();
 						}
 						break;

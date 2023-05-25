@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import client.rapid.Wrapper;
+import client.rapid.module.modules.visual.NameTags;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -257,8 +258,9 @@ public abstract class Render<T extends Entity> {
    }
 
    protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance) {
-      if(Wrapper.getModuleManager().getModule("Name Tags").isEnabled())
+      if(Wrapper.getModuleManager().getModule("Name Tags").isEnabled()) {
          return;
+      }
 
       double d0 = entityIn.getDistanceSqToEntity(this.renderManager.livingPlayer);
       if(d0 <= (double)(maxDistance * maxDistance)) {
