@@ -9,7 +9,6 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
 import client.rapid.util.block.BlockUtil;
-import javafx.scene.chart.Axis;
 import net.minecraft.block.BlockAir;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;

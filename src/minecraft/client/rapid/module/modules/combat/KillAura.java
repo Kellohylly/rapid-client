@@ -39,10 +39,13 @@ public class KillAura extends Module {
     private final Setting sortMode = new Setting("Sort", this, "Distance", "Health");
     private final Setting click = new Setting("Click", this, "Normal", "Legit", "Sync");
 
-    private final Setting rotate = new Setting("Rotate", this, "None", "Instant", "Fixed");
+    private final Setting rotate = new Setting("Rotate", this, "None", "Normal");
     private final Setting viewLock = new Setting("View Lock", this, false);
     private final Setting rayCast = new Setting("Ray Cast", this, true);
     private final Setting useGcd = new Setting("Use GCD", this, false);
+    private final Setting heuristics = new Setting("Heuristics", this, false);
+    private final Setting prediction = new Setting("Prediction", this, false);
+    private final Setting resolver = new Setting("Resolver", this, false);
     private final Setting shakeX = new Setting("Random X", this, 0, 0, 5, false);
     private final Setting shakeY = new Setting("Random Y", this, 0, 0, 5, false);
     private final Setting minTurn = new Setting("Min Turn Speed", this, 120, 0, 180, true);
@@ -68,7 +71,7 @@ public class KillAura extends Module {
     private int index;
 
     public KillAura() {
-        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
+        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, heuristics, prediction, resolver, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
     }
 
     @Override
@@ -113,7 +116,7 @@ public class KillAura extends Module {
             EventRotation event = (EventRotation) e;
             if (target != null) {
                 if(!rotate.getMode().equals("None")) {
-                    doRotations(event, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
+                    doRotations(event, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue(), heuristics.isEnabled(), prediction.isEnabled(), resolver.isCheck()));
                 }
             }
         }
@@ -201,7 +204,7 @@ public class KillAura extends Module {
 
     private boolean isInFieldOfView(EntityLivingBase entity, double angle) {
         angle *= .5D;
-        double angleDiff = getAngleDifference(mc.thePlayer.rotationYaw, RotationUtil.getRotations(entity, 0, 0)[0]);
+        double angleDiff = getAngleDifference(mc.thePlayer.rotationYaw, RotationUtil.getRotations(entity, 0, 0, false, false, false)[0]);
         return (angleDiff > 0 && angleDiff < angle) || (-angle < angleDiff && angleDiff < 0);
     }
 
@@ -291,12 +294,8 @@ public class KillAura extends Module {
                         mc.thePlayer.swingItem();
                         mc.playerController.attackEntity(mc.thePlayer, target);
                     } else {
-                        mc.thePlayer.swingItem();
-
-                        if(mc.objectMouseOver != null && mc.objectMouseOver.entityHit != null)
-                            mc.playerController.attackEntity(mc.thePlayer, mc.objectMouseOver.entityHit);
+                    	mc.clickMouse();
                     }
-                        //mc.clickMouse();
                 }
                 break;
         }
