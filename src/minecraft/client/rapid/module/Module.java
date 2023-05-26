@@ -6,6 +6,7 @@ import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.animation.Animation;
 import client.rapid.util.module.MoveUtil;
 import net.minecraft.client.Minecraft;
 
@@ -18,7 +19,9 @@ public class Module {
 	protected String tag;
 	protected int key;
 	protected boolean enabled;
-	
+
+	private final Animation animY = new Animation(0, 0.6f);
+
 	protected final Minecraft mc;
 	
 	public Module() {
@@ -75,6 +78,10 @@ public class Module {
 		
 		if(Client.getInstance() != null && mc.thePlayer != null)
 			Wrapper.getConfigManager().getModKeyConfig().save();
+	}
+
+	public Animation getAnimY() {
+		return animY;
 	}
 
 	public boolean isEnabled() {

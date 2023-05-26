@@ -48,8 +48,9 @@ public class NoFall extends Module {
 						mc.thePlayer.motionY = -0.0975;
 
 				if(mc.thePlayer.ticksExisted % 11 == 0) {
-					if(mc.thePlayer.ticksExisted % 5.5 == 0)
+					if(mc.thePlayer.ticksExisted % 5.5 == 0) {
 						mc.thePlayer.onGround = true;
+					}
 				}
 
 			}

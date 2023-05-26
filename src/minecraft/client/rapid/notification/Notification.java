@@ -17,13 +17,14 @@ public class Notification {
     private final NotificationType type;
     private final String title, message;
     private final MCFontRenderer font = Fonts.normal;
+    private Animation animationY = new Animation(0, 0.6f);
 
     public final TimerUtil timer = new TimerUtil();
 
     private long start;
     private int seconds;
 
-    private final Animation animation = new Animation(1, 0.25f);
+    private final Animation animation = new Animation(1, 0.6f);
 
     public Notification(String title, String message, NotificationType type, int seconds) {
         this.type = type;
@@ -57,7 +58,7 @@ public class Notification {
 
         Gui.drawRect(x - animation.getValue(), y - 30, x, y - 4, 0x90000000);
 
-        double number = ((float)(seconds / 100 - 1 - timer.time() / 100) / 10) - 0.6;
+        double number = ((float)(seconds / 100 - 1 - timer.time() / 100) / 10);
         String counter = number <= 0 ? "0.0" : String.format("%.1f", number);
 
         if(mcFont) {
@@ -68,7 +69,7 @@ public class Notification {
             font.drawString(message, (int) (x - animation.getValue() + 33), y - 15, -1);
         }
 
-        if(timer.reached(seconds - 1000 + 450)) {
+        if(timer.reached(seconds)) {
             animation.interpolate(0);
         } else {
             animation.interpolate(getTime() > 0 ? width : 0);
@@ -95,4 +96,13 @@ public class Notification {
         GlStateManager.popMatrix();
 
     }
+
+    public Animation getAnimationY() {
+        return animationY;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
 }

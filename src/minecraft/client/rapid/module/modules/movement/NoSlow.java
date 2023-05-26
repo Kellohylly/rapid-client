@@ -9,6 +9,8 @@ import client.rapid.module.modules.combat.KillAura;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
@@ -49,7 +51,12 @@ public class NoSlow extends Module {
 						event.cancel();
 						break;
 					case "Packet":
-						if(KillAura.target == null) {
+						event.cancel();
+
+						if(mc.thePlayer.getHeldItem() != null && KillAura.target == null && mc.thePlayer.isUsingItem()) {
+							if(mc.thePlayer.getHeldItem().getItem() instanceof ItemFood || mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion) {
+								return;
+							}
 							if (e.isPost())
 								PacketUtil.sendPacketSilent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
 
@@ -58,7 +65,6 @@ public class NoSlow extends Module {
 								mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem());
 							}
 						}
-						event.cancel();
 						break;
 					case "NCP":
 						if(mc.thePlayer.getHeldItem() != null && KillAura.target == null) {
@@ -75,8 +81,9 @@ public class NoSlow extends Module {
 								}
 							}
 						}
-						if(KillAura.target != null)
+						if(KillAura.target != null) {
 							event.cancel();
+						}
 						break;
 				}
 			}

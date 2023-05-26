@@ -12,6 +12,10 @@
 + Added Omni Sprint to Disabler.
 + Added Health to Auto Pot.
 + Added Has Armor to Anti Bot.
++ Added Incognito to Flight.
++ Added Venom to Flight.
++ Added Greycliff font to Hud Settings.
++ Added cooler spin in Animations.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -20,15 +24,21 @@
 / Changed ClickGui Category Icons.
 / Fixed a few Main Menu and Alt Manager visuals.
 / Separated Auto Pot from Auto Heal again lol.
-/ Fixed Inventory Manager dropping all at once.
+/ Fixed Inventory Manager dropping all at once (it broke again).
 / Unpatched and improved Vulcan Long Jump.
 / Made settings hide if not used.
 / Fixed Top Box not showing in Enabled Modules.
 / Fixed Outline Top being wrong color.
 / Improved Auto Pot for Instant Health potions.
 / Animations to Target Hud.
+/ Improved Block Counter Module.
+/ Recoded Enabled Modules.
+/ Renamed Spin animations to Astolfo.
+/ Renamed Geuxy animations to Flat.
 
 - Removed Position from Flight.
 
  Added Fences Module.
  Added No Jump Delay Module.
+
+ This update was to mostly clean my code a bit.

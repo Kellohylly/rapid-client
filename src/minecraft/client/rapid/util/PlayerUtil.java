@@ -36,7 +36,7 @@ public class PlayerUtil extends MinecraftUtil {
     }
 
 	public static void addChatMessage(String message) {
-		message = GRAY + "[" + RED + BOLD + "R" + RESET + GRAY + "] " + RESET + message;
+		message = RED + "Rapid " + GRAY + "» " + RESET + message;
 		mc.thePlayer.addChatMessage(new ChatComponentText(message));
 	}
 

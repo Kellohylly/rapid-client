@@ -36,10 +36,14 @@ public class NotificationManager {
 
         int i = 0;
         for(Notification notification : nots) {
-            if(notification != null)
-                notification.render(x, y - i);
+            if(notification != null) {
+                notification.render(x, (y + 26) - (int)notification.getAnimationY().getValue());
 
-            i += 26;
+                if(!notification.timer.reached(notification.getSeconds() + 150)) {
+                    i += 26;
+                    notification.getAnimationY().interpolate(i);
+                }
+            }
         }
     }
 

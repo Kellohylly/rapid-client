@@ -8,23 +8,37 @@ import client.rapid.notification.NotificationType;
 import client.rapid.util.module.MoveUtil;
 
 public class IncognitoFlight extends FlightBase {
+    private int hurts;
 
     @Override
     public void onEnable() {
         NotificationManager.add("Flight", "Use Verus No Fall on 3.0 distance", NotificationType.INFO, 3);
+        hurts = 0;
+    }
+
+    @Override
+    public void onDisable() {
+        hurts = 0;
+        MoveUtil.setMoveSpeed(0.2);
     }
 
     @Override
     public void onEvent(Event e) {
         if(e instanceof EventUpdate && e.isPre()) {
-            if(mc.thePlayer.hurtTime == 8) {
-                MoveUtil.setMoveSpeed(0);
-
+            if(mc.thePlayer.hurtTime == 1) {
+                mc.thePlayer.motionY -= 1f;
+                hurts++;
             }
             if(mc.thePlayer.hurtTime > 1) {
-                mc.thePlayer.motionY = 0.5;
-                MoveUtil.setMoveSpeed(3.1);
+                mc.thePlayer.motionY = 0.65;
+
+                if(hurts == 0) {
+                    MoveUtil.setMoveSpeed(0.1);
+                }
             }
+        }
+        if(hurts > 0) {
+            MoveUtil.setMoveSpeed(3.1);
         }
         MoveUtil.strafe();
     }

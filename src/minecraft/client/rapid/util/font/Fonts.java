@@ -11,6 +11,7 @@ public class Fonts {
 	normal = getFont("font.ttf", 21),
 	normal2 = getFont("font.ttf", 19),
 	inter = getFont("inter.ttf", 19),
+	greycliff = getFont("greycliff.ttf", 19),
 	sfui = getFont("sfui.ttf", 19),
 	clickgui = getFont("font.ttf", 17),
 	newIcons = getFont("category.ttf", 22),
