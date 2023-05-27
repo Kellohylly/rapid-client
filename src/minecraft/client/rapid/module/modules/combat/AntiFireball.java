@@ -49,7 +49,7 @@ public class AntiFireball extends Module {
         if(e instanceof EventRotation && fireball != null && rotate.isEnabled()) {
             EventRotation event = (EventRotation) e;
 
-            float[] rots = RotationUtil.getRotations(fireball, 0, 0);
+            float[] rots = RotationUtil.getRotations(fireball, 0, 0, false, false, false, false);
 
             event.setYaw(rots[0]);
             event.setPitch(rots[1]);
