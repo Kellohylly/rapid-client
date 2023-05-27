@@ -13,9 +13,9 @@
 + Added Health to Auto Pot.
 + Added Has Armor to Anti Bot.
 + Added Incognito to Flight.
-+ Added Venom to Flight.
 + Added Greycliff font to Hud Settings.
 + Added cooler spin in Animations.
++ Added Matrix to Jesus.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -24,7 +24,7 @@
 / Changed ClickGui Category Icons.
 / Fixed a few Main Menu and Alt Manager visuals.
 / Separated Auto Pot from Auto Heal again lol.
-/ Fixed Inventory Manager dropping all at once (it broke again).
+/ Mostly fixed Inventory Manager (only sword slot not work).
 / Unpatched and improved Vulcan Long Jump.
 / Made settings hide if not used.
 / Fixed Top Box not showing in Enabled Modules.
@@ -35,6 +35,7 @@
 / Recoded Enabled Modules.
 / Renamed Spin animations to Astolfo.
 / Renamed Geuxy animations to Flat.
+/ Improved Kill Aura.
 
 - Removed Position from Flight.
 

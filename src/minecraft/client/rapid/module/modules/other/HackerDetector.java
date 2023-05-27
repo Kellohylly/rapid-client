@@ -28,13 +28,13 @@ public class HackerDetector extends Module {
     private final Setting mode = new Setting("Mode", this, "Notifications", "Client Side", "Server Side");
     private final Setting flagPlayer = new Setting("Flag Player", this, false);
 
-    private static final ArrayList<EntityPlayer> hackers = new ArrayList<>();
-
     private final TimerUtil cooldown = new TimerUtil();
     private final TimerUtil airTime = new TimerUtil();
     private final TimerUtil groundTime = new TimerUtil();
     private final TimerUtil collideTime = new TimerUtil();
     private final TimerUtil useTime = new TimerUtil();
+
+    private static final ArrayList<EntityPlayer> hackers = new ArrayList<>();
 
     public HackerDetector() {
         add(mode, flagPlayer);
@@ -75,54 +75,27 @@ public class HackerDetector extends Module {
                     if (entity.fallDistance > 0 || entity.onGround)
                         airTime.reset();
 
-                    if(!entity.onGround)
+                    if (!entity.onGround)
                         groundTime.reset();
 
-                    if(!entity.isCollidedHorizontally || !entity.isSneaking())
+                    if (!entity.isCollidedHorizontally || !entity.isSneaking())
                         collideTime.reset();
 
-                    if(!mc.thePlayer.isUsingItem())
+                    if (!entity.isUsingItem())
                         useTime.reset();
 
                     // Flight (weird but works sometimes)
                     if (blockUnder instanceof BlockAir && entity.fallDistance == 0 && airTime.reached(500))
                         flag(entity, "Flight");
 
-                    // Speed
-                    double base = entity.onGround ? 0.292 : 0.36;
-                    if(entity.isPotionActive(Potion.moveSpeed)) {
-                        PotionEffect effect = entity.getActivePotionEffect(Potion.moveSpeed);
-
-                        if (effect.getAmplifier() == 0) {
-                            base *= 0.8 + 0.2 * (effect.getAmplifier() + 1);
-
-                        } else if (effect.getAmplifier() == 1) {
-                            base *= 0.8 + 0.2 * (effect.getAmplifier() + 0.6);
-                        }
-
-                    }
-
-                    if(entity.hurtTime != 0) {
-                        if(entity.moveForward > 0) {
-                            base = 0.6;
-                        } else {
-                            base = 1.5;
-                        }
-                    }
-
-                    if(speed > base && blockAbove instanceof BlockAir && entity.moveForward > 0) {
-                        flag(entity, "Speed");
-                    }
-
-                    // No Slow
                     if(entity.isUsingItem() && speed > 0.1 && useTime.reached(500))
                         flag(entity, "No Slow");
 
-                    // Sprint
                     if((entity.isSprinting() && ((entity.isCollidedHorizontally && collideTime.reached(500)) || (entity.isSneaking() && collideTime.reached(500)) || entity.getFoodStats().getFoodLevel() <= 6))
-                    || speed > 0.14 && entity.moveForward < 0 && entity.onGround && groundTime.reached(500))
+                            || speed > 0.14 && entity.moveForward < 0 && entity.onGround && groundTime.reached(500))
                         flag(entity, "Sprint");
                 }
+
             }
         }
     }

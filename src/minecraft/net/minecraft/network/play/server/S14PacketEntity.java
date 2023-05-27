@@ -28,6 +28,22 @@ public class S14PacketEntity implements Packet<INetHandlerPlayClient> {
       this.entityId = buf.readVarIntFromBuffer();
    }
 
+   public int getEntityId() {
+      return entityId;
+   }
+
+   public byte getPosX() {
+      return posX;
+   }
+
+   public byte getPosY() {
+      return posY;
+   }
+
+   public byte getPosZ() {
+      return posZ;
+   }
+
    public void writePacketData(PacketBuffer buf) throws IOException {
       buf.writeVarIntToBuffer(this.entityId);
    }

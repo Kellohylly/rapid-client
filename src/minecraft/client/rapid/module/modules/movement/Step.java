@@ -6,6 +6,9 @@ import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.movement.flights.FlightMode;
+import client.rapid.module.modules.movement.steps.StepBase;
+import client.rapid.module.modules.movement.steps.StepMode;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
@@ -13,101 +16,73 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 
 @ModuleInfo(getName = "Step", getCategory = Category.MOVEMENT)
 public class Step extends Module {
-	private final Setting mode = new Setting("Mode", this, "Vanilla", "Matrix", "Ground", "Packet", "Motion");
+	private final Setting mode = new Setting("Mode", this, "Vanilla", "Old NCP", "Motion");
+
+	private final Setting motionMode = new Setting("Motion", this, "NCP", "Matrix", "Karhu");
+
 	private final Setting height = new Setting("Height", this, 1.5, 1, 2, false);
 	private final Setting delay = new Setting("Delay", this, 0, 0, 600, true);
 
-	private final TimerUtil timer = new TimerUtil();
+	public final TimerUtil timer = new TimerUtil();
 
 	private boolean stepped;
 
+	private StepBase currentMode;
+
 	public Step() {
-		add(mode, height, delay);
+		add(mode, motionMode, height, delay);
 	}
 
 	@Override
 	public void settingCheck() {
 		height.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Packet"));
+		motionMode.setVisible(mode.getMode().equals("Motion"));
+	}
+
+	@Override
+	public void onEnable() {
+		this.setMode();
+		currentMode.onEnable();
 	}
 
 	@Override
 	public void onDisable() {
 		mc.thePlayer.stepHeight = 0.6F;
 		stepped = false;
+		currentMode.onDisable();
 	}
 
 	@Override
 	public void onEvent(Event e) {
 		setTag(mode.getMode());
 
-		if(e instanceof EventStep) {
-			EventStep event = (EventStep)e;
+		this.setMode();
 
-			double rheight = mc.thePlayer.getEntityBoundingBox().minY + 1 - mc.thePlayer.posY;
+		if(timer.reached(delay.getValue())) {
+			currentMode.onEvent(e);
+		}
+	}
 
-			if(timer.reached((int)delay.getValue())) {
-				if (mc.thePlayer.isCollidedHorizontally) {
-					switch(mode.getMode()) {
-						case "Vanilla":
-							event.setHeight((float) height.getValue());
-							break;
-						case "Packet":
-							event.setHeight(1f);
-							break;
-					}
-				} else
-					event.setHeight(0.6f);
-
-				if (rheight >= 0.8) {
-					switch(mode.getMode()) {
-						case "Packet":
-						if (rheight <= 1) {
-							PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.4199, mc.thePlayer.posZ, false));
-							PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.7532, mc.thePlayer.posZ, false));
-							timer.reset();
+	private void setMode() {
+		for(StepMode fm : StepMode.values()) {
+			if(currentMode != fm.getBase()) {
+				switch(mode.getMode()) {
+					case "Vanilla":
+						if (mode.getMode().equals("Vanilla")) {
+							currentMode = fm.getBase();
 						}
 						break;
-					}
-				}
-			}
-		}
-
-		if(e instanceof EventUpdate && e.isPre() && timer.reached((int)delay.getValue())) {
-			switch (mode.getMode()) {
-			case "Matrix":
-			case "Motion":
-				if (mc.thePlayer.isCollidedHorizontally && isMovingOnGround()) {
-					mc.thePlayer.jump();
-					stepped = true;
-				} else {
-					if(mc.thePlayer.isCollidedHorizontally && stepped && isMoving()) {
-
-					}
-					if (!mc.thePlayer.isCollidedHorizontally && stepped && isMoving()) {
-						mc.thePlayer.motionY = 0;
-						stepped = false;
-
-						if (mode.getMode().equals("Motion"))
-							setMoveSpeed(0.2);
-						else
-							setMoveSpeed(0.06);
-						timer.reset();
-
-					}
-				}
-				break;
-				case "Ground":
-					if (mc.thePlayer.isCollidedHorizontally && isMoving() && mc.thePlayer.onGround) {
-						mc.thePlayer.jump();
-						stepped = true;
-					} else {
-						if (mc.thePlayer.isCollidedHorizontally && !mc.thePlayer.onGround && stepped) {
-							mc.thePlayer.onGround = true;
-							stepped = false;
-							timer.reset();
+					case "Old NCP":
+						if (mode.getMode().equals("Old NCP")) {
+							currentMode = fm.getBase();
 						}
-					}
-					break;
+						break;
+					case "Motion":
+						if (motionMode.getMode().equals(fm.getName())) {
+							currentMode = fm.getBase();
+						}
+						break;
+				}
 			}
 		}
 	}

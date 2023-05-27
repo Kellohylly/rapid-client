@@ -1,6 +1,7 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -67,6 +68,14 @@ public class Flight extends Module {
 		this.setMode();
 
 		this.setTag(mode.getMode());
+
+		if(e instanceof EventMove) {
+			EventMove event = (EventMove) e;
+			if(!damage.getMode().equals("None") && !damaged) {
+				event.setX(0);
+				event.setZ(0);
+			}
+		}
 
 		if(e instanceof EventUpdate && e.isPre()) {
 			if(bobbing.isEnabled()) {

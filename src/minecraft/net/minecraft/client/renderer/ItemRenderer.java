@@ -352,7 +352,7 @@ public class ItemRenderer {
                       GlStateManager.rotate(-f6 * 30.0F, 1.0F, f6 / 2.0F, -0.0F);
                       this.func_178103_d();
                       break;
-                   case "Geuxy":
+                   case "Flat":
                       float f7 = MathHelper.sin((float) (MathHelper.sqrt_float(f1) * 3.1));
                       GL11.glTranslated(-0.05D, 0, 0.0D);
                       this.transformFirstPersonItem(f / 2, 0.0f);

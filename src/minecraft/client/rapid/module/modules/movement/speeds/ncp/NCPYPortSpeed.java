@@ -24,11 +24,13 @@ public class NCPYPortSpeed extends SpeedBase {
                         mc.thePlayer.motionY = 0.399;
                     }
                 } else {
-                    if(!nearEnd)
+                    if(!nearEnd) {
                         mc.thePlayer.motionY = -0.5;
+                    }
                 }
             }
             mc.timer.timerSpeed = 1.08f;
+
             MoveUtil.setMoveSpeed((MoveUtil.getMoveSpeed()) + (mc.thePlayer.hurtTime > 0 ? damageBoost.getValue() / 5 : 0));
         }
     }

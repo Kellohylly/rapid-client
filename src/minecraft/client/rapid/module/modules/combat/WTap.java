@@ -18,7 +18,7 @@ public class WTap extends Module {
 			if(mc.pointedEntity != null && mc.pointedEntity instanceof EntityPlayer) {
 				EntityPlayer entity = (EntityPlayer) mc.pointedEntity;
 
-				if (entity.hurtTime == 0 && entity.isEntityAlive() && mc.thePlayer.isSprinting() && clicked) {
+				if (entity.hurtTime == 0 && entity.isEntityAlive() && clicked) {
 					mc.thePlayer.motionX *= 0;
 					mc.thePlayer.motionZ *= 0;
 					mc.thePlayer.moveForward = 0;

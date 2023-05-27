@@ -1,6 +1,7 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventCollide;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -17,7 +18,7 @@ import net.minecraft.util.MathHelper;
 
 @ModuleInfo(getName = "Jesus", getCategory = Category.MOVEMENT)
 public class Jesus extends Module {
-    private final Setting mode = new Setting("Mode", this, "Solid", "Jump", "Vulcan");
+    private final Setting mode = new Setting("Mode", this, "Solid", "Jump", "Vulcan", "Matrix");
 
     private boolean walking;
     private int ticks;
@@ -34,6 +35,10 @@ public class Jesus extends Module {
 
     @Override
     public void onEvent(Event e) {
+        if(e instanceof EventWorldLoad) {
+            walking = false;
+            ticks = 0;
+        }
         if(e instanceof EventUpdate && e.isPre()) {
             setTag(mode.getMode());
             ticks++;
@@ -65,10 +70,20 @@ public class Jesus extends Module {
                     break;
                 }
             }
+            if(mode.getMode().equals("Matrix")) {
+                if(mc.thePlayer.isInWater()) {
+                    if(mc.thePlayer.isCollidedHorizontally) {
+                        mc.thePlayer.motionY = 0.22;
+                    } else {
+                        mc.thePlayer.motionY = 0.13;
+                    }
+                    mc.gameSettings.keyBindJump.pressed = false;
+                }
+            }
         }
         if(e instanceof EventCollide && e.isPre()) {
             EventCollide event = (EventCollide)e;
-            if (mc.theWorld == null || mc.thePlayer.fallDistance > 3 || (mc.thePlayer.isBurning() && PlayerUtil.isOnWater()))
+            if (mc.theWorld == null || mc.thePlayer.fallDistance > 3 || (mc.thePlayer.isBurning() && PlayerUtil.isOnWater()) || mode.getMode().equals("Matrix"))
                 return;
 
             if(!(event.getBlock() instanceof BlockLiquid) || mc.thePlayer.isInWater() || mc.thePlayer.isSneaking())

@@ -125,7 +125,8 @@ public class KillAura extends Module {
 							legitRandom.isEnabled(), heuristics.isEnabled(), prediction.isEnabled(),
 							resolver.isCheck());
 					if (this.legitRandom.isEnabled()) {
-						if (up) {
+
+                        if (up) {
 							rotations[1] += ThreadLocalRandom.current().nextDouble(shakeY.getValue() * 0.5,
 									shakeY.getValue() * 2);
 						} else {
