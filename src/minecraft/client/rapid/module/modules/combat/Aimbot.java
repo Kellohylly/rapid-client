@@ -44,7 +44,7 @@ public class Aimbot extends Module {
     public void onEvent(Event e) {
         if(e instanceof EventRotation) {
             if(target != null) {
-                float[] rots = RotationUtil.getRotations(target, 0, 0, false, false, false);
+                float[] rots = RotationUtil.getRotations(target, 0, 0, false, false, false, false);
 
                 rotations[0] = RotationUtil.updateRotation(mc.thePlayer.rotationYaw, rots[0], (float)turnSpeed.getValue());
                 rotations[1] = RotationUtil.updateRotation(mc.thePlayer.rotationPitch, rots[1], (float)turnSpeed.getValue());

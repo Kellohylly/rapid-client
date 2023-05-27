@@ -38,14 +38,14 @@ public class RotationUtil extends MinecraftUtil {
     }
     
     // Thanks to white_cola for this
-    public static float[] getRotations(final Entity entity, double shakeX, double shakeY, boolean heuristics, boolean prediction, boolean resolver) {
+    public static float[] getRotations(final Entity entity, double shakeX, double shakeY, boolean dontShake, boolean heuristics, boolean prediction, boolean resolver) {
     	Vec3 targetPosition = new Vec3(entity.posX, entity.posY + entity.getEyeHeight() / 2, entity.posZ);
     	if(resolver) {
     		targetPosition = resolveOptimizedHitBox(mc.thePlayer.getPositionEyes(1F), entity.getEntityBoundingBox());
     	}
-        double xSize = targetPosition.xCoord - mc.thePlayer.posX + MathUtil.randomNumber(shakeX / 50, -shakeX / 50),
-        ySize = targetPosition.yCoord - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight()) + MathUtil.randomNumber(shakeY / 50, -shakeY / 50),
-        zSize = targetPosition.zCoord - mc.thePlayer.posZ + MathUtil.randomNumber(shakeX / 50, -shakeX / 50);
+        double xSize = targetPosition.xCoord - mc.thePlayer.posX + (dontShake ? 0 : MathUtil.randomNumber(shakeX / 50, -shakeX / 50)),
+        ySize = targetPosition.yCoord - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight()) + (dontShake ? 0 : MathUtil.randomNumber(shakeY / 50, -shakeY / 50)),
+        zSize = targetPosition.zCoord - mc.thePlayer.posZ + (dontShake ? 0 : MathUtil.randomNumber(shakeX / 50, -shakeX / 50));
 
         if (prediction) {
             final boolean sprinting = entity.isSprinting();
@@ -71,9 +71,9 @@ public class RotationUtil extends MinecraftUtil {
         
         if(heuristics) {
         	try {
-                xSize += SecureRandom.getInstanceStrong().nextDouble() * 0.1;
-                ySize += SecureRandom.getInstanceStrong().nextDouble() * 0.1;
-                zSize += SecureRandom.getInstanceStrong().nextDouble() * 0.1;	
+                xSize += SecureRandom.getInstanceStrong().nextDouble() * 0.2;
+                ySize += SecureRandom.getInstanceStrong().nextDouble() * 0.5;
+                zSize += SecureRandom.getInstanceStrong().nextDouble() * 0.2;	
 			} catch (NoSuchAlgorithmException e) {
 				System.out.println("what");
 				e.printStackTrace();
@@ -84,7 +84,7 @@ public class RotationUtil extends MinecraftUtil {
         
         final float yaw = (float) (Math.atan2(zSize, xSize) * 180 / Math.PI) - 90,
         pitch = (float) (-(Math.atan2(ySize, theta) * 180 / Math.PI));
-
+        
         return new float[] {yaw, pitch};
     }
 

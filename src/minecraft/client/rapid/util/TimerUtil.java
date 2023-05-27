@@ -26,4 +26,8 @@ public final class TimerUtil {
     public boolean reached(final long time) {
         return time() >= time;
     }
+
+	public boolean reached(double time) {
+        return time() >= time;
+	}
 }

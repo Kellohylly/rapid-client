@@ -2,9 +2,9 @@ package client.rapid.module.modules.combat;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.ThreadLocalRandom;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.event.events.player.EventUpdate;
@@ -46,6 +46,7 @@ public class KillAura extends Module {
     private final Setting heuristics = new Setting("Heuristics", this, false);
     private final Setting prediction = new Setting("Prediction", this, false);
     private final Setting resolver = new Setting("Resolver", this, false);
+    private final Setting legitRandom = new Setting("Legit Random", this, false);
     private final Setting shakeX = new Setting("Random X", this, 0, 0, 5, false);
     private final Setting shakeY = new Setting("Random Y", this, 0, 0, 5, false);
     private final Setting minTurn = new Setting("Min Turn Speed", this, 120, 0, 180, true);
@@ -71,7 +72,7 @@ public class KillAura extends Module {
     private int index;
 
     public KillAura() {
-        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, heuristics, prediction, resolver, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
+        add(minimumCps, maximumCps, randomCps, reach, switchDelay, mode, sortMode, click, rotate, viewLock, rayCast, useGcd, heuristics, prediction, resolver, legitRandom, shakeX, shakeY, minTurn, maxTurn, fov,autoBlock, autoblockperc, /*blockRange,*/ invisibles, players, animals, monsters, villagers, teams);
     }
 
     @Override
@@ -98,6 +99,10 @@ public class KillAura extends Module {
         targets.clear();
     }
 
+    private TimerUtil legitShakeTimer = new TimerUtil();
+    private boolean up = false;
+    private double legitShakeDelay = 0;
+    
     @Override
     public void onEvent(Event e) {
         if(e instanceof EventUpdate && e.isPost()) {
@@ -108,18 +113,36 @@ public class KillAura extends Module {
                 index++;
 
             if (index >= targets.size())
-                index = 0;
+				index = 0;
 
-            target = !targets.isEmpty() ? targets.get(index) : null;
-        }
-        if(e instanceof EventRotation) {
-            EventRotation event = (EventRotation) e;
-            if (target != null) {
-                if(!rotate.getMode().equals("None")) {
-                    doRotations(event, RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue(), heuristics.isEnabled(), prediction.isEnabled(), resolver.isCheck()));
-                }
-            }
-        }
+			target = !targets.isEmpty() ? targets.get(index) : null;
+		}
+		if (e instanceof EventRotation) {
+			EventRotation event = (EventRotation) e;
+			if (target != null) {
+				if (!rotate.getMode().equals("None")) {
+					float[] rotations = RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue(),
+							legitRandom.isEnabled(), heuristics.isEnabled(), prediction.isEnabled(),
+							resolver.isCheck());
+					if (this.legitRandom.isEnabled()) {
+						if (up) {
+							rotations[1] += ThreadLocalRandom.current().nextDouble(shakeY.getValue() * 0.5,
+									shakeY.getValue() * 2);
+						} else {
+							rotations[1] -= ThreadLocalRandom.current().nextDouble(shakeY.getValue() * 0.5,
+									shakeY.getValue() * 2);
+						}
+
+						if (legitShakeTimer.reached(legitShakeDelay)) {
+							legitShakeTimer.reset();
+							up = !up;
+							legitShakeDelay = ThreadLocalRandom.current().nextDouble(100, 600);
+						}
+					}
+					doRotations(event, rotations);
+				}
+			}
+		}
         if (e instanceof EventMotion) {
             if (e.isPre()) {
                 setTag(mode.getMode());
@@ -204,7 +227,7 @@ public class KillAura extends Module {
 
     private boolean isInFieldOfView(EntityLivingBase entity, double angle) {
         angle *= .5D;
-        double angleDiff = getAngleDifference(mc.thePlayer.rotationYaw, RotationUtil.getRotations(entity, 0, 0, false, false, false)[0]);
+        double angleDiff = getAngleDifference(mc.thePlayer.rotationYaw, RotationUtil.getRotations(entity, 0, 0, false, false, false, false)[0]);
         return (angleDiff > 0 && angleDiff < angle) || (-angle < angleDiff && angleDiff < 0);
     }
 
@@ -247,10 +270,6 @@ public class KillAura extends Module {
     }
     
     private void doRotations(EventRotation event, float[] rots) {
-    	if(this.useGcd.isEnabled()) {
-    		rots = this.applyMouseFix(rots[0], rots[1]);
-    	}
-
         float f = (float)(mc.thePlayer.posX - target.posX);
         float f2 = (float)(mc.thePlayer.posZ - target.posZ);
         double distance = MathHelper.sqrt_float(f * f + f2 * f2);
@@ -266,13 +285,17 @@ public class KillAura extends Module {
 
         rots = this.smoothenRotations(rots);
         
+    	if(this.useGcd.isEnabled()) {
+    		rots = this.applyMouseFix(rots[0], rots[1]);
+    	}
+        
+        event.setYaw(rots[0]);
+        event.setPitch(rots[1]);
+    	
         if (viewLock.isEnabled()) {
             mc.thePlayer.rotationYaw = rots[0];
             mc.thePlayer.rotationPitch = rots[1];
         } else {
-            event.setYaw(rots[0]);
-            event.setPitch(rots[1]);
-
             mc.thePlayer.rotationYawHead = event.getYaw();
             mc.thePlayer.renderYawOffset = event.getYaw();
             mc.thePlayer.rotationPitchHead = event.getPitch();
