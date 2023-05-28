@@ -1,18 +1,21 @@
 package client.rapid.gui.dropgui.component.components;
 
 import java.awt.Color;
-import java.math.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.gui.dropgui.component.DropComponent;
+import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.gui.Gui;
 
 public class DropSlider extends DropComponent {
-	private final Setting set;
 	private int offset;
-	private int x, y;
-	private boolean hovered, dragging = false;
+	private int x;
+	private int y;
+	private boolean hovered;
+	private boolean dragging = false;
 
 	private double renderWidth;
 
@@ -25,11 +28,11 @@ public class DropSlider extends DropComponent {
 	}
 
 	public void renderComponent() {
-		Gui.drawRect(parent.parent.getX() - 1, parent.parent.getY() + offset, parent.parent.getX() + parent.parent.getWidth() + 1, parent.parent.getY() + offset + 12, this.hovered ? new Color(0xFF0F0F13).darker().getRGB() : 0xFF0F0F13);
+		Gui.drawRect(parent.parent.getX() - 1, parent.parent.getY() + offset, parent.parent.getX() + parent.parent.getWidth() + 1, parent.parent.getY() + offset + 12, this.hovered ? new Color(PanelGui.backgroundDark).darker().getRGB() : PanelGui.backgroundDark);
 		Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + (int) renderWidth + 2, parent.parent.getY() + offset + 12,hovered ? new Color(DropdownGui.hud.getColor(offset / 2)).darker().darker().getRGB() : new Color(DropdownGui.hud.getColor(offset / 2)).darker().getRGB());
 		Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + 12,hovered ? new Color(DropdownGui.hud.getColor(offset / 2)).darker().getRGB() : DropdownGui.hud.getColor(offset / 2));
 		parent.parent.font.drawString(this.set.getName(), (parent.parent.getX() + 4), (parent.parent.getY() + offset + 2) + 1.5f, -1);
-		parent.parent.font.drawString("" + this.set.getValue(), (parent.parent.getX() + 100) - parent.parent.font.getStringWidth("" + set.getValue()) + 3, (parent.parent.getY() + offset + 2) + 1.5f, -1);
+		parent.parent.font.drawString(String.valueOf(this.set.getValue()), (parent.parent.getX() + 100) - parent.parent.font.getStringWidth(String.valueOf(set.getValue())) + 3, (parent.parent.getY() + offset + 2) + 1.5f, -1);
 	}
 	
 	public void updateComponent(int mouseX, int mouseY) {
@@ -45,10 +48,10 @@ public class DropSlider extends DropComponent {
 		renderWidth = (103) * (set.getValue() - min) / (max - min);
 		
 		if (dragging) {
-			if (diff == 0)
+			if (diff == 0) {
 				set.setValue(set.getMin());
 
-			else {
+			} else {
 				double newValue = roundToPlace(((diff / 103) * (max - min) + min));
 				set.setValue(newValue);
 			}
@@ -63,11 +66,13 @@ public class DropSlider extends DropComponent {
 	
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int button) {
-		if(isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.open)
+		if(isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.open) {
 			dragging = true;
+		}
 
-		if(isMouseOnButtonI(mouseX, mouseY) && button == 0 && this.parent.open)
+		if(isMouseOnButtonI(mouseX, mouseY) && button == 0 && this.parent.open) {
 			dragging = true;
+		}
 	}
 	
 	@Override

@@ -1,10 +1,12 @@
-package client.rapid.gui.dropgui.component.components;
+package client.rapid.gui.dropgui;
 
 import java.util.ArrayList;
 
 import client.rapid.Wrapper;
 import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.gui.dropgui.component.DropComponent;
+import client.rapid.gui.dropgui.component.components.DropButton;
+import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.Module;
 import client.rapid.module.modules.Category;
 import client.rapid.util.animation.Animation;
@@ -19,9 +21,9 @@ public class DropFrame {
 	public ArrayList<DropComponent> components;
 	public Category category;
 	private boolean open, dragging;
-	private final int width;
+	public int width;
 	public int x, y, dragX, dragY;
-	private final int barHeight;
+	public final int barHeight;
 	
 	public DropFrame(Category cat) {
 		this.components = new ArrayList<>();
@@ -46,15 +48,11 @@ public class DropFrame {
 		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled())
 			Gui.drawRect(this.x - 1.5, this.y - 0.5, this.x + this.width + 1.5, this.y + this.barHeight + 0.5, DropdownGui.hud.getColor(barHeight));
 
-		Gui.drawRect(this.x - 1, this.y, this.x + this.width + 1, this.y + this.barHeight, DropdownGui.backgroundDark);
+		Gui.drawRect(this.x - 1, this.y, this.x + this.width + 1, this.y + this.barHeight, PanelGui.backgroundDark);
 		font.drawString(this.category.getName(), (this.x + 2) + 5, (this.y + 2.5f) + 2.5f, -1);
 
 		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Category Icons").isEnabled()) {
 			icons.drawString(String.valueOf(category.getIcon()), x + width - 15, y + icons.getStringHeight(String.valueOf(category.getIcon())) / 1.5f - 0.5f, -1);
-			/*if(category == Category.PLAYER || category == Category.HUD)
-				icon1.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4f, -1);
-			else
-				icon2.drawString(String.valueOf(category.getIcon()), x + width - 17, y + 4f, -1);*/
 		}
 
 		if(this.open && !this.components.isEmpty()) {

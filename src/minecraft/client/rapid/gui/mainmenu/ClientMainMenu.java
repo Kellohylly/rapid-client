@@ -92,7 +92,7 @@ public class ClientMainMenu extends GuiScreen {
 		String mojangab = "Copyright Mojang AB. Do not distribute!";
 
 		mc.fontRendererObj.drawStringWithShadow("Changelog - " + Client.getInstance().getVersion() + EnumChatFormatting.RED + (outdated ? " [Outdated]" : ""), 3, 1, -1);
-		font.drawString(mojangab, width - mc.fontRendererObj.getStringWidth(mojangab), height - 12, -1);
+		font.drawString(mojangab, width - mc.fontRendererObj.getStringWidth(mojangab) - 7, height - 14, -1);
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class MMButton extends GuiButton {
-    Animation animation = new Animation(1, 0.8f);
+    Animation animation = new Animation(0, 0.8f);
     MCFontRenderer font = Fonts.normal;
 
     public MMButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {

@@ -32,7 +32,7 @@ public class InventoryManager extends Module {
     private final TimerUtil timer = new TimerUtil();
 
     public InventoryManager() {
-        add(delay, swordSlot, clean, keepAxe, keepPickaxe, keepShovel, inventoryOnly);
+        add(delay, /*swordSlot,*/ clean, keepAxe, keepPickaxe, keepShovel, inventoryOnly);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class InventoryManager extends Module {
                     }
 
                     // Best Sword
-                    if(getBestSword() != -1 && getBestSword() != swordSlot.getValue() - 1) {
+                    /*if(getBestSword() != -1 && getBestSword() != swordSlot.getValue() - 1) {
                         for (int j = 0; j < mc.thePlayer.inventoryContainer.inventorySlots.size(); j++) {
                             Slot slot = mc.thePlayer.inventoryContainer.inventorySlots.get(i);
 
@@ -102,7 +102,7 @@ public class InventoryManager extends Module {
                                 mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot.slotNumber, (int) swordSlot.getValue(), 2, mc.thePlayer);
                             }
                         }
-                    }
+                    }*/
                 }
             }
         }

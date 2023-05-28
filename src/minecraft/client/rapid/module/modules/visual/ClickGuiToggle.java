@@ -13,7 +13,7 @@ import java.awt.*;
 @ModuleInfo(getName = "Click Gui", getCategory = Category.VISUAL)
 public class ClickGuiToggle extends Module {	
 	private final Setting mode = new Setting("Mode", this, "Normal", "Dropdown");
-	private final Setting theme = new Setting("Theme", this, "Rapid", "Nord", "Material", "Tenacity");
+	private final Setting theme = new Setting("Theme", this, "Rapid", "Nord", "Idk", "SkeetBlue");
 	private final Setting outline = new Setting("Outline", this, true);
 	private final Setting categoryIcons = new Setting("Category Icons", this, true);
 	private final Setting background = new Setting("Background", this, true);
@@ -24,7 +24,12 @@ public class ClickGuiToggle extends Module {
 		add(mode, theme, background, outline, categoryIcons);
 		setKey(54);
 	}
-	
+
+	@Override
+	public void settingCheck() {
+		categoryIcons.setVisible(mode.getMode().equals("Dropdown"));
+	}
+
 	public void onEnable() {
 		if(clickGui == null) {
 			clickGui = mode.getMode().equals("Dropdown") ? new DropdownGui() : new PanelGui();
@@ -32,12 +37,14 @@ public class ClickGuiToggle extends Module {
 
 		switch(mode.getMode()) {
 			case "Normal":
-				if(clickGui instanceof DropdownGui)
+				if(!(clickGui instanceof PanelGui)) {
 					clickGui = new PanelGui();
+				}
 				break;
 			case "Dropdown":
-				if(clickGui instanceof PanelGui)
+				if(!(clickGui instanceof DropdownGui)) {
 					clickGui = new DropdownGui();
+				}
 				break;
 		}
 		mc.displayGuiScreen(clickGui);
@@ -48,16 +55,16 @@ public class ClickGuiToggle extends Module {
 				PanelGui.setBackgroundDark(PanelGui.rapidadaptaDark);
 				break;
 			case "Nord":
-				PanelGui.setBackground(PanelGui.nord);
-				PanelGui.setBackgroundDark(PanelGui.nordDark);
+				PanelGui.setBackgroundDark(new Color(PanelGui.nordDark).darker().darker().getRGB());
+				PanelGui.setBackground(new Color(PanelGui.nordDark).darker().getRGB());
 				break;
-			case "Material":
-				PanelGui.setBackgroundDark(0xFF1E272C);
-				PanelGui.setBackground(0xFF263238);
-			break;
-			case "Tenacity":
-				PanelGui.setBackgroundDark(0xFF212226);
-				PanelGui.setBackground(0xFF2b2c31);
+			case "Idk":
+				PanelGui.setBackgroundDark(0xFF0d0e13);
+				PanelGui.setBackground(0xFF181c28);
+				break;
+			case "SkeetBlue":
+				PanelGui.setBackgroundDark(0xFF0c0c11);
+				PanelGui.setBackground(0xFF111119);
 				break;
 		}
 		toggle();
