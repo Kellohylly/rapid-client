@@ -1,6 +1,8 @@
 package client.rapid.module.modules.movement.speeds.ncp;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.player.EventMotion;
+import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.movement.speeds.SpeedBase;
 import client.rapid.util.module.MoveUtil;

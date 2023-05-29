@@ -31,6 +31,7 @@ public class Disabler extends Module {
 	private final Setting transaction = new Setting("Transaction", this, false);
 	private final Setting keepAlive = new Setting("Keep Alive", this, false);
 	private final Setting oldVulcanStrafe = new Setting("Old Vulcan Strafe", this, false);
+	private final Setting vulcanc08 = new Setting("Vulcan C08", this, false);
 	private final Setting omniSprint = new Setting("Omni Sprint", this, false);
 
 	private final List<C0FPacketConfirmTransaction> transactions = new ArrayList<>();
@@ -54,14 +55,17 @@ public class Disabler extends Module {
 	@Override
 	public void onEvent(Event e) {
 		if(e instanceof EventUpdate && e.isPre()) {
-			if(oldVulcanStrafe.isEnabled() && mc.thePlayer.ticksExisted % 4 == 0)
+			if(oldVulcanStrafe.isEnabled() && mc.thePlayer.ticksExisted % 4 == 0 && mc.thePlayer.swingProgress == 0) {
 				PacketUtil.sendPacketSilent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), EnumFacing.DOWN));
-
+			}
 			if(transaction.isEnabled() && transactionDelay.sleep((int)time.getValue() * 10L) && transactions.size() > 0)
 				PacketUtil.sendPacketSilent(transactions.get(transactions.size() - 1));
 
 			if(keepAlive.isEnabled() && keepAliveDelay.sleep((int)time.getValue() * 10L) && keepAlives.size() > 0)
 				PacketUtil.sendPacketSilent(keepAlives.get(keepAlives.size() - 1));
+
+			if(vulcanc08.isEnabled() && mc.thePlayer.ticksExisted % 4 == 0)
+				PacketUtil.sendPacketSilent(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 0, mc.thePlayer.getHeldItem(), 0, 0, 0));
 
 		}
 		if(e instanceof EventPacket && e.isPre()) {

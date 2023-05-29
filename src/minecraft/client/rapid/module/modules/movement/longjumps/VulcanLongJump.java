@@ -29,7 +29,7 @@ public class VulcanLongJump extends LongJumpBase {
                 mc.thePlayer.jump();
 
                 // High jump
-            } else if(mc.thePlayer.fallDistance > 0) {
+            } else if(mc.thePlayer.fallDistance > 0.25) {
                 if(jumps < 3) {
                     mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + (jumps == 0 ? 10 : height.getValue()), mc.thePlayer.posZ);
                     jumps += 1;

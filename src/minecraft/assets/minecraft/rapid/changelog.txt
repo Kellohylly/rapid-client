@@ -12,10 +12,13 @@
 + Omni Sprint Disabler.
 + Health to Auto Pot.
 + Has Armor to Anti Bot.
-+ Incognito to Flight.
++ Incognito Flight.
 + Greycliff font to Hud Settings.
 + cooler spin in Animations.
 + Matrix Jesus.
++ Ignore Bad Items to Chest Stealer.
++ Added Binds Command.
++ Added Vulcan Ground Speed.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -33,8 +36,10 @@
 / Renamed Spin animations to Astolfo.
 / Renamed Geuxy animations to Flat.
 / Improved Kill Aura.
+/ Improved Dropdown Gui.
 
 - Position Flight.
 
  Added Fences.
  Added No Jump Delay.
+ Added Lunar Spoofer that doesnt even work.

@@ -151,7 +151,7 @@ public class Scaffold extends Module {
 					mc.thePlayer.rotationYawHead = event.getYaw();
 					mc.thePlayer.rotationPitchHead = event.getPitch();
 				}
-					if (PlayerUtil.hasBlockEquipped() && timer.sleep((long) delay.getValue()) && mode.getMode().equals("Post")) {
+					if (PlayerUtil.hasBlockEquipped() && timer.reached((long) delay.getValue()) && mode.getMode().equals("Post")) {
 						if (placeOnEnd.isEnabled() && !mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.getEntityBoundingBox().offset(0.0, -0.001D, 0.0)).isEmpty())
 							return;
 
@@ -163,8 +163,10 @@ public class Scaffold extends Module {
 								mc.thePlayer.swingItem();
 							else
 								PacketUtil.sendPacket(new C0APacketAnimation());
+							timer.reset();
 
-					}
+							rotated = true;
+						}
 				}
 			}
 		}
@@ -240,7 +242,7 @@ public class Scaffold extends Module {
 								break;
 						}
 					}
-					if (PlayerUtil.hasBlockEquipped() && timer.sleep((long) delay.getValue()) && mode.getMode().equals("Pre")) {
+					if (PlayerUtil.hasBlockEquipped() && timer.reached((long) delay.getValue()) && mode.getMode().equals("Pre")) {
 						if (placeOnEnd.isEnabled() && !mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.getEntityBoundingBox().offset(0.0, -0.001D, 0.0)).isEmpty())
 							return;
 
@@ -257,6 +259,7 @@ public class Scaffold extends Module {
 								PacketUtil.sendPacket(new C0APacketAnimation());
 
 							rotated = true;
+							timer.reset();
 
 						}
 					}

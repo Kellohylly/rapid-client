@@ -26,7 +26,7 @@ public class Speed extends Module {
 	private final Setting vanillaMode = new Setting("Vanilla", this, "Motion", "Strafe");
 	private final Setting ncpMode = new Setting("NCP", this, "NCP Hop", "NCP LowHop", "NCP YPort");
 	private final Setting verusMode = new Setting("Verus", this, "Verus Hop", "Verus Ground");
-	private final Setting vulcanMode = new Setting("Vulcan", this, "Vulcan Hop", "Vulcan LowHop");
+	private final Setting vulcanMode = new Setting("Vulcan", this, "Vulcan Hop", "Vulcan LowHop", "Vulcan Ground");
 
 	private final Setting speed = new Setting("Speed", this, 12, 1, 100, true);
 	private final Setting damageBoost = new Setting("Damage Boost", this, 0.01, 0, 2, false);

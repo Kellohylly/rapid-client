@@ -11,10 +11,20 @@ public class VulcanLowHopSpeed extends SpeedBase {
     private int ticks;
 
     @Override
+    public void onEnable() {
+        ticks = 0;
+    }
+
+    @Override
+    public void onDisable() {
+        ticks = 0;
+    }
+
+    @Override
     public void onEvent(Event e) {
         if(e instanceof EventUpdate && e.isPre()) {
             ticks++;
-
+            
             if (MoveUtil.isMovingOnGround()) {
                 double moveSpeed;
 

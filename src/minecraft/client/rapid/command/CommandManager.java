@@ -20,6 +20,7 @@ public class CommandManager {
 		commands.add(new VClipCommand());
 		commands.add(new ToggleCommand());
 		commands.add(new BindCommand());
+		commands.add(new BindsCommand());
 	}
 	
 	public void handle(EventChat e) {

@@ -6,6 +6,7 @@ import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.ItemUtil;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.block.Block;
@@ -65,7 +66,7 @@ public class InventoryManager extends Module {
                     if(clean.isEnabled()) {
 
                         // Bad / Useless Items
-                        if(isBadItem(stack.getItem()))
+                        if(ItemUtil.isBadItem(stack.getItem()))
                             drop(i, stack);
 
                         // Keep Sword
@@ -220,40 +221,5 @@ public class InventoryManager extends Module {
             mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, -999, 0, 0, mc.thePlayer);
         }
         timer.reset();
-    }
-
-    private boolean isBadItem(Item item) {
-        return item.getUnlocalizedName().contains("tnt") ||
-                item.getUnlocalizedName().contains("stick") ||
-                item.getUnlocalizedName().contains("egg") ||
-                item.getUnlocalizedName().contains("string") ||
-                item.getUnlocalizedName().contains("flint") ||
-                item.getUnlocalizedName().contains("bow") ||
-                item.getUnlocalizedName().contains("arrow") ||
-                item.getUnlocalizedName().contains("bucket") ||
-                item.getUnlocalizedName().contains("feather") ||
-                item.getUnlocalizedName().contains("snow") ||
-                item.getUnlocalizedName().contains("piston") ||
-                item instanceof ItemGlassBottle ||
-                item.getUnlocalizedName().contains("web") ||
-                item.getUnlocalizedName().contains("slime") ||
-                item.getUnlocalizedName().contains("trip") ||
-                item.getUnlocalizedName().contains("wire") ||
-                item.getUnlocalizedName().contains("sugar") ||
-                item.getUnlocalizedName().contains("note") ||
-                item.getUnlocalizedName().contains("record") ||
-                item.getUnlocalizedName().contains("flower") ||
-                item.getUnlocalizedName().contains("wheat") ||
-                item.getUnlocalizedName().contains("fishing") ||
-                item.getUnlocalizedName().contains("boat") ||
-                item.getUnlocalizedName().contains("leather") ||
-                item.getUnlocalizedName().contains("seeds") ||
-                item.getUnlocalizedName().contains("skull") ||
-                item.getUnlocalizedName().contains("torch") ||
-                item.getUnlocalizedName().contains("anvil") ||
-                item.getUnlocalizedName().contains("enchant") ||
-                item.getUnlocalizedName().contains("exp") ||
-                item.getUnlocalizedName().contains("shears");
-
     }
 }

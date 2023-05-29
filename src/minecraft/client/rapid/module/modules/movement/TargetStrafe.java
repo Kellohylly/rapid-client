@@ -1,6 +1,7 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
+import client.rapid.event.events.player.EventJump;
 import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;

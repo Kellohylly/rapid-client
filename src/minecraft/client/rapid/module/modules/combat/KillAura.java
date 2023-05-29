@@ -127,10 +127,10 @@ public class KillAura extends Module {
 					if (this.legitRandom.isEnabled()) {
 
                         if (up) {
-							rotations[1] += ThreadLocalRandom.current().nextDouble(shakeY.getValue() * 0.5,
+							rotations[1] += MathUtil.randomNumber(shakeY.getValue() * 0.5,
 									shakeY.getValue() * 2);
 						} else {
-							rotations[1] -= ThreadLocalRandom.current().nextDouble(shakeY.getValue() * 0.5,
+							rotations[1] -= MathUtil.randomNumber(shakeY.getValue() * 0.5,
 									shakeY.getValue() * 2);
 						}
 

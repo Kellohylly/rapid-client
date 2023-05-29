@@ -69,6 +69,7 @@ public class ModuleManager {
 			new RichPresenceToggle(),
 			new HackerDetector(),
 			new ChestStealer(),
+			new LunarSpoofer(),
 			new ChatFilter(),
 			new PingSpoof(),
 			new FastPlace(),

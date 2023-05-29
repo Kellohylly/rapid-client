@@ -18,6 +18,12 @@ public class Wrapper {
 
 	public static void preinit() {
 		Wrapper.richPresence = new RichPresence();
+
+		try {
+			ViaMCP.getInstance().start();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void init() {
@@ -25,13 +31,7 @@ public class Wrapper {
 		Wrapper.moduleManager = new ModuleManager();
 		Wrapper.configManager = new FileManager();
 		Wrapper.commandManager = new CommandManager();
-
-		try {
-			ViaMCP.getInstance().start();
-			ViaMCP.getInstance().initAsyncSlider();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		ViaMCP.getInstance().initAsyncSlider();
 	}
 
 	public static void stop() {

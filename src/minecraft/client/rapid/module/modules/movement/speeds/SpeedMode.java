@@ -7,6 +7,7 @@ import client.rapid.module.modules.movement.speeds.vanilla.StrafeSpeed;
 import client.rapid.module.modules.movement.speeds.vanilla.VanillaSpeed;
 import client.rapid.module.modules.movement.speeds.verus.VerusGroundSpeed;
 import client.rapid.module.modules.movement.speeds.verus.VerusHopSpeed;
+import client.rapid.module.modules.movement.speeds.vulcan.VulcanGroundSpeed;
 import client.rapid.module.modules.movement.speeds.vulcan.VulcanHopSpeed;
 import client.rapid.module.modules.movement.speeds.vulcan.VulcanLowHopSpeed;
 
@@ -18,6 +19,7 @@ public enum SpeedMode {
     NCP_YPORT("NCP YPort", new NCPYPortSpeed(), "NCP"),
     VULCAN_HOP("Vulcan Hop", new VulcanHopSpeed(), "Vulcan"),
     VULCAN_LOWHOP("Vulcan LowHop", new VulcanLowHopSpeed(), "Vulcan"),
+    VULCAN_GROUND("Vulcan Ground", new VulcanGroundSpeed(), "Vulcan"),
     VERUS_HOP("Verus Hop", new VerusHopSpeed(), "Verus"),
     VERUS_GROUND("Verus Ground", new VerusGroundSpeed(), "Verus");
 

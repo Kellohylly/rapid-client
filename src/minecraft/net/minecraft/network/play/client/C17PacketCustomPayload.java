@@ -47,4 +47,9 @@ public class C17PacketCustomPayload implements Packet<INetHandlerPlayServer> {
    public PacketBuffer getBufferData() {
       return this.data;
    }
+
+   public void setData(PacketBuffer data) {
+      this.data = data;
+   }
+
 }
