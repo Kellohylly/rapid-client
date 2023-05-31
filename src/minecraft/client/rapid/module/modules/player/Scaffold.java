@@ -31,13 +31,13 @@ public class Scaffold extends Module {
 	private final Setting tower = new Setting("Tower", this, "None", "NCP", "Slow", "Matrix");
 	private final Setting sprint = new Setting("Sprint", this, "None", "Normal", "No Packet");
 	private final Setting spoof = new Setting("Spoof", this, "None", "Switch");
+	private final Setting eagle = new Setting("Eagle", this, "None", "Normal", "Vulcan");
 	private final Setting delay = new Setting("Delay", this, 0, 0, 500, true);
 	private final Setting boost = new Setting("Speed Boost", this, 0, 0, 1, false);
 	private final Setting placeOnEnd = new Setting("Place on end", this, true);
 	private final Setting towerMove = new Setting("Tower Move", this, false);
 	private final Setting rayCast = new Setting("Ray Cast", this, true);
 	private final Setting strict = new Setting("Strict", this, true);
-	private final Setting eagle = new Setting("Eagle", this, true);
 	private final Setting keepY = new Setting("Keep Y", this, false);
 	private final Setting swing = new Setting("Swing", this, false);
 
@@ -51,6 +51,7 @@ public class Scaffold extends Module {
 	private float yaw, pitch;
 
 	private int oldSlot;
+	private int places;
 
 	public static final List<Block> invalid = Arrays.asList(
 			Blocks.air,
@@ -71,12 +72,13 @@ public class Scaffold extends Module {
 	TimerUtil timer = new TimerUtil();
 
 	public Scaffold() {
-		add(mode, rotations, safewalk, tower, sprint, spoof, delay, boost, placeOnEnd, towerMove, rayCast, strict, eagle, keepY, swing, autoDisable);
+		add(mode, rotations, safewalk, tower, sprint, spoof, eagle, delay, boost, placeOnEnd, towerMove, rayCast, strict, keepY, swing, autoDisable);
 	}
 
 	@Override
 	public void settingCheck() {
 		towerMove.setVisible(!tower.getMode().equals("None"));
+		strict.setVisible(rayCast.isEnabled());
 	}
 
 	@Override
@@ -141,10 +143,11 @@ public class Scaffold extends Module {
 					case "Simple":
 						event.setYaw(mc.thePlayer.rotationYaw - 180);
 
-						if(isMoving())
-							event.setPitch(84f);
-						else
+						if(isMoving()) {
+							event.setPitch(82f);
+						} else {
 							event.setPitch(90);
+						}
 						break;
 				}
 				if (!rotations.getMode().equals("None")) {
@@ -172,17 +175,34 @@ public class Scaffold extends Module {
 		}
 		if(e instanceof EventMotion) {
 			if (e.isPre()) {
-				if(eagle.isEnabled())
-					sneak(rotated);
+				if(!eagle.getMode().equals("None")) {
+					switch(eagle.getMode()) {
+						case "Normal":
+							sneak(rotated);
+							break;
+						case "Vulcan":
+							if(places > 4) {
+								sneak(rotated);
+							}
+							if(places > 5) {
+								places = 0;
+							}
+							break;
+					}
+				}
 
 				boolean safewalkthing = mc.theWorld.getBlockState(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)).getBlock() == Blocks.air;
 				if(safewalk.getMode().equals("Legit"))
 					sneak(safewalkthing);
 
-				if(safewalkthing)
+				if(safewalkthing) {
 					rotated = true;
-				else
+				} else {
+					if(rotated)
+						places++;
+
 					rotated = false;
+				}
 
 				if(mc.thePlayer.onGround && boost.getValue() != 0)
 					setMoveSpeed(getMoveSpeed() + boost.getValue());

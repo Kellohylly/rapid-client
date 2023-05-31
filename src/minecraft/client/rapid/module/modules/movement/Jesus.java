@@ -1,108 +1,101 @@
 package client.rapid.module.modules.movement;
 
 import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventWorldLoad;
-import client.rapid.event.events.player.EventCollide;
-import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.movement.jesus.JesusBase;
+import client.rapid.module.modules.movement.jesus.JesusMode;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.PlayerUtil;
-import client.rapid.util.module.MoveUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
 
 @ModuleInfo(getName = "Jesus", getCategory = Category.MOVEMENT)
 public class Jesus extends Module {
-    private final Setting mode = new Setting("Mode", this, "Solid", "Jump", "Vulcan", "Matrix");
+    private final Setting mode = new Setting("Mode", this, "Solid", "Jump", "Matrix");
 
-    private boolean walking;
-    private int ticks;
+    private final Setting jumpMode = new Setting("Jump", this, "Verus", "Vulcan");
+
+    private JesusBase currentMode;
 
     public Jesus() {
-        add(mode);
+        add(mode, jumpMode);
+    }
+
+    @Override
+    public void onEnable() {
+        this.setMode();
+        currentMode.onEnable();
     }
 
     @Override
     public void onDisable() {
-        walking = false;
-        ticks = 0;
+        currentMode.onDisable();
+    }
+
+    @Override
+    public void settingCheck() {
+        jumpMode.setVisible(mode.getMode().equals("Jump"));
     }
 
     @Override
     public void onEvent(Event e) {
-        if(e instanceof EventWorldLoad) {
-            walking = false;
-            ticks = 0;
-        }
-        if(e instanceof EventUpdate && e.isPre()) {
+        this.setMode();
+
+        if (mode.getMode().equals("Jump")) {
+            setTag(jumpMode.getMode());
+        } else {
             setTag(mode.getMode());
-            ticks++;
+        }
 
-            if(walking) {
+
+        if(isWaterBelow() && !mc.thePlayer.capabilities.isFlying && !mc.thePlayer.isSneaking()) {
+            if(!mode.getMode().equals("Matrix") && mc.thePlayer.isInWater()) {
+                return;
+            }
+            currentMode.onEvent(e);
+        }
+    }
+
+    public boolean isWaterBelow() {
+        double x = mc.thePlayer.posX;
+        double y = mc.thePlayer.posY;
+        double z = mc.thePlayer.posZ;
+
+        return isWater(new BlockPos(x, y - 1, z)) || isWater(new BlockPos(x, y - 2, z)) || isWater(new BlockPos(x, y, z));
+    }
+
+    private boolean isWater(BlockPos pos) {
+        Block block = mc.theWorld.getBlockState(pos).getBlock();
+
+        return block instanceof BlockLiquid && block.getMaterial() == Material.water;
+    }
+
+    private void setMode() {
+        for(JesusMode fm : JesusMode.values()) {
+            if(currentMode != fm.getBase()) {
                 switch(mode.getMode()) {
-                case "Jump":
-                   if(mc.thePlayer.onGround && !isEnabled("Speed"))
-                        mc.thePlayer.jump();
-                    break;
-                case "Vulcan":
-                    if(mc.thePlayer.onGround && !isEnabled("Speed")) {
-                        mc.thePlayer.jump();
-                        ticks = 0;
-                    }
+                    case "Solid":
+                        if (mode.getMode().equals("Solid")) {
+                            currentMode = JesusMode.SOLID.getBase();
+                        }
+                        break;
+                    case "Jump":
+                        if (jumpMode.getMode().equals(fm.getName())) {
+                            currentMode = fm.getBase();
+                        }
+                        break;
+                    case "Matrix":
+                        if (mode.getMode().equals("Matrix")) {
+                            currentMode = JesusMode.MATRIX_MOTION.getBase();
+                        }
+                        break;
 
-                    if(mc.thePlayer.isInWater())
-                        return;
-
-                    if (ticks > 9) {
-                        mc.gameSettings.keyBindForward.pressed = false;
-                        mc.thePlayer.setSprinting(false);
-                        setMoveSpeed(0);
-                    } else if(ticks > 1) {
-                        mc.gameSettings.keyBindForward.pressed = true;
-                        setMoveSpeed(getBaseMoveSpeed());
-                        mc.thePlayer.setSprinting(true);
-                    }
-                    break;
-                }
-            }
-            if(mode.getMode().equals("Matrix")) {
-                if(mc.thePlayer.isInWater()) {
-                    if(mc.thePlayer.isCollidedHorizontally) {
-                        mc.thePlayer.motionY = 0.22;
-                    } else {
-                        mc.thePlayer.motionY = 0.13;
-                    }
-                    mc.gameSettings.keyBindJump.pressed = false;
                 }
             }
         }
-        if(e instanceof EventCollide && e.isPre()) {
-            EventCollide event = (EventCollide)e;
-            if (mc.theWorld == null || mc.thePlayer.fallDistance > 3 || (mc.thePlayer.isBurning() && PlayerUtil.isOnWater()) || mode.getMode().equals("Matrix"))
-                return;
-
-            if(!(event.getBlock() instanceof BlockLiquid) || mc.thePlayer.isInWater() || mc.thePlayer.isSneaking())
-                return;
-
-            event.setBoundingBox(new AxisAlignedBB(0, 0, 0, 1, 1, 1).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
-            walking = (PlayerUtil.isOnWater() || isOnWater()) && !mc.thePlayer.isInWater();
-        }
     }
 
-    public boolean isOnWater() {
-        final double y = mc.thePlayer.posY - 1;
-        for (int x = MathHelper.floor_double(mc.thePlayer.posX); x < MathHelper.ceiling_double_int(mc.thePlayer.posX); ++x) {
-            for (int z = MathHelper.floor_double(mc.thePlayer.posZ); z < MathHelper.ceiling_double_int(mc.thePlayer.posZ); ++z) {
-                final BlockPos pos = new BlockPos(x, MathHelper.floor_double(y), z);
-                if (mc.theWorld.getBlockState(pos).getBlock() instanceof BlockLiquid &&mc.theWorld.getBlockState(pos).getBlock().getMaterial() == Material.water)
-                    return true;
-            }
-        }
-        return false;
-    }
 }

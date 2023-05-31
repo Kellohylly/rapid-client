@@ -79,6 +79,7 @@ public class ModuleManager {
 			new Spammer(),
 			new Timer(),
 			new Panic(),
+			new Blink(),
 
 			// PLAYER
 			new InventoryManager(),

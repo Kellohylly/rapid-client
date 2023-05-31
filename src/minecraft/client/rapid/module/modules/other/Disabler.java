@@ -7,6 +7,7 @@ import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.combat.KillAura;
 import client.rapid.module.settings.Setting;
 import client.rapid.notification.Notification;
 import client.rapid.notification.NotificationManager;
@@ -41,7 +42,7 @@ public class Disabler extends Module {
 	private final TimerUtil keepAliveDelay = new TimerUtil();
 
 	public Disabler() {
-		add(time, noPayload, noAbilities, timer, transaction, keepAlive, oldVulcanStrafe, omniSprint);
+		add(time, noPayload, noAbilities, timer, transaction, keepAlive, oldVulcanStrafe, vulcanc08, omniSprint);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class Disabler extends Module {
 			if(keepAlive.isEnabled() && keepAliveDelay.sleep((int)time.getValue() * 10L) && keepAlives.size() > 0)
 				PacketUtil.sendPacketSilent(keepAlives.get(keepAlives.size() - 1));
 
-			if(vulcanc08.isEnabled() && mc.thePlayer.ticksExisted % 4 == 0)
+			if(vulcanc08.isEnabled() && mc.thePlayer.ticksExisted % 4 == 0 && KillAura.target == null)
 				PacketUtil.sendPacketSilent(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 0, mc.thePlayer.getHeldItem(), 0, 0, 0));
 
 		}
@@ -86,7 +87,6 @@ public class Disabler extends Module {
 			}
 
 			if(keepAlive.isEnabled() && event.getPacket() instanceof C00PacketKeepAlive) {
-				System.out.println("working");
 				keepAlives.add(event.getPacket());
 				event.cancel();
 			}

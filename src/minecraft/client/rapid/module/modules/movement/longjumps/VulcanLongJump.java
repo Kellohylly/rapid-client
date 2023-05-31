@@ -1,7 +1,9 @@
 package client.rapid.module.modules.movement.longjumps;
 
+import client.rapid.Wrapper;
 import client.rapid.event.events.Event;
 import client.rapid.event.events.player.EventUpdate;
+import client.rapid.module.modules.player.NoFall;
 import client.rapid.util.TimerUtil;
 import client.rapid.util.module.MoveUtil;
 
@@ -20,6 +22,12 @@ public class VulcanLongJump extends LongJumpBase {
     public void onDisable() {
         jumps = 0;
         timer.reset();
+
+        if(!mc.thePlayer.onGround) {
+            mc.thePlayer.fallDistance = 0;
+            mc.thePlayer.onGround = true;
+            NoFall.falls = 1;
+        }
     }
 
     @Override

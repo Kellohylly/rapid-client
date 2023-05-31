@@ -17,8 +17,10 @@
 + cooler spin in Animations.
 + Matrix Jesus.
 + Ignore Bad Items to Chest Stealer.
-+ Added Binds Command.
-+ Added Vulcan Ground Speed.
++ Binds Command.
++ Vulcan Ground Speed.
++ Vulcan Eagle to Scaffold.
++ Vulcan C08 to Disabler.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -37,9 +39,12 @@
 / Renamed Geuxy animations to Flat.
 / Improved Kill Aura.
 / Improved Dropdown Gui.
+/ Made No Fall mostly flagless.
+/ Made Vulcan Jesus flagless.
 
 - Position Flight.
 
  Added Fences.
  Added No Jump Delay.
  Added Lunar Spoofer that doesnt even work.
+ Added Blink.

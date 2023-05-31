@@ -29,6 +29,9 @@ public class IncognitoFlight extends FlightBase {
                 mc.thePlayer.motionY -= 1f;
                 hurts++;
             }
+            if(mc.thePlayer.hurtTime == 0) {
+                MoveUtil.setMoveSpeed(MoveUtil.getMoveSpeed() + 0.2);
+            }
             if(mc.thePlayer.hurtTime > 1) {
                 mc.thePlayer.motionY = 0.65;
 
@@ -37,7 +40,7 @@ public class IncognitoFlight extends FlightBase {
                 }
             }
         }
-        if(hurts > 0) {
+        if(hurts > 0 && mc.thePlayer.hurtTime > 0) {
             MoveUtil.setMoveSpeed(3.1);
         }
         MoveUtil.strafe();

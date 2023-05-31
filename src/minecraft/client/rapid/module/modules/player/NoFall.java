@@ -11,13 +11,17 @@ import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.PlayerUtil;
+import client.rapid.util.module.MoveUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 
 @ModuleInfo(getName = "No Fall", getCategory = Category.PLAYER)
 public class NoFall extends Module {
 	private final Setting mode = new Setting("Mode", this, "Vanilla", "Ground", "Vulcan", "Verus");
 	private final Setting distance = new Setting("Fall Distance", this, 4, 2, 4, false);
+
+	public static int falls;
 
 	public NoFall() {
 		add(mode, distance);
@@ -35,26 +39,30 @@ public class NoFall extends Module {
 				event.setBoundingBox(new AxisAlignedBB(-5, -1, -5, 5, 1, 5).offset(event.getX(), event.getY(), event.getZ()));
 			}
 		}
+
 		if(e instanceof EventUpdate && e.isPre()) {
-			EventUpdate event = (EventUpdate)e;
+			BlockPos pos = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ);
 
-			if(isEnabled("Long Jump") && getMode("Long Jump", "Mode").equals("Vulcan"))
-				return;
-
-			if(mode.getMode().equals("Vulcan") && mc.thePlayer.fallDistance >= 3) {
-				if(mc.thePlayer.ticksExisted % 2 == 0)
-						mc.thePlayer.motionY = -0.1476;
-					else
-						mc.thePlayer.motionY = -0.0975;
-
-				if(mc.thePlayer.ticksExisted % 11 == 0) {
-					if(mc.thePlayer.ticksExisted % 5.5 == 0) {
-						mc.thePlayer.onGround = true;
-					}
-				}
-
+			if(!mc.theWorld.isAirBlock(pos) && mc.theWorld.getBlockState(pos).getBlock().isFullBlock()) {
+				falls = 0;
 			}
 
+		}
+		if(e instanceof EventPacket && e.isPre()) {
+			EventPacket event = (EventPacket) e;
+
+			if(mode.getMode().equals("Vulcan") && event.getPacket() instanceof C03PacketPlayer && mc.thePlayer.fallDistance > distance.getValue() && !isEnabled("Long Jump")) {
+				if(falls > 0) {
+					mc.thePlayer.motionY = -0.1f;
+				} else {
+					mc.thePlayer.motionY = -0.07f;
+				}
+
+				((C03PacketPlayer) event.getPacket()).setOnGround(true);
+
+				mc.thePlayer.fallDistance = 0;
+				falls++;
+			}
 		}
 		if(e instanceof EventMotion && e.isPre()) {
 			setTag(mode.getMode());
