@@ -1,7 +1,7 @@
 package client.rapid.gui.panelgui;
 
 import client.rapid.Client;
-import client.rapid.gui.GuiPosition;
+import client.rapid.gui.HudConfigScreen;
 import client.rapid.gui.panelgui.component.Comp;
 import client.rapid.gui.panelgui.component.components.*;
 import client.rapid.module.Module;
@@ -27,7 +27,7 @@ public class PanelGui extends GuiScreen {
     public boolean dragging, binding;
     public Category selectedCategory;
 
-    private GuiPosition position;
+    private HudConfigScreen position;
 
     private Module selectedModule, bindingModule;
 
@@ -187,7 +187,7 @@ public class PanelGui extends GuiScreen {
                             for (Setting setting : Client.getInstance().getSettingsManager().getSettingsByMod(m)) {
                                 selectedModule = m;
 
-                                if (setting.isCheck()) {
+                                if (setting.isCheckbox()) {
                                     comps.add(new PanelCheckbox(275, offset, this, selectedModule, setting));
                                 }
 
@@ -214,7 +214,7 @@ public class PanelGui extends GuiScreen {
 
         if(mouseButton == 0 && isInside(mouseX, mouseY, 4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4)) {
             if(position == null)
-                position = new GuiPosition();
+                position = new HudConfigScreen();
             mc.displayGuiScreen(position);
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);

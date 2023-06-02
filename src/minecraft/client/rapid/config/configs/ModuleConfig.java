@@ -25,19 +25,26 @@ public class ModuleConfig extends Config {
         ArrayList<String> saves = new ArrayList<>();
 
         for(Module m : Client.getInstance().getModuleManager().getModules()) {
-            saves.add("Module:" + m.getName().replace(" ", "-") + ":" + m.isEnabled());
+            String modName = m.getName().replace(" ", "-");
+
+            saves.add("Module:" + modName + ":" + m.isEnabled());
 
             for(Setting s : Client.getInstance().getSettingsManager().getSettings()) {
-                if(s.getParentMod().getName().replace(" ", "-").equals(m.getName().replace(" ", "-"))) {
+                if(s.getParentMod().getName().replace(" ", "-").equals(modName)) {
 
-                    if (s.isCheck())
-                        saves.add("Setting:" + m.getName().replace(" ", "-") + ":" + s.getName().replace(" ", "-") + ":" + s.isEnabled());
+                    String setName = s.getName().replace(" ", "-");
 
-                    if (s.isCombo())
-                        saves.add("Setting:" + m.getName().replace(" ", "-") + ":" + s.getName().replace(" ", "-") + ":" + s.getMode().replace(" ", "-"));
+                    if (s.isCheckbox()) {
+                        saves.add("Setting:" + modName + ":" + setName + ":" + s.isEnabled());
+                    }
 
-                    if (s.isSlider())
-                        saves.add("Setting:" + m.getName().replace(" ", "-") + ":" + s.getName().replace(" ", "-") + ":" + s.getValue());
+                    if (s.isCombo()) {
+                        saves.add("Setting:" + modName + ":" + setName + ":" + s.getMode().replace(" ", "-"));
+                    }
+
+                    if (s.isSlider()) {
+                        saves.add("Setting:" + modName + ":" + setName + ":" + s.getValue());
+                    }
                 }
             }
         }
@@ -45,8 +52,9 @@ public class ModuleConfig extends Config {
         try {
             PrintWriter pw = new PrintWriter(this.getData());
 
-            for (String str : saves)
+            for (String str : saves) {
                 pw.println(str);
+            }
 
             pw.close();
         } catch (FileNotFoundException e) {
@@ -57,12 +65,11 @@ public class ModuleConfig extends Config {
 
     @Override
     public void load() {
-        System.out.println(this.getData());
         this.load(this.getData());
         super.load();
     }
 
-    public void load(java.io.File file) {
+    public void load(File file) {
         ArrayList<String> lines = new ArrayList<>();
 
         try {
@@ -84,8 +91,9 @@ public class ModuleConfig extends Config {
             if(line.startsWith("Module")) {
                 Module m = Client.getInstance().getModuleManager().getModuleByName(args[1].replace("-", " "));
 
-                if(m != null)
+                if (m != null) {
                     m.setEnabled(Boolean.parseBoolean(args[2]));
+                }
             }
 
             if(line.startsWith("Setting")) {
@@ -95,14 +103,18 @@ public class ModuleConfig extends Config {
                     Setting s = Client.getInstance().getSettingsManager().getSettingByName(m.getName().replace("-", " "), args[2].replace("-", " "));
 
                     if(s != null) {
-                        if(s.isCheck())
+
+                        if (s.isCheckbox()) {
                             s.setEnabled(Boolean.parseBoolean(args[3]));
+                        }
 
-                        if(s.isCombo())
+                        if (s.isCombo()) {
                             s.setMode(args[3].replace("-", " "));
+                        }
 
-                        if(s.isSlider())
+                        if (s.isSlider()) {
                             s.setValue(Double.parseDouble(args[3]));
+                        }
                     }
                 }
             }

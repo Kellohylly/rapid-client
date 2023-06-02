@@ -60,42 +60,32 @@ public class AntiBot extends Module {
 		}
 		if(e instanceof EventUpdate && e.isPre()) {
 			setTag(mode.getMode());
-			
-			if(timer.sleep((int)clearTime.getValue() * 100L))
+
+			if(clear.isEnabled() && timer.sleep((int)clearTime.getValue() * 100L)) {
 				bots.clear();
+			}
 
 			switch(mode.getMode()) {
-				case "Basic":
-					for (Entity entity : mc.theWorld.loadedEntityList) {
-						if (entity instanceof EntityPlayer && entity != mc.thePlayer) {
+			case "Basic":
+				for (EntityPlayer entity : mc.theWorld.playerEntities) {
+					if (entity != mc.thePlayer) {
 
-							double distance = mc.thePlayer.getDistanceToEntity(entity);
+						double distance = mc.thePlayer.getDistanceToEntity(entity);
 
-							if (entity.ticksExisted < 20 && mc.thePlayer.ticksExisted > 10 && distance > 1 && distance < maxDistance.getValue()) {
-								if (!excludeTeam.isEnabled() && ((EntityPlayer) entity).isOnSameTeam(mc.thePlayer)) {
-									return;
-								}
+						// Check players and entities existing time and distance
+						if (entity.ticksExisted < 20 && mc.thePlayer.ticksExisted > 10 && distance > 1 && distance < maxDistance.getValue()) {
 
-								if(hasArmor.isEnabled() && !PlayerUtil.hasArmorEquipped((EntityPlayer)entity)) {
-									return;
-								}
-
-								if (remove.isEnabled()) {
-									mc.theWorld.removeEntity(entity);
-								}
-
-								bots.add(entity);
-							}
-						}
-					}
-					break;
-				case "Tab":
-					for (Entity entity : mc.theWorld.loadedEntityList) {
-						if (!getPlayerList().contains(entity) && entity.isInvisible() && entity instanceof EntityPlayer) {
-							if (excludeTeam.isEnabled() && ((EntityPlayer) entity).isOnSameTeam(mc.thePlayer)) {
+							// Check if on same team
+							if (!excludeTeam.isEnabled() && entity.isOnSameTeam(mc.thePlayer)) {
 								return;
 							}
 
+							// Check if entity has armor
+							if(hasArmor.isEnabled() && !PlayerUtil.hasArmorEquipped(entity)) {
+								return;
+							}
+
+							// Remove entity from world
 							if (remove.isEnabled()) {
 								mc.theWorld.removeEntity(entity);
 							}
@@ -103,25 +93,48 @@ public class AntiBot extends Module {
 							bots.add(entity);
 						}
 					}
-					break;
+				}
+				break;
+			case "Tab":
+				for (EntityPlayer entity : mc.theWorld.playerEntities) {
+
+					// Check if entity is not in player list
+					if (!getPlayerList().contains(entity)) {
+
+						// Check if on same team
+						if (excludeTeam.isEnabled() && entity.isOnSameTeam(mc.thePlayer)) {
+							return;
+						}
+
+						// Remove entity from world
+						if (remove.isEnabled()) {
+							mc.theWorld.removeEntity(entity);
+						}
+
+						bots.add(entity);
+					}
+				}
+				break;
 			}
 		}
 	}
 
+	// Get list of players
 	public List<EntityPlayer> getPlayerList() {
 		List<EntityPlayer> list = new ArrayList<>();
 
-		NetHandlerPlayClient var4 = mc.thePlayer.sendQueue;
-		List<?> players = GuiPlayerTabOverlay.field_175252_a.sortedCopy(var4.getPlayerInfoMap());
+		List<?> players = GuiPlayerTabOverlay.field_175252_a.sortedCopy(mc.thePlayer.sendQueue.getPlayerInfoMap());
 
-		for (Object o : players) {
-			NetworkPlayerInfo info = (NetworkPlayerInfo) o;
+		for (Object player : players) {
+			NetworkPlayerInfo info = (NetworkPlayerInfo) player;
 
 			if (info == null) {
 				continue;
 			}
 
-			list.add(mc.theWorld.getPlayerEntityByName(info.getGameProfile().getName()));
+			EntityPlayer player2 = mc.theWorld.getPlayerEntityByName(info.getGameProfile().getName());
+
+			list.add(player2);
 		}
 		return list;
 	}
@@ -129,4 +142,5 @@ public class AntiBot extends Module {
 	public static ArrayList<Entity> getBots() {
 		return bots;
 	}
+
 }

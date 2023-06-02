@@ -1,6 +1,5 @@
 package client.rapid.module;
 
-
 import client.rapid.module.modules.Category;
 
 import java.lang.annotation.Retention;

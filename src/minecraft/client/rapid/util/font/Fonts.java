@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 public class Fonts {
 	public static MCFontRenderer
 	normal = getFont("font.ttf", 21),
+	normalbold = getFont("bold.ttf", 18),
 	normal2 = getFont("font.ttf", 19),
 	inter = getFont("inter.ttf", 19),
 	greycliff = getFont("greycliff.ttf", 19),

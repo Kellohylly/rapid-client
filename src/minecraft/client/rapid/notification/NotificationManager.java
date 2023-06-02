@@ -40,7 +40,7 @@ public class NotificationManager {
             if(notification != null) {
                 notification.render(x, (y + 26) - (int)notification.getAnimationY().getValue());
 
-                if(!notification.timer.reached(notification.getSeconds() + 150)) {
+                if(!notification.timer.reached(notification.getMaxTime() + 150)) {
                     i += 26;
                     notification.getAnimationY().interpolate(i);
                 }

@@ -101,8 +101,8 @@ public class Setting {
 	public boolean isCombo() {
 		return mode == SettingType.COMBO;
 	}
-	
-	public boolean isCheck() {
+
+	public boolean isCheckbox() {
 		return mode == SettingType.CHECK;
 	}
 	

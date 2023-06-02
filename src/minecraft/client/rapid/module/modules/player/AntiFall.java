@@ -7,6 +7,7 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
+import client.rapid.util.TimerUtil;
 import net.minecraft.util.BlockPos;
 
 @ModuleInfo(getName = "Anti Fall", getCategory = Category.PLAYER)
@@ -14,11 +15,14 @@ public class AntiFall extends Module {
     private final Setting mode = new Setting("Mode", this, "Normal", "Jump", "Teleport");
     private final Setting fallDistance = new Setting("Fall Distance", this, 4, 2, 10, false);
     private final Setting height = new Setting("Height", this, 2, 0.42, 10, false);
+    private final Setting delay = new Setting("Delay", this, 2, 0.42, 30, false);
 
     private BlockPos groundPos;
 
+    private final TimerUtil timer = new TimerUtil();
+
     public AntiFall() {
-        add(mode, fallDistance, height);
+        add(mode, fallDistance, height, delay);
     }
 
     @Override
@@ -33,10 +37,11 @@ public class AntiFall extends Module {
         if(e instanceof EventMotion && e.isPre()) {
             EventMotion event = (EventMotion) e;
 
-            if (mc.thePlayer.onGround && !mc.theWorld.isAirBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ)))
+            if (mc.thePlayer.onGround && !mc.theWorld.isAirBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ))) {
                 groundPos = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+            }
 
-            if (mc.thePlayer.fallDistance >= fallDistance.getValue() && !PlayerUtil.isBlockUnder()) {
+            if (mc.thePlayer.fallDistance >= fallDistance.getValue() && !PlayerUtil.isBlockUnder() && timer.reached((int) delay.getValue() * 100L)) {
                 switch (mode.getMode()) {
                     case "Normal":
                         event.setY(event.getY() + height.getValue());
@@ -53,6 +58,7 @@ public class AntiFall extends Module {
                         }
                         break;
                 }
+                timer.reset();
             }
         }
     }

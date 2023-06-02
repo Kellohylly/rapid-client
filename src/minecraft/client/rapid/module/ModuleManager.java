@@ -11,18 +11,7 @@ import client.rapid.module.modules.hud.*;
 import client.rapid.module.modules.movement.*;
 import client.rapid.module.modules.other.*;
 import client.rapid.module.modules.player.*;
-import client.rapid.module.modules.visual.Animations;
-import client.rapid.module.modules.visual.Cape;
-import client.rapid.module.modules.visual.ClickGuiToggle;
-import client.rapid.module.modules.visual.Crosshair;
-import client.rapid.module.modules.visual.ESP;
-import client.rapid.module.modules.visual.FullBright;
-import client.rapid.module.modules.hud.Watermark;
-import client.rapid.module.modules.visual.NameProtect;
-import client.rapid.module.modules.visual.NameTags;
-import client.rapid.module.modules.visual.NoRender;
-import client.rapid.module.modules.visual.TimeChanger;
-import client.rapid.module.modules.visual.XRay;
+import client.rapid.module.modules.visual.*;
 import client.rapid.util.font.Fonts;
 
 public class ModuleManager {
@@ -82,6 +71,7 @@ public class ModuleManager {
 			new Timer(),
 			new Panic(),
 			new Blink(),
+			new MCF(),
 
 			// PLAYER
 			new InventoryManager(),
@@ -132,8 +122,9 @@ public class ModuleManager {
 			);
 
 		// Add Draggables to Modules
-		for(Draggable d : draggables)
+		for(Draggable d : draggables) {
 			addAll(modules, d);
+		}
 
 		Watermark.setWatermark(Watermark.text);
 
@@ -182,7 +173,7 @@ public class ModuleManager {
 		return null;
 	}
 
-	// Gets a module without spaces
+	// Gets a module by name, without spaces
 	public Module getModuleWithoutSpaces(String name) {
 		for(Module m : getModules()) {
 			if(m.getName2().equalsIgnoreCase(name))

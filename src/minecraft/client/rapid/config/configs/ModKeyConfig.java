@@ -17,8 +17,9 @@ public class ModKeyConfig extends Config {
     public void save() {
         ArrayList<String> toSave = new ArrayList<>();
 
-        for (Module mod : Client.getInstance().getModuleManager().getModules())
+        for (Module mod : Client.getInstance().getModuleManager().getModules()) {
             toSave.add(mod.getName() + ":" + mod.getKey());
+        }
 
         try {
             PrintWriter pw = new PrintWriter(this.getData());
@@ -35,23 +36,30 @@ public class ModKeyConfig extends Config {
     @Override
     public void load() {
         ArrayList<String> lines = new ArrayList<>();
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this.getData()));
             String line = reader.readLine();
+
             while (line != null) {
                 lines.add(line);
                 line = reader.readLine();
             }
+
             reader.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         for (String s : lines) {
             String[] args = s.split(":");
+
             Module m = Client.getInstance().getModuleManager().getModuleByName(args[0]);
-            if (m != null)
+
+            if (m != null) {
                 m.setKey(Integer.parseInt(args[1]));
+            }
         }
         super.load();
     }

@@ -3,7 +3,7 @@ package client.rapid.module.modules.hud;
 import client.rapid.Client;
 import client.rapid.event.Event;
 import client.rapid.event.events.game.EventRender2D;
-import client.rapid.gui.GuiPosition;
+import client.rapid.gui.HudConfigScreen;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -69,7 +69,7 @@ public class BlockCounter extends Draggable {
                     blockCount += held.stackSize;
             }
 
-            if (!(mc.currentScreen instanceof GuiPosition)) {
+            if (!(mc.currentScreen instanceof HudConfigScreen)) {
                 HudSettings hud = (HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class);
 
                 if (background.isEnabled()) {

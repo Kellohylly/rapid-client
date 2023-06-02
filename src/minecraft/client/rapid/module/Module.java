@@ -1,6 +1,6 @@
 package client.rapid.module;
 
-import client.rapid.*;
+import client.rapid.Client;
 import client.rapid.event.Event;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;

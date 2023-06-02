@@ -11,9 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-
 public class Notification {
     private final NotificationType type;
     private final String title, message;
@@ -23,15 +20,18 @@ public class Notification {
     public final TimerUtil timer = new TimerUtil();
 
     private long start;
-    private int seconds;
+    private final int maxTime;
 
     private final Animation animation = new Animation(1, 0.6f);
 
-    public Notification(String title, String message, NotificationType type, int seconds) {
+    private final Minecraft mc;
+
+    public Notification(String title, String message, NotificationType type, int maxTime) {
+        this.mc = Minecraft.getMinecraft();
         this.type = type;
         this.title = title;
         this.message = message;
-        this.seconds = seconds * 1000;
+        this.maxTime = maxTime * 1000;
         timer.reset();
     }
 
@@ -40,7 +40,7 @@ public class Notification {
     }
 
     public boolean isShown() {
-        return getTime() <= seconds + 500;
+        return getTime() <= maxTime + 500;
     }
 
     private long getTime() {
@@ -59,22 +59,10 @@ public class Notification {
 
         Gui.drawRect(x - animation.getValue(), y - 30, x, y - 4, 0x90000000);
 
-        double number = ((float)(seconds / 100 - 1 - timer.time() / 100) / 10);
+        double number = ((float)(maxTime / 100 - 1 - timer.time() / 100) / 10);
         String counter = number <= 0 ? "0.0" : String.format("%.1f", number);
 
-        if(mcFont) {
-            mc.fontRendererObj.drawString(title + EnumChatFormatting.GRAY + " (" + counter + ")", (int) (x - animation.getValue() + 33), y - 27, -1);
-            mc.fontRendererObj.drawString(message, (int) (x - animation.getValue() + 33), y - 15, -1);
-        } else {
-            font.drawString(title + " &7(" + counter + ")", (int) (x - animation.getValue() + 33), y - 27, -1);
-            font.drawString(message, (int) (x - animation.getValue() + 33), y - 15, -1);
-        }
-
-        if(timer.reached(seconds)) {
-            animation.interpolate(0);
-        } else {
-            animation.interpolate(getTime() > 0 ? width : 0);
-        }
+        String text = mcFont ? title + "§7 (" + counter + ")" : title + " &7(" + counter + ")";
 
         GlStateManager.pushMatrix();
         GlStateManager.color(1, 1, 1);
@@ -82,18 +70,18 @@ public class Notification {
         GlStateManager.enableDepth();
         GlStateManager.enableCull();
 
-        ResourceLocation image;
+        this.drawString(text, (int) (x - animation.getValue() + 33), y - 27);
+        this.drawString(message, (int) (x - animation.getValue() + 33), y - 15);
 
-        if(type == NotificationType.WARNING)
-            image = new ResourceLocation("rapid/images/warning.png");
-        else if(type == NotificationType.ERROR)
-            image = new ResourceLocation("rapid/images/error.png");
-        else
-            image = new ResourceLocation("rapid/images/info.png");
+        if(timer.reached(maxTime)) {
+            animation.interpolate(0);
+        } else {
+            animation.interpolate(getTime() > 0 ? width : 0);
+        }
 
-        mc.getTextureManager().bindTexture(image);
-
+        mc.getTextureManager().bindTexture(type.getImage());
         Gui.drawModalRectWithCustomSizedTexture((int) (x - animation.getValue()) + 6, y - 27, 0, 0, 20, 20, 20, 20);
+
         GlStateManager.popMatrix();
 
     }
@@ -102,8 +90,18 @@ public class Notification {
         return animationY;
     }
 
-    public int getSeconds() {
-        return seconds;
+    public int getMaxTime() {
+        return maxTime;
+    }
+
+    private void drawString(String text, float x, float y) {
+        if(Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Minecraft Font").isEnabled()) {
+            mc.fontRendererObj.drawString(text, x, y, -1);
+            mc.fontRendererObj.drawString(text, x, y, -1);
+        } else {
+            font.drawString(text, x, y, -1);
+            font.drawString(text, x, y, -1);
+        }
     }
 
 }

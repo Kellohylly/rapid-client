@@ -57,7 +57,6 @@ public class Client {
 
 	// Executes when game stops
 	public void onShutdown() {
-
 		this.discordRP.stopRPC();
 	}
 

@@ -3,7 +3,7 @@ package client.rapid.module.modules.hud;
 import client.rapid.Client;
 import client.rapid.event.Event;
 import client.rapid.event.events.game.EventRender2D;
-import client.rapid.gui.GuiPosition;
+import client.rapid.gui.HudConfigScreen;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -42,7 +42,7 @@ public class Effects extends Draggable {
 
             ArrayList<PotionEffect> collection = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
 
-            if (!collection.isEmpty() && !(mc.currentScreen instanceof GuiPosition)) {
+            if (!collection.isEmpty() && !(mc.currentScreen instanceof HudConfigScreen)) {
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.disableLighting();
 

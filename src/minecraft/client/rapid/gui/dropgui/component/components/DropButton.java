@@ -43,7 +43,7 @@ public class DropButton extends DropComponent {
 					this.subcomponents.add(new DropSlider(s, this, opY));
 				}
 
-				if(s.isCheck()) {
+				if(s.isCheckbox()) {
 					this.subcomponents.add(new DropCheckbox(s, this, opY));
 				}
 
@@ -139,7 +139,7 @@ public class DropButton extends DropComponent {
 						this.subcomponents.add(new DropSlider(s, this, opY));
 					}
 
-					if(s.isCheck()) {
+					if(s.isCheckbox()) {
 						this.subcomponents.add(new DropCheckbox(s, this, opY));
 					}
 

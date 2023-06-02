@@ -2,7 +2,7 @@ package client.rapid.module.modules.hud;
 
 import client.rapid.event.Event;
 import client.rapid.event.events.game.EventRender2D;
-import client.rapid.gui.GuiPosition;
+import client.rapid.gui.HudConfigScreen;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -35,12 +35,12 @@ public class Notifications extends Draggable {
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             GlStateManager.popMatrix();
 
-            Notification example = new Notification("Example", "This is an example", NotificationType.INFO, 2);
-            if(mc.currentScreen instanceof GuiPosition)
+            Notification example = new Notification("Example", "Im an example!", NotificationType.INFO, 2);
+            if(mc.currentScreen instanceof HudConfigScreen)
                 NotificationManager.addToQueue(example);
 
-            if(!(mc.currentScreen instanceof GuiPosition) && !NotificationManager.getQueue().isEmpty())
-                NotificationManager.getQueue().removeIf(not -> not.getMessage().equals("This is an example"));
+            if(!(mc.currentScreen instanceof HudConfigScreen) && !NotificationManager.getQueue().isEmpty())
+                NotificationManager.getQueue().removeIf(not -> not.getMessage().equals("Im an example!"));
         }
     }
 

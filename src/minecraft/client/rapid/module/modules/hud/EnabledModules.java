@@ -60,6 +60,9 @@ public class EnabledModules extends Draggable {
             case "Greycliff":
                 font = Fonts.greycliff;
                 break;
+            case "Bold":
+                font = Fonts.normalbold;
+                break;
         }
     }
 

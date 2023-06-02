@@ -21,7 +21,7 @@ public class HudSettings extends Draggable {
     private final Setting rainbow = new Setting("Rainbow Wave", this, 10, 1, 100, true);
 
     private final Setting mcFont = new Setting("Minecraft Font", this, true);
-    private final Setting fontMode = new Setting("Font", this, "Product Sans", "Inter", "SF UI", "Greycliff");
+    private final Setting fontMode = new Setting("Font", this, "Product Sans", "Inter", "SF UI", "Greycliff", "Bold");
     private final Setting shadow = new Setting("Shadow", this, true);
 
     public HudSettings() {

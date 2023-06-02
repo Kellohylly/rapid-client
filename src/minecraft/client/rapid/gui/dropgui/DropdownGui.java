@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import client.rapid.Client;
-import client.rapid.gui.GuiPosition;
+import client.rapid.gui.HudConfigScreen;
 import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.hud.HudSettings;
@@ -19,7 +19,7 @@ public class DropdownGui extends GuiScreen {
 	public static int background = 0xFF0F0F13;
 	public static int backgroundDark = new Color(0xFF0F0F13).darker().getRGB();
 
-	private GuiPosition position;
+	private HudConfigScreen position;
 	
 	public static HudSettings hud = ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class));
 
@@ -73,7 +73,7 @@ public class DropdownGui extends GuiScreen {
 		}
 		if(mouseButton == 0 && isInside(mouseX, mouseY, 4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4)) {
     		if(position == null) {
-				position = new GuiPosition();
+				position = new HudConfigScreen();
 			}
 
     		mc.displayGuiScreen(position);

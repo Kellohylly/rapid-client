@@ -5,7 +5,7 @@ import java.awt.Color;
 import client.rapid.Client;
 import client.rapid.event.Event;
 import client.rapid.event.events.game.EventRender2D;
-import client.rapid.gui.GuiPosition;
+import client.rapid.gui.HudConfigScreen;
 import client.rapid.module.*;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.combat.KillAura;
@@ -38,7 +38,7 @@ public class TargetHud extends Draggable {
 		if(e instanceof EventRender2D && e.isPre()) {
 			EntityLivingBase target;
 
-			if(mc.currentScreen instanceof GuiPosition) {
+			if(mc.currentScreen instanceof HudConfigScreen) {
 				target = mc.thePlayer;
 			} else {
 				target = KillAura.target;

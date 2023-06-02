@@ -1,13 +1,18 @@
 package client.rapid.command;
 
 import client.rapid.Client;
-import client.rapid.util.PlayerUtil;
+
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class Command {
-	protected String name, description, syntax;
+
+	protected String name;
+	protected String description;
+	protected String syntax;
+
 	protected List<String> aliases;
 	
 	public Command(String name, String description, String syntax, String... aliases) {

@@ -3,6 +3,7 @@ package client.rapid.event;
 import client.rapid.Client;
 import client.rapid.event.events.game.EventChat;
 import client.rapid.module.Module;
+
 import net.minecraft.client.Minecraft;
 
 public class Event {
@@ -12,7 +13,7 @@ public class Event {
 	
 	public void callEvent() {
 		if(this instanceof EventChat && this.isPre()) {
-			Client.getInstance().getCommandManager().handle((EventChat) this);
+			Client.getInstance().getCommandManager().handleChat((EventChat) this);
 		}
 
 		// Handle events for modules.

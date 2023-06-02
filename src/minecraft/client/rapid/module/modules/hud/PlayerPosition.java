@@ -3,7 +3,7 @@ package client.rapid.module.modules.hud;
 import client.rapid.Client;
 import client.rapid.event.Event;
 import client.rapid.event.events.game.EventRender2D;
-import client.rapid.gui.GuiPosition;
+import client.rapid.gui.HudConfigScreen;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -33,7 +33,7 @@ public class PlayerPosition extends Draggable {
     @Override
     public void onEvent(Event e) {
         if(e instanceof EventRender2D) {
-            if(!(mc.currentScreen instanceof GuiPosition) && mc.thePlayer != null) {
+            if(!(mc.currentScreen instanceof HudConfigScreen) && mc.thePlayer != null) {
                 String[] dimensions = {"X", "Y", "Z"};
                 int[] positions = {(int)mc.thePlayer.posX, (int)mc.thePlayer.posY, (int)mc.thePlayer.posZ};
 

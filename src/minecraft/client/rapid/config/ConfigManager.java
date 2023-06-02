@@ -6,6 +6,7 @@ import client.rapid.config.configs.ModuleConfig;
 import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -14,10 +15,10 @@ public class ConfigManager {
     private final ModKeyConfig modKeyConfig;
     private final HudConfig hudConfig;
 
-    private final java.io.File dir;
+    private final File dir;
 
     public ConfigManager() {
-        this.dir = new java.io.File(Minecraft.getMinecraft().mcDataDir, "Rapid");
+        this.dir = new File(Minecraft.getMinecraft().mcDataDir, "Rapid");
 
         this.generateFiles();
 
@@ -59,46 +60,54 @@ public class ConfigManager {
     public void generateFiles() {
 
         // Insults File
-        java.io.File file = new java.io.File(dir, java.io.File.separator + "insults.txt");
+        File file = new File(dir, File.separator + "insults.txt");
 
         if(!file.exists()) {
             try {
                 file.createNewFile();
 
                 FileWriter writer = new FileWriter(file);
-                writer.write("bro got sent home." +
-                        "\nyou are the type of person to use FDP and lose." +
-                        "\nChuck Norris once stepped on kid, Its descendants were then known as degenerates like you." +
-                        "\nShh, he doesnt know i know this hack (Rapid Client)!" +
-                        "\nYou cant win, I have 5 million power!" +
-                        "\nyou seem like a guy who deep throats ice cream.");
+
+                writer.write(
+                    "{name} got sent home." +
+                    "\n{name} is the type of person to use FDP and lose." +
+                    "\nChuck Norris once stepped on kid, Its descendants were then known as degenerates like {name}." +
+                    "\n{name}, you seem like a guy who deep throats ice cream."
+                );
+
                 writer.close();
+
             } catch (IOException e) {
                 Logger.error("Cant generate insults.txt");
             }
         }
 
         // Spammer File
-        file = new java.io.File(dir, java.io.File.separator + "spammer.txt");
+        file = new File(dir, File.separator + "spammer.txt");
 
         if(!file.exists()) {
             try {
                 file.createNewFile();
 
                 FileWriter writer = new FileWriter(file);
-                writer.write("get spammed lol" +
-                        "\ntrash server" +
-                        "\nimagine paying to win" +
-                        "\nwhat the cat doing" +
-                        "\ncat supremacy" +
-                        "\ncats >>");
+
+                writer.write(
+                    "get spammed lol" +
+                    "\ntrash server" +
+                    "\nimagine paying to win" +
+                    "\nwhat the cat doing" +
+                    "\ncat supremacy" +
+                    "\ncats >>"
+                );
+
                 writer.close();
+
             } catch (IOException e) {
                 Logger.error("Cant generate spammer.txt");
             }
         }
 
-        file = new java.io.File(dir, java.io.File.separator + "Configs");
+        file = new File(dir, File.separator + "Configs");
 
         if(!file.exists()) {
             file.mkdir();

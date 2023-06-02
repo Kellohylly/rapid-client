@@ -11,6 +11,7 @@ import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
+import client.rapid.module.modules.other.MCF;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.MathUtil;
 import client.rapid.util.PacketUtil;
@@ -123,7 +124,7 @@ public class KillAura extends Module {
 				if (!rotate.getMode().equals("None")) {
 					float[] rotations = RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue(),
 							legitRandom.isEnabled(), heuristics.isEnabled(), prediction.isEnabled(),
-							resolver.isCheck());
+							resolver.isCheckbox());
 					if (this.legitRandom.isEnabled()) {
 
                         if (up) {
@@ -221,6 +222,9 @@ public class KillAura extends Module {
             return false;
 
         if(!entity.isEntityAlive())
+            return false;
+
+        if(isEnabled(MCF.class) && MCF.getFriends().contains(entity))
             return false;
 
         return entity != mc.thePlayer && !(entity.getDistanceToEntity(mc.thePlayer) > reach.getValue());

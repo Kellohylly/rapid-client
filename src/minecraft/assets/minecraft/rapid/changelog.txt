@@ -21,6 +21,7 @@
 + Vulcan Ground Speed.
 + Vulcan Eagle to Scaffold.
 + Vulcan C08 to Disabler.
++ Added Delay to Anti Fall.
 
 / Made Config System a bit better.
 / Improved Notification System.
@@ -48,3 +49,4 @@
  Added No Jump Delay.
  Added Lunar Spoofer that doesnt even work.
  Added Blink.
+ Added MCF.
