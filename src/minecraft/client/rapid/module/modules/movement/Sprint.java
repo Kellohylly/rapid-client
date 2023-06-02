@@ -22,7 +22,7 @@ public class Sprint extends Module {
 	@Override
 	public void onEvent(Event e) {
 		if(e instanceof EventUpdate && e.isPre()) {
-			if(isEnabled(Scaffold.class) && !getBoolean(Scaffold.class, "Sprint"))
+			if(isEnabled(Scaffold.class) && getMode(Scaffold.class, "Sprint").equals("None"))
 				return;
 
 			if((mc.thePlayer.isBlocking() || mc.thePlayer.isUsingItem() || mc.thePlayer.isEating()) && !getBoolean(NoSlow.class, "Allow Sprinting"))
