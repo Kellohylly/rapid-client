@@ -1,7 +1,5 @@
 package net.minecraft.client.multiplayer;
 
-import client.rapid.Client;
-import client.rapid.Wrapper;
 import client.rapid.module.modules.player.Scaffold;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

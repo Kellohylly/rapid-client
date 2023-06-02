@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -21,9 +21,9 @@ public class Strafe extends Module {
         if(e instanceof EventUpdate && e.isPre()) {
             if(damageOnly.isEnabled()) {
                 if(mc.thePlayer.hurtTime > 1)
-                    setMoveSpeed(getMoveSpeed());
+                    MoveUtil.setMoveSpeed(MoveUtil.getMoveSpeed());
             } else
-                setMoveSpeed(getMoveSpeed());
+                MoveUtil.setMoveSpeed(MoveUtil.getMoveSpeed());
         }
     }
 }

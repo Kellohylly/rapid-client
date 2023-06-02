@@ -2,9 +2,9 @@ package client.rapid.module.modules.hud;
 
 import java.awt.Color;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.Client;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.gui.GuiPosition;
 import client.rapid.module.*;
 import client.rapid.module.modules.Category;
@@ -15,8 +15,6 @@ import client.rapid.util.font.*;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
@@ -37,7 +35,7 @@ public class TargetHud extends Draggable {
 	}
 
 	public void onEvent(Event e) {
-		if(e instanceof EventRender && e.isPre()) {
+		if(e instanceof EventRender2D && e.isPre()) {
 			EntityLivingBase target;
 
 			if(mc.currentScreen instanceof GuiPosition) {
@@ -49,7 +47,7 @@ public class TargetHud extends Draggable {
 			if (!(target instanceof EntityPlayer || target instanceof EntityVillager || target instanceof EntityZombie))
 				return;
 
-			HudSettings hud = (HudSettings) Wrapper.getModuleManager().getModule("Hud Settings");
+			HudSettings hud = (HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class);
 
 			if(animation.getValueF() != target.getHealth()) {
 				animation.interpolate(target.getHealth());
@@ -79,7 +77,7 @@ public class TargetHud extends Draggable {
 
 					Gui.drawRect(x + 30, y + 16, x + 30 + animation.getValueF() * 4.7f, y + 30, color);
 
-					if (Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled()) {
+					if (Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Minecraft Font").isEnabled()) {
 						mc.fontRendererObj.drawStringWithShadow(target.getName(), x + 30, y + 4, -1);
 						mc.fontRendererObj.drawStringWithShadow(String.format("%.1f", target.getHealth() / 2), x + 30 + (target.getMaxHealth() * 4.7f) / 2 - mc.fontRendererObj.getStringWidth(String.format("%.1f", target.getHealth() / 2)) / 2, y + 19f, -1);
 

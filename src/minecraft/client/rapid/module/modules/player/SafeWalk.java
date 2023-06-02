@@ -1,6 +1,6 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventSafewalk;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;

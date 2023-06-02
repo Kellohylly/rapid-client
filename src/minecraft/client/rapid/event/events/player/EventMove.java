@@ -1,8 +1,10 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 
+// Hooked in EntityPlayerSP.java
 public class EventMove extends Event {
+
 	public double x;
 	public double y;
 	public double z;

@@ -1,9 +1,8 @@
 package client.rapid.module.modules.hud;
 
 import client.rapid.Client;
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -22,8 +21,8 @@ public class Watermark extends Draggable {
 	private final Setting watermarkMode = new Setting("Watermark", this, "Simple", "Cool", "Sense");
 	private final Setting watermarkOpacity = new Setting("Opacity", this, 100, 0, 255, true);
 
-	private final Setting mcFont = Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font");
-	private final Setting rainbow = Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Rainbow Wave");
+	private final Setting mcFont = Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Minecraft Font");
+	private final Setting rainbow = Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Rainbow Wave");
 
 	public static String text = Client.getInstance().getName();
 	MCFontRenderer font = Fonts.normal2;
@@ -34,13 +33,13 @@ public class Watermark extends Draggable {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		watermarkOpacity.setVisible(watermarkMode.getMode().equals("Cool"));
 	}
 
 	@Override
 	public void onEvent(Event e) {
-		if(e instanceof EventRender && e.isPre()) {
+		if(e instanceof EventRender2D && e.isPre()) {
 			String text1 = text
 					.replace("{fps}", String.valueOf(Minecraft.getDebugFPS()))
 					.replace("{time}", new SimpleDateFormat("kk:mm").format(new Date()))
@@ -86,7 +85,7 @@ public class Watermark extends Draggable {
 	}
 
 	public int getColor(long index) {
-		return ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(index);
+		return ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(index);
 	}
 
 }

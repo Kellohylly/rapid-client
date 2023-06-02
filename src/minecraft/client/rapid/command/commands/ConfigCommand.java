@@ -3,10 +3,9 @@ package client.rapid.command.commands;
 import java.io.File;
 import java.util.StringJoiner;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import org.apache.commons.io.FilenameUtils;
 
-import client.rapid.Client;
 import client.rapid.command.Command;
 import client.rapid.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
@@ -30,25 +29,25 @@ public class ConfigCommand extends Command {
 					configName.add(args[i]);
 				
 				if(new File(dir + File.separator + configName + ".conf").exists()) {
-					Wrapper.getConfigManager().getModuleConfig().load(new File(dir + File.separator + configName + ".conf"));
-					PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Loaded config!");
+					Client.getInstance().getConfigManager().getModuleConfig().load(new File(dir + File.separator + configName + ".conf"));
+					Client.getInstance().addChatMessage(EnumChatFormatting.GREEN + "Loaded config!");
 				}
 				else {
-					PlayerUtil.addChatMessage(EnumChatFormatting.RED + "Couldnt load config, check if the names correct,");
-					PlayerUtil.addChatMessage(EnumChatFormatting.RED + "If it still doesnt work, try renaming the file to something else!");
+					Client.getInstance().addChatMessage(EnumChatFormatting.RED + "Couldnt load config, check if the names correct,");
+					Client.getInstance().addChatMessage(EnumChatFormatting.RED + "If it still doesnt work, try renaming the file to something else!");
 				}
 			}
 		} else {
 			try {
-				PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Available Configs:");
+				Client.getInstance().addChatMessage(EnumChatFormatting.GREEN + "Available Configs:");
 
 				assert configs != null;
 
 				for(String f : configs)
-					PlayerUtil.addChatMessage(FilenameUtils.removeExtension(f));
+					Client.getInstance().addChatMessage(FilenameUtils.removeExtension(f));
 				
 			} catch(Exception e) {
-				PlayerUtil.addChatMessage(EnumChatFormatting.RED + "Please make a file in .minecraft/Rapid called \"Configs\"!");
+				Client.getInstance().addChatMessage(EnumChatFormatting.RED + "Please make a file in .minecraft/Rapid called \"Configs\"!");
 			}
 		}
 

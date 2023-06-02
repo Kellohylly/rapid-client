@@ -1,12 +1,13 @@
 package client.rapid.gui.panelgui;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.gui.GuiPosition;
 import client.rapid.gui.panelgui.component.Comp;
 import client.rapid.gui.panelgui.component.components.*;
 import client.rapid.module.Module;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.hud.HudSettings;
+import client.rapid.module.modules.visual.ClickGuiToggle;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
@@ -68,16 +69,16 @@ public class PanelGui extends GuiScreen {
         width2 = posX + 200 * 2;
         height2 = posY + 250;
 
-        if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Background").isEnabled())
+        if(Client.getInstance().getSettingsManager().getSetting(ClickGuiToggle.class, "Background").isEnabled())
             Gui.drawRect(0, 0, width, height, 0x84000000);
 
-        if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled())
-            Gui.drawRect(posX - 2.5, posY - 18.5, width2 + 2.5, height2 + 4.5, ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0));
+        if(Client.getInstance().getSettingsManager().getSetting(ClickGuiToggle.class, "Outline").isEnabled())
+            Gui.drawRect(posX - 2.5, posY - 18.5, width2 + 2.5, height2 + 4.5, ((HudSettings)Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(0));
 
         Gui.drawRect(posX - 2, posY - 18, width2 + 2, height2 + 4, backgroundDark);
         Gui.drawRect(posX + 252, posY, width2, height2 + 2, background);
 
-        font.drawCenteredString("R&fapid", (float)posX + 21, (float)posY - 13, ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0));
+        font.drawCenteredString("R&fapid", (float)posX + 21, (float)posY - 13, ((HudSettings)Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(0));
         font.drawCenteredString(selectedCategory.getName(), (float)posX + 144, (float)posY - 13, -1);
         font.drawCenteredString(selectedModule != null ? selectedModule.getName() : "", (float)posX + 325, (float)posY - 13, -1);
 
@@ -86,7 +87,7 @@ public class PanelGui extends GuiScreen {
         for(Category c : Category.values()) {
             int size = 42;
 
-            Gui.drawRect(posX, posY + i, posX + size, posY + 10 + i + size - 10, c.equals(selectedCategory) ? ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0) : background);
+            Gui.drawRect(posX, posY + i, posX + size, posY + 10 + i + size - 10, c.equals(selectedCategory) ? ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(0) : background);
 
             icons.drawCenteredString(String.valueOf(c.getIcon()), (float)posX + (float) size / 2, (float)posY + i + 14, -1);
 
@@ -98,9 +99,9 @@ public class PanelGui extends GuiScreen {
         glScissor(posX, posY, width2 - posX, height2 - posY + 2);
 
         i = 0;
-        for(Module m : Wrapper.getModuleManager().getModulesInCategory(selectedCategory)) {
+        for(Module m : Client.getInstance().getModuleManager().getModulesInCategory(selectedCategory)) {
             Gui.drawRect(posX + 44, posY + i + heightt, posX + 250, posY + i + heightt + 23, background);
-            font.drawString(m.getName() + (m.getKey() == 0 ? (binding && m == bindingModule ? " &7Listening..." : "") : " &7[" + (binding && m == bindingModule ? "Listening...]" : Keyboard.getKeyName(m.getKey()) + "]")), (float)posX + 50, (float)posY + (float)heightt + 8 + i, m.isEnabled() ? ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor(i) : -1);
+            font.drawString(m.getName() + (m.getKey() == 0 ? (binding && m == bindingModule ? " &7Listening..." : "") : " &7[" + (binding && m == bindingModule ? "Listening...]" : Keyboard.getKeyName(m.getKey()) + "]")), (float)posX + 50, (float)posY + (float)heightt + 8 + i, m.isEnabled() ? ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(i) : -1);
 
             if(isInside(mouseX, mouseY, posX + 52, posY, posX + 250, height2)) {
                 if (wheel < 0) {
@@ -131,7 +132,7 @@ public class PanelGui extends GuiScreen {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();
 
-        Gui.drawRect(4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4, isInside(mouseX, mouseY, 4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4) ? ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0) : 0xFF0F0F0F);
+        Gui.drawRect(4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4, isInside(mouseX, mouseY, 4, height - 26, 16 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 4) ? ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(0) : 0xFF0F0F0F);
         Gui.drawRect(5, height - 25, 15 + mc.fontRendererObj.getStringWidth("Draggable Hud"), height - 5, 0xFF1F1F1F);
         mc.fontRendererObj.drawString("Draggable Hud", 10, height - 19, -1);
     }
@@ -171,7 +172,7 @@ public class PanelGui extends GuiScreen {
             i += 42;
         }
         i = 0;
-        for(Module m : Wrapper.getModuleManager().getModulesInCategory(selectedCategory)) {
+        for(Module m : Client.getInstance().getModuleManager().getModulesInCategory(selectedCategory)) {
             if(isInside(mouseX, mouseY, posX + 44, posY + i + heightt, posX + 250, posY + i + heightt + 23)) {
                 if(isInside(mouseX, mouseY, posX + 44, posY, posX + 250, height2 + 2)) {
                     if(mouseButton == 0) {
@@ -182,8 +183,8 @@ public class PanelGui extends GuiScreen {
                     } else if(mouseButton == 1) {
                         offset = 3;
                         comps.clear();
-                        if (Wrapper.getSettingsManager().getSettingsByMod(m) != null)
-                            for (Setting setting : Wrapper.getSettingsManager().getSettingsByMod(m)) {
+                        if (Client.getInstance().getSettingsManager().getSettingsByMod(m) != null)
+                            for (Setting setting : Client.getInstance().getSettingsManager().getSettingsByMod(m)) {
                                 selectedModule = m;
 
                                 if (setting.isCheck()) {

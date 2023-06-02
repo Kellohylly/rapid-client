@@ -1,5 +1,6 @@
 package client.rapid.command.commands;
 
+import client.rapid.Client;
 import client.rapid.command.Command;
 import client.rapid.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
@@ -15,7 +16,7 @@ public class VClipCommand extends Command {
         try {
             Minecraft.getMinecraft().thePlayer.getEntityBoundingBox().offsetAndUpdate(0, Double.parseDouble(args[0]), 0);
         } catch(Exception e) {
-            PlayerUtil.addChatMessage(EnumChatFormatting.RED + "Invalid Number!");
+            Client.getInstance().addChatMessage(EnumChatFormatting.RED + "Invalid Number!");
         }
     }
 }

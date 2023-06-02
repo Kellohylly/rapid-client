@@ -1,6 +1,6 @@
 package client.rapid.module.modules.combat;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -71,7 +71,7 @@ public class Aimbot extends Module {
             if (entity.isOnSameTeam(mc.thePlayer) && teams.isEnabled())
                 return false;
 
-            if (isEnabled("Anti Bot") && AntiBot.getBots().contains(entity))
+            if (isEnabled(AntiBot.class) && AntiBot.getBots().contains(entity))
                 return false;
         }
 

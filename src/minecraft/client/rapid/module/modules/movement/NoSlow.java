@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventSlowdown;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -9,6 +9,7 @@ import client.rapid.module.modules.combat.KillAura;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
+import client.rapid.util.module.MoveUtil;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSword;
@@ -31,7 +32,7 @@ public class NoSlow extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		delay.setVisible(!mode.getMode().equals("Vanilla"));
 	}
 
@@ -42,7 +43,7 @@ public class NoSlow extends Module {
 		if(e instanceof EventSlowdown) {
 			EventSlowdown event = (EventSlowdown) e;
 
-			if (mc.thePlayer.isUsingItem() && isMoving() && !mc.thePlayer.isSneaking()) {
+			if (mc.thePlayer.isUsingItem() && MoveUtil.isMoving() && !mc.thePlayer.isSneaking()) {
 				if(mc.thePlayer.isSprinting() && !allowSprinting.isEnabled())
 					mc.thePlayer.setSprinting(false);
 

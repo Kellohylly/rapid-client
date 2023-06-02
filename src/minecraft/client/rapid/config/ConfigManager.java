@@ -1,22 +1,22 @@
-package client.rapid.file;
+package client.rapid.config;
 
-import client.rapid.file.files.HudConfig;
-import client.rapid.file.files.ModKeyConfig;
-import client.rapid.file.files.ModuleConfig;
+import client.rapid.config.configs.HudConfig;
+import client.rapid.config.configs.ModKeyConfig;
+import client.rapid.config.configs.ModuleConfig;
 import client.rapid.util.console.Logger;
 import net.minecraft.client.Minecraft;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileManager {
+public class ConfigManager {
     private final ModuleConfig moduleConfig;
     private final ModKeyConfig modKeyConfig;
     private final HudConfig hudConfig;
 
     private final java.io.File dir;
 
-    public FileManager() {
+    public ConfigManager() {
         this.dir = new java.io.File(Minecraft.getMinecraft().mcDataDir, "Rapid");
 
         this.generateFiles();
@@ -25,7 +25,7 @@ public class FileManager {
         this.modKeyConfig = new ModKeyConfig();
         this.hudConfig = new HudConfig();
 
-        for(File config : new File[] {moduleConfig, modKeyConfig, hudConfig}) {
+        for(Config config : new Config[] {moduleConfig, modKeyConfig, hudConfig}) {
             if(!config.getData().exists()) {
                 try {
                     config.getData().createNewFile();

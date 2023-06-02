@@ -1,9 +1,7 @@
 package client.rapid.module.modules.movement.steps;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventStep;
-import client.rapid.util.PacketUtil;
-import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class VanillaStep extends StepBase {
 

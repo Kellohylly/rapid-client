@@ -1,6 +1,7 @@
 package client.rapid.module.modules.other;
 
-import client.rapid.event.events.Event;
+import client.rapid.Client;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -9,14 +10,10 @@ import client.rapid.module.settings.Setting;
 import client.rapid.notification.Notification;
 import client.rapid.notification.NotificationManager;
 import client.rapid.notification.NotificationType;
-import client.rapid.util.PlayerUtil;
 import client.rapid.util.TimerUtil;
-import client.rapid.util.module.MoveUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -115,7 +112,7 @@ public class HackerDetector extends Module {
                     String name = red + player.getName() + gray;
                     check = red + check + gray;
 
-                    PlayerUtil.addChatMessage(name + " failed " + check + "!");
+                    Client.getInstance().addChatMessage(name + " failed " + check + "!");
                     break;
                 case "Server Side":
                     mc.thePlayer.sendChatMessage("AC >> " + player.getName() + " failed " + check + "!");

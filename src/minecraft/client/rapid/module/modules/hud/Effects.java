@@ -1,8 +1,8 @@
 package client.rapid.module.modules.hud;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.Client;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.gui.GuiPosition;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
@@ -37,7 +37,7 @@ public class Effects extends Draggable {
     }
 
     public void onEvent(Event e) {
-        if(e instanceof EventRender && e.isPre()) {
+        if(e instanceof EventRender2D && e.isPre()) {
             int i2 = 16;
 
             ArrayList<PotionEffect> collection = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
@@ -60,7 +60,7 @@ public class Effects extends Draggable {
 
 
                     String text = s1 + EnumChatFormatting.GRAY + " " + Potion.getDurationString(potioneffect);
-                    if(Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled())
+                    if(Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Minecraft Font").isEnabled())
                         Gui.drawCenteredString(mc.fontRendererObj, text, x + width + 2 - mc.fontRendererObj.getStringWidth(text) / 2 - 5, y + 14 + i2, potion.getLiquidColor());
                     else
                         font.drawCenteredStringWithShadow(text, x + width + 2 - (float) font.getStringWidth(text) / 2 + 5, y + 14 + i2, potion.getLiquidColor());

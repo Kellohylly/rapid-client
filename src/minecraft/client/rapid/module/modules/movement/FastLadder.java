@@ -1,11 +1,12 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.module.MoveUtil;
 
 @ModuleInfo(getName = "Fast Ladder", getCategory = Category.MOVEMENT)
 public class FastLadder extends Module {
@@ -25,7 +26,7 @@ public class FastLadder extends Module {
 	public void onEvent(Event e) {
 		if(e instanceof EventUpdate && e.isPre()) {
 			setTag(mode.getMode());
-			if(mc.thePlayer.isOnLadder() && isMoving() && !mc.thePlayer.onGround && !(mc.thePlayer.fallDistance > 0)) {
+			if(mc.thePlayer.isOnLadder() && MoveUtil.isMoving() && !mc.thePlayer.onGround && !(mc.thePlayer.fallDistance > 0)) {
 				switch(mode.getMode()) {
 					case "Vanilla":
 						mc.thePlayer.motionY *= speed.getValue();

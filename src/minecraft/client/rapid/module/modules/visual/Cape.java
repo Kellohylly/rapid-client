@@ -1,6 +1,6 @@
 package client.rapid.module.modules.visual;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -16,14 +16,12 @@ public class Cape extends Module {
     }
 
     public static ResourceLocation getCape() {
-        switch (Wrapper.getSettingsManager().getSettingByName("Cape", "Mode").getMode()) {
-            case "Rapid":
-                return new ResourceLocation("rapid/images/cape.png");
+        switch (Client.getInstance().getSettingsManager().getSetting(Cape.class, "Mode").getMode()) {
             case "Hydrogen":
                 return new ResourceLocation("rapid/images/hydrogen.png");
             case "Lunar":
                 return new ResourceLocation("rapid/images/lunar.png");
         }
-        return null;
+        return new ResourceLocation("rapid/images/cape.png");
     }
 }

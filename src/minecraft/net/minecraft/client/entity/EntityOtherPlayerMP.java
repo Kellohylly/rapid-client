@@ -1,7 +1,7 @@
 package net.minecraft.client.entity;
 
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventAttackedPlayer;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
@@ -33,7 +33,7 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer {
       if(source.getSourceOfDamage() == Minecraft.getMinecraft().thePlayer) {
          EventAttackedPlayer eventAttacked = new EventAttackedPlayer(this);
          eventAttacked.setType(EventType.PRE);
-         Event.dispatch(eventAttacked);
+         eventAttacked.callEvent();
       }
 
 

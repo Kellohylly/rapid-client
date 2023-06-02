@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer;
 
+import client.rapid.Client;
 import client.rapid.module.modules.combat.KillAura;
+import client.rapid.module.modules.visual.Animations;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -28,8 +30,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
-
-import client.rapid.Wrapper;
 
 public class ItemRenderer {
    private static final ResourceLocation RES_MAP_BACKGROUND = new ResourceLocation("textures/map/map_background.png");
@@ -233,8 +233,8 @@ public class ItemRenderer {
       GlStateManager.rotate(f1 * -20.0F, 0.0F, 0.0F, 1.0F);
       GlStateManager.rotate(f1 * -80.0F, 1.0F, 0.0F, 0.0F);
 
-      if(Wrapper.getModuleManager().getModule("Animations").isEnabled())
-         GlStateManager.scale(0.2F + Wrapper.getSettingsManager().getSettingByName("Animations", "Item Size").getValue(), 0.2F + Wrapper.getSettingsManager().getSettingByName("Animations", "Item Size").getValue(), 0.2F + Wrapper.getSettingsManager().getSettingByName("Animations", "Item Size").getValue());
+      if(Client.getInstance().getModuleManager().getModule(Animations.class).isEnabled())
+         GlStateManager.scale(0.2F + Client.getInstance().getSettingsManager().getSetting(Animations.class, "Item Size").getValue(), 0.2F + Client.getInstance().getSettingsManager().getSetting(Animations.class, "Item Size").getValue(), 0.2F + Client.getInstance().getSettingsManager().getSetting(Animations.class, "Item Size").getValue());
       else
          GlStateManager.scale(0.4F, 0.4F, 0.4F);
    }
@@ -281,7 +281,7 @@ public class ItemRenderer {
       GlStateManager.enableRescaleNormal();
       GlStateManager.pushMatrix();
       if(this.itemToRender != null) {
-         boolean fakeBlock = KillAura.target != null && (Wrapper.getSettingsManager().getSettingByName("Kill Aura", "AutoBlock").getMode().equals("Fake") || Wrapper.getSettingsManager().getSettingByName("Kill Aura", "AutoBlock").getMode().equals("NCP"));
+         boolean fakeBlock = KillAura.target != null && (Client.getInstance().getSettingsManager().getSetting(KillAura.class, "AutoBlock").getMode().equals("Fake") || Client.getInstance().getSettingsManager().getSetting(KillAura.class, "AutoBlock").getMode().equals("NCP"));
 
          if(this.itemToRender.getItem() == Items.filled_map) {
             this.renderItemMap(abstractclientplayer, f2, f, f1);
@@ -289,7 +289,7 @@ public class ItemRenderer {
             EnumAction enumaction = this.itemToRender.getItemUseAction();
             switch(enumaction) {
             case NONE:
-            	if(Wrapper.getModuleManager().getModule("Animations").isEnabled() && Wrapper.getSettingsManager().getSettingByName("Animations", "Better Swing").isEnabled())
+            	if(Client.getInstance().getModuleManager().getModule(Animations.class).isEnabled() && Client.getInstance().getSettingsManager().getSetting(Animations.class, "Better Swing").isEnabled())
 	 	            this.transformFirstPersonItem(0, f1);
             	else    	
             		this.transformFirstPersonItem(f, 0.0F);
@@ -300,8 +300,8 @@ public class ItemRenderer {
                this.transformFirstPersonItem(f, 0.0F);
                break;
             case BLOCK:
-            	if(Wrapper.getModuleManager().getModule("Animations").isEnabled()) {
-                   switch(Wrapper.getSettingsManager().getSettingByName("Animations", "Mode").getMode()) {
+            	if(Client.getInstance().getModuleManager().getModule(Animations.class).isEnabled()) {
+                   switch(Client.getInstance().getSettingsManager().getSetting(Animations.class, "Mode").getMode()) {
             		case "1.8":
      	               this.transformFirstPersonItem(f, 0.0F);
     	               this.func_178103_d();
@@ -314,7 +314,7 @@ public class ItemRenderer {
             		case "Slide":
                         float f11 = MathHelper.sin((float) (MathHelper.sqrt_float(f1) * 3.1));
                         
-                        if(Wrapper.getSettingsManager().getSettingByName("Animations", "Mode").getMode().equals("Slide"))
+                        if(Client.getInstance().getSettingsManager().getSetting(Animations.class, "Mode").getMode().equals("Slide"))
                         	GL11.glTranslated(-0.1D, 0.1D, 0.0D);
 						else
 							GL11.glTranslated(0.0D, 0.1D, 0.0D);
@@ -322,16 +322,16 @@ public class ItemRenderer {
                         this.transformFirstPersonItem(f, 0.0f);
                         GlStateManager.rotate(-f11 * 40.0F, 1.0F, -0.1f, 0);
                         
-                        if(Wrapper.getSettingsManager().getSettingByName("Animations", "Mode").getMode().equals("Slide"))
+                        if(Client.getInstance().getSettingsManager().getSetting(Animations.class, "Mode").getMode().equals("Slide"))
                          GlStateManager.rotate(-f11 * 25.0F, 0.0F, -2f, 0);
                         this.func_178103_d();
             			break;
             		case "Rotate":
                         this.transformFirstPersonItem(0, 0);
-                        GlStateManager.rotate(System.currentTimeMillis() / (int)(Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() - 3) % 360, 0, 1f, 0);
+                        GlStateManager.rotate(System.currentTimeMillis() / (int)(Client.getInstance().getSettingsManager().getSetting(Animations.class, "Swing Speed").getValue() - 3) % 360, 0, 1f, 0);
                         break;
             		case "Astolfo":
-                       GlStateManager.rotate((System.currentTimeMillis() / (int)(Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() - 3)% 360), 0, 0, 1);
+                       GlStateManager.rotate((System.currentTimeMillis() / (int)(Client.getInstance().getSettingsManager().getSetting(Animations.class, "Swing Speed").getValue() - 3)% 360), 0, 0, 1);
                        this.transformFirstPersonItem(0, 0);
                        this.func_178103_d();
                        break;
@@ -339,7 +339,7 @@ public class ItemRenderer {
                       GlStateManager.translate(0.33D, -0.4, -0.8);
                       GlStateManager.rotate(30.0F, -60.0F, -20.0F, 30.0F);
                       GlStateManager.rotate(45.0F, 0.0F, -20.0F, 30.0F);
-                      GlStateManager.rotate((System.currentTimeMillis() / (int)(Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() - 3)% 360), 1.0F, 0.4F, 1.0F);
+                      GlStateManager.rotate((System.currentTimeMillis() / (int)(Client.getInstance().getSettingsManager().getSetting(Animations.class, "Swing Speed").getValue() - 3)% 360), 1.0F, 0.4F, 1.0F);
                       GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
                       GlStateManager.scale(0.4, 0.4, 0.4);
                       GlStateManager.scale(0.8f, 0.8f, 0.8f);
@@ -388,8 +388,8 @@ public class ItemRenderer {
             }
          } else {
         		 
-        	 if(Wrapper.getModuleManager().getModule("Animations").isEnabled()) {
-        		 if(!Wrapper.getSettingsManager().getSettingByName("Animations", "Better Swing").isEnabled()) 
+        	 if(Client.getInstance().getModuleManager().getModule(Animations.class).isEnabled()) {
+        		 if(!Client.getInstance().getSettingsManager().getSetting(Animations.class, "Better Swing").isEnabled())
         			 this.func_178105_d(f1);
         	 } else
          		this.func_178105_d(f1);

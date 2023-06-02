@@ -12,13 +12,11 @@ public class ATextField extends GuiTextField {
 
     private final int width;
     private final int height;
-    private FontRenderer fontRendererInstance;
 
     public ATextField(int componentId, FontRenderer fontrendererObj, int x, int y, int par5Width, int par6Height) {
         super(componentId, fontrendererObj, x, y, par5Width, par6Height);
         this.width = par5Width;
         this.height = par6Height;
-        this.fontRendererInstance = fontrendererObj;
     }
 
     @Override

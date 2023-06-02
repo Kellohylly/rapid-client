@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventCollide;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
@@ -8,6 +8,7 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
+import client.rapid.util.module.MoveUtil;
 
 @ModuleInfo(getName = "Phase", getCategory = Category.MOVEMENT)
 public class Phase extends Module {
@@ -63,11 +64,11 @@ public class Phase extends Module {
                     if(PlayerUtil.isInsideBlock()) {
                         mc.thePlayer.motionY = 0D;
                         mc.thePlayer.onGround = true;
-                        setMoveSpeed(speed.getValue());
+                        MoveUtil.setMoveSpeed(speed.getValue());
                         wasPhasing = true;
                     } else {
                         if(wasPhasing) {
-                            setMoveSpeed(0);
+                            MoveUtil.setMoveSpeed(0);
                             wasPhasing = false;
                         }
                     }
@@ -77,8 +78,8 @@ public class Phase extends Module {
         if(e instanceof EventCollide && e.isPre()) {
             EventCollide event = (EventCollide)e;
 
-            if((mc.gameSettings.keyBindJump.isKeyDown()) || (!PlayerUtil.isInsideBlock() && event.getBoundingBox() != null && event.getBoundingBox().maxY > mc.thePlayer.boundingBox.minY && mc.thePlayer.isSneaking()))
-                ((EventCollide)e).setBoundingBox(null);
+            if((mc.gameSettings.keyBindJump.isKeyDown()) || (!PlayerUtil.isInsideBlock() && event.getAxisAlignedBB() != null && event.getAxisAlignedBB().maxY > mc.thePlayer.boundingBox.minY && mc.thePlayer.isSneaking()))
+                ((EventCollide)e).setAxisAlignedBB(null);
         }
     }
 }

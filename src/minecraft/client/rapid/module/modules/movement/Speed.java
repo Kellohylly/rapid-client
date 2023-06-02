@@ -1,9 +1,8 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.event.events.player.EventMotion;
-import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -42,7 +41,7 @@ public class Speed extends Module {
 		this.setMode();
 	}
 
-	public void settingCheck() {
+	public void updateSettings() {
 		groundStrafe.setVisible(mode.getMode().equals("Vulcan") || (mode.getMode().equals("Vanilla") && vanillaMode.getMode().equals("Strafe")));
 		damageBoost.setVisible(!mode.getMode().equals("Vanilla") && !mode.getMode().equals("Vulcan"));
 		speed.setVisible(mode.getMode().equals("Vanilla"));

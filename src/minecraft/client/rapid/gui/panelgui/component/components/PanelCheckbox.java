@@ -1,6 +1,6 @@
 package client.rapid.gui.panelgui.component.components;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.gui.panelgui.component.Comp;
 import client.rapid.module.Module;
@@ -26,7 +26,7 @@ public class PanelCheckbox extends Comp {
         Gui.drawRect((int)(parent.posX + x + 107), (int)(parent.posY + y + 4) + scrollY, (int)(parent.posX + x + 120), (int)(parent.posY + y + 17) + scrollY, PanelGui.backgroundDark);
 
         if(setting.isEnabled())
-            Gui.drawRect((int)(parent.posX + x + 109), (int)(parent.posY + y + 6) + scrollY, (int)(parent.posX + x + 118), (int)(parent.posY + y + 15) + scrollY, ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor((long)y));
+            Gui.drawRect((int)(parent.posX + x + 109), (int)(parent.posY + y + 6) + scrollY, (int)(parent.posX + x + 118), (int)(parent.posY + y + 15) + scrollY, ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor((long)y));
 
     }
 

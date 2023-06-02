@@ -7,11 +7,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import client.rapid.Client;
+import client.rapid.module.modules.movement.NoJumpDelay;
+import client.rapid.module.modules.visual.Animations;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 
-import client.rapid.Wrapper;
 import client.rapid.event.EventType;
 import client.rapid.event.events.player.EventJump;
 import client.rapid.util.module.RotationUtil;
@@ -902,7 +904,7 @@ public abstract class EntityLivingBase extends Entity {
    }
 
    private int getArmSwingAnimationEnd() {
-      return Wrapper.getModuleManager().getModule("Animations").isEnabled() ? (int)Wrapper.getSettingsManager().getSettingByName("Animations", "Swing Speed").getValue() : this.isPotionActive(Potion.digSpeed)?6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) :(this.isPotionActive(Potion.digSlowdown)?6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2:6);
+      return Client.getInstance().getModuleManager().getModule(Animations.class).isEnabled() ? (int)Client.getInstance().getSettingsManager().getSetting(Animations.class, "Swing Speed").getValue() : this.isPotionActive(Potion.digSpeed)?6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) :(this.isPotionActive(Potion.digSlowdown)?6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2:6);
    }
 
    public void swingItem() {
@@ -1332,7 +1334,7 @@ public abstract class EntityLivingBase extends Entity {
    }
 
    public void onLivingUpdate() {
-      if(Wrapper.getModuleManager().getModule("No Jump Delay").isEnabled()) {
+      if(Client.getInstance().getModuleManager().getModule(NoJumpDelay.class).isEnabled()) {
          this.jumpTicks = 0;
       } else {
          if (this.jumpTicks > 0) {
@@ -1390,7 +1392,7 @@ public abstract class EntityLivingBase extends Entity {
          } else if(this.onGround && this.jumpTicks == 0) {
             this.jump();
 
-            if(!Wrapper.getModuleManager().getModule("No Jump Delay").isEnabled()) {
+            if(!Client.getInstance().getModuleManager().getModule(NoJumpDelay.class).isEnabled()) {
                this.jumpTicks = 10;
             }
          }

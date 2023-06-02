@@ -1,7 +1,7 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
+import client.rapid.Client;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -12,10 +12,6 @@ import client.rapid.util.TimerUtil;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @ModuleInfo(getName = "Chest Stealer", getCategory = Category.PLAYER)
 public class ChestStealer extends Module {
@@ -78,7 +74,7 @@ public class ChestStealer extends Module {
     public static boolean isEmpty(Container container) {
         for (int i = 0; i < ((container.inventorySlots.size() == 90) ? 54 : 27); ++i) {
             if (container.getSlot(i).getHasStack()) {
-				return Wrapper.getSettingsManager().getSettingByName("Chest Stealer", "Ignore Bad Items").isEnabled() && ItemUtil.isBadItem(container.inventorySlots.get(i).getStack().getItem());
+				return Client.getInstance().getSettingsManager().getSetting(ChestStealer.class, "Ignore Bad Items").isEnabled() && ItemUtil.isBadItem(container.inventorySlots.get(i).getStack().getItem());
 			}
         }
         return true;

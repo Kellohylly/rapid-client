@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer.entity.layers;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.modules.visual.Cape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -22,7 +22,7 @@ public class LayerCape implements LayerRenderer
 
     public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
     {
-            if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && entitylivingbaseIn.isWearing(EnumPlayerModelParts.CAPE) && (entitylivingbaseIn.getLocationCape() != null || Wrapper.getModuleManager().getModule("Cape").isEnabled() && entitylivingbaseIn == Minecraft.getMinecraft().thePlayer)) {
+            if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && entitylivingbaseIn.isWearing(EnumPlayerModelParts.CAPE) && (entitylivingbaseIn.getLocationCape() != null || Client.getInstance().getModuleManager().getModule(Cape.class).isEnabled() && entitylivingbaseIn == Minecraft.getMinecraft().thePlayer)) {
 
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 

@@ -1,6 +1,5 @@
 package client.rapid.module.modules.hud;
 
-import client.rapid.Wrapper;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -14,7 +13,6 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 

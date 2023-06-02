@@ -3,7 +3,6 @@ package client.rapid.module.settings;
 import java.util.*;
 
 import client.rapid.Client;
-import client.rapid.Wrapper;
 import client.rapid.module.Module;
 import net.minecraft.client.Minecraft;
 
@@ -113,11 +112,11 @@ public class Setting {
     
     private void save() {
 		if(Client.getInstance() != null && Minecraft.getMinecraft().thePlayer != null)
-			Wrapper.getConfigManager().getModuleConfig().save();
+			Client.getInstance().getConfigManager().getModuleConfig().save();
     }
 
 	public void check() {
-		parent.settingCheck();
+		parent.updateSettings();
 	}
 
 }

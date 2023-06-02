@@ -1,6 +1,6 @@
 package net.minecraft.client.gui;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.modules.visual.NameProtect;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
@@ -426,7 +426,7 @@ public class FontRenderer implements IResourceManagerReloadListener
      */
     private void renderStringAtPos(String p_78255_1_, boolean p_78255_2_)
     {
-        if(Minecraft.getMinecraft().thePlayer != null && Wrapper.getModuleManager().getModule("Name Protect").isEnabled()) {
+        if(Minecraft.getMinecraft().thePlayer != null && Client.getInstance().getModuleManager().getModule(NameProtect.class).isEnabled()) {
             if(p_78255_1_.contains(Minecraft.getMinecraft().thePlayer.getName())) {
                 p_78255_1_ = p_78255_1_.replaceAll(Minecraft.getMinecraft().thePlayer.getName(), NameCommand.getNewName()).replace("%n", Minecraft.getMinecraft().thePlayer.getName());
             }

@@ -1,8 +1,6 @@
 package net.minecraft.client;
 
-import client.rapid.Wrapper;
 import client.rapid.event.events.game.EventWorldLoad;
-import client.rapid.module.modules.other.RichPresenceToggle;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -19,7 +17,7 @@ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 
 import client.rapid.Client;
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventTick;
 
 import java.awt.image.BufferedImage;
@@ -475,7 +473,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     private void startGame() throws LWJGLException, IOException
     {
-        Client.getInstance().preinit();
+        Client.getInstance().onPreStartup();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
@@ -590,7 +588,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.toggleFullscreen();
         }
 
-        Client.getInstance().init();
+        Client.getInstance().onStartup();
 
         try
         {
@@ -1043,7 +1041,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     {
         try
         {
-            Client.getInstance().stop();
+            Client.getInstance().onShutdown();
 
             this.stream.shutdownStream();
             logger.info("Stopping!");
@@ -2265,7 +2263,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         
         EventTick eventTick = new EventTick();
         eventTick.setType(EventType.PRE);
-        Event.dispatch(eventTick);
+        eventTick.callEvent();
+
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
     }
@@ -2338,7 +2337,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         networkmanager.sendPacket(new C00Handshake(47, socketaddress.toString(), 0, EnumConnectionState.LOGIN));
         networkmanager.sendPacket(new C00PacketLoginStart(this.getSession().getProfile()));
         this.myNetworkManager = networkmanager;
-        Wrapper.getRichPresence().update("On SinglePlayer", "");
+        Client.getInstance().getDiscordRP().updateRPC("On SinglePlayer", "");
     }
 
     /**
@@ -2420,7 +2419,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
             EventWorldLoad eventWorldLoad = new EventWorldLoad();
             eventWorldLoad.setType(EventType.PRE);
-            Event.dispatch(eventWorldLoad);
+            eventWorldLoad.callEvent();
 
         }
         else

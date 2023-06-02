@@ -1,6 +1,6 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -13,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
@@ -37,7 +36,7 @@ public class InventoryManager extends Module {
     }
 
     @Override
-    public void settingCheck() {
+    public void updateSettings() {
         keepAxe.setVisible(clean.isEnabled());
         keepPickaxe.setVisible(clean.isEnabled());
         keepShovel.setVisible(clean.isEnabled());

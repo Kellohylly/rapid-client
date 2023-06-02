@@ -3,7 +3,7 @@ package client.rapid.module.modules.combat;
 import net.minecraft.util.MovingObjectPosition;
 import org.lwjgl.input.Mouse;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventTick;
 import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.module.*;

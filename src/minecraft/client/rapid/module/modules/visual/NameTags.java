@@ -1,13 +1,11 @@
 package client.rapid.module.modules.visual;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRenderWorld;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender3D;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.font.Fonts;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,8 +28,8 @@ public class NameTags extends Module {
 
     @Override
     public void onEvent(Event e) {
-        if(e instanceof EventRenderWorld) {
-            EventRenderWorld event = (EventRenderWorld) e;
+        if(e instanceof EventRender3D) {
+            EventRender3D event = (EventRender3D) e;
             mc.theWorld.loadedEntityList.forEach(p -> {
                 if(p instanceof EntityPlayer && p != mc.thePlayer) {
                     double tickX = p.lastTickPosX + (p.posX - p.lastTickPosX) * event.getPartialTicks();

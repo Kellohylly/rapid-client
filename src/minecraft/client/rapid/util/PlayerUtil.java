@@ -35,11 +35,6 @@ public class PlayerUtil extends MinecraftUtil {
         PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
     }
 
-	public static void addChatMessage(String message) {
-		message = RED + "Rapid " + GRAY + "» " + RESET + message;
-		mc.thePlayer.addChatMessage(new ChatComponentText(message));
-	}
-
     public static boolean isOnWater() {
         final double y = mc.thePlayer.posY - 0.03;
 

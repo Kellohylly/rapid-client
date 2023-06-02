@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventCollide;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -8,11 +8,7 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
-import client.rapid.util.block.BlockUtil;
-import net.minecraft.block.BlockAir;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
 
 @ModuleInfo(getName = "Spider", getCategory = Category.MOVEMENT)
 public class Spider extends Module {
@@ -50,7 +46,7 @@ public class Spider extends Module {
                 if(mc.thePlayer.motionY > 0.0)
                     return;
 
-                event.setBoundingBox(new AxisAlignedBB(event.getX(), event.getY(), event.getZ(), event.getX() + 1, 1, event.getZ() + 1));
+                event.setAxisAlignedBB(new AxisAlignedBB(event.getX(), event.getY(), event.getZ(), event.getX() + 1, 1, event.getZ() + 1));
 
             } else {
                 mc.thePlayer.motionX *= -1f;

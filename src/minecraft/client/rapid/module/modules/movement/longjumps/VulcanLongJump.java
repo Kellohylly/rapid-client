@@ -1,7 +1,6 @@
 package client.rapid.module.modules.movement.longjumps;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.player.NoFall;
 import client.rapid.util.TimerUtil;

@@ -1,13 +1,13 @@
 package net.minecraft.client.entity;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
 import client.rapid.event.events.game.EventChat;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventSlowdown;
 import client.rapid.event.events.player.EventUpdate;
+import client.rapid.module.modules.visual.NoRender;
 import client.rapid.util.module.RotationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -113,30 +113,34 @@ public class EntityPlayerSP extends AbstractClientPlayer {
    public void onUpdate() {
       if(this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
          super.onUpdate();
+
          EventUpdate eventUpdate = new EventUpdate(rotationYaw, rotationPitch);
          eventUpdate.setType(EventType.PRE);
-         Event.dispatch(eventUpdate);
+         eventUpdate.callEvent();
+
          if(this.isRiding()) {
             this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(RotationUtil.yaw, RotationUtil.pitch, this.onGround));
             this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
          } else {
             this.onUpdateWalkingPlayer();
          }
+
          eventUpdate.setType(EventType.POST);
-         Event.dispatch(eventUpdate);
+         eventUpdate.callEvent();
       }
    }
    
    @Override
 	public void moveEntity(double x, double y, double z) {
-	   EventMove eventMove = new EventMove(x, y, z);
-	   eventMove.setType(EventType.PRE);
-	   Event.dispatch(eventMove);
-	   
-	   super.moveEntity(eventMove.getX(), eventMove.getY(), eventMove.getZ());
-	   
-	   eventMove.setType(EventType.POST);
-		Event.dispatch(eventMove);
+      EventMove eventMove = new EventMove(x, y, z);
+
+      eventMove.setType(EventType.PRE);
+      eventMove.callEvent();
+
+      super.moveEntity(eventMove.getX(), eventMove.getY(), eventMove.getZ());
+
+      eventMove.setType(EventType.POST);
+      eventMove.callEvent();
 	}
 
 	@Override
@@ -156,7 +160,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
       EventMotion eventMotion = new EventMotion(RotationUtil.yaw, RotationUtil.pitch, this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround);
       eventMotion.setType(EventType.PRE);
-      Event.dispatch(eventMotion);
+      eventMotion.callEvent();
       
       if(flag != this.serverSprintState) {
          if(flag) {
@@ -216,7 +220,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
          }
       }
       eventMotion.setType(EventType.POST);
-      Event.dispatch(eventMotion);
+      eventMotion.callEvent();
    }
 
    public EntityItem dropOneItem(boolean dropAll) {
@@ -231,7 +235,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
    public void sendChatMessage(String message) {
 	   EventChat eventChat = new EventChat(message);
 	   eventChat.setType(EventType.PRE);
-	   Event.dispatch(eventChat);
+	   eventChat.callEvent();
 	   
 	   if(eventChat.isCancelled())
 		   return;
@@ -526,7 +530,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
             this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("portal.trigger"), this.rand.nextFloat() * 0.4F + 0.8F));
          }
 
-         if(Wrapper.getModuleManager().getModule("No Render").isEnabled() && Wrapper.getSettingsManager().getSettingByName("No Render", "Portal").isEnabled())
+         if(Client.getInstance().getModuleManager().getModule(NoRender.class).isEnabled() && Client.getInstance().getSettingsManager().getSetting(NoRender.class, "Portal").isEnabled())
             this.timeInPortal = 0;
          else
             this.timeInPortal += 0.0125F;
@@ -538,7 +542,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
          this.inPortal = false;
       } else if (this.isPotionActive(Potion.confusion) && this.getActivePotionEffect(Potion.confusion).getDuration() > 60) {
          {
-            if(Wrapper.getModuleManager().getModule("No Render").isEnabled() && Wrapper.getSettingsManager().getSettingByName("No Render", "Nausea").isEnabled())
+            if(Client.getInstance().getModuleManager().getModule(NoRender.class).isEnabled() && Client.getInstance().getSettingsManager().getSetting(NoRender.class, "Nausea").isEnabled())
                   this.timeInPortal = 0;
             else
                this.timeInPortal += 0.006666667F;
@@ -570,7 +574,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
       if(this.isUsingItem() && !this.isRiding()) {
          EventSlowdown eventSlowdown = new EventSlowdown();
          eventSlowdown.setType(EventType.PRE);
-         Event.dispatch(eventSlowdown);
+         eventSlowdown.callEvent();
 
     	  if(!eventSlowdown.isCancelled()) {
 	         this.movementInput.moveStrafe *= 0.2F;
@@ -578,7 +582,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 	         this.sprintToggleTimer = 0;
     	  }
          eventSlowdown.setType(EventType.POST);
-         Event.dispatch(eventSlowdown);
+         eventSlowdown.callEvent();
       }
 
       this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);

@@ -1,7 +1,7 @@
 package client.rapid.module.modules.visual;
 
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -21,8 +21,8 @@ public class Crosshair extends Module {
     }
 
     public void onEvent(Event e) {
-        if(e instanceof EventRender && e.isPre()) {
-            EventRender event = (EventRender)e;
+        if(e instanceof EventRender2D && e.isPre()) {
+            EventRender2D event = (EventRender2D)e;
 
             double width = (float) event.getScaledResolution().getScaledWidth() / 2 + 0.5;
             double height = (float) event.getScaledResolution().getScaledHeight() / 2 + 0.5;

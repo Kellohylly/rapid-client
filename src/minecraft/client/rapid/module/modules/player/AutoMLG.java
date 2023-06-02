@@ -1,6 +1,6 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.module.Module;
@@ -39,7 +39,7 @@ public class AutoMLG extends Module {
     }
 
     @Override
-    public void settingCheck() {
+    public void updateSettings() {
         pickupWater.setVisible(waterBucket.isEnabled());
         leaveBoat.setVisible(boat.isEnabled());
     }

@@ -1,7 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
-import client.rapid.event.events.player.EventJump;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -59,7 +58,7 @@ public class TargetStrafe extends Module {
 
             if (target != null) {
                 if(!mc.gameSettings.keyBindBack.isKeyDown())
-                    setSpeed((EventMove) e, getMoveSpeed(), RotationUtil.getRotations(target, 0, 0, false, false, false, false)[0], direction, (mc.thePlayer.getDistanceToEntity(target) <= range.getValue() - 1) ? 0.0 : 1.0);
+                    setSpeed((EventMove) e, MoveUtil.getMoveSpeed(), RotationUtil.getRotations(target, 0, 0, false, false, false, false)[0], direction, (mc.thePlayer.getDistanceToEntity(target) <= range.getValue() - 1) ? 0.0 : 1.0);
                 if(autoThirdPerson.isEnabled() && !changedView && mc.gameSettings.thirdPersonView != 1) {
                     mc.gameSettings.thirdPersonView = 1;
                     changedView = true;

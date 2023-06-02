@@ -1,8 +1,7 @@
 package client.rapid.module.modules.other;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
-import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -18,7 +17,6 @@ import net.minecraft.network.play.client.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 

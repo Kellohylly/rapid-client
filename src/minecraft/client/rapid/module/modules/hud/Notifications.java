@@ -1,7 +1,7 @@
 package client.rapid.module.modules.hud;
 
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.gui.GuiPosition;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
@@ -27,7 +27,7 @@ public class Notifications extends Draggable {
     }
 
     public void onEvent(Event e) {
-        if(e instanceof EventRender && e.isPre()) {
+        if(e instanceof EventRender2D && e.isPre()) {
             GlStateManager.pushMatrix();
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             glScissor(x - 200, 0, width + 200, GuiScreen.height);

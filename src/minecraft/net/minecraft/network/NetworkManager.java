@@ -4,7 +4,7 @@ import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
@@ -129,9 +129,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
    }
 
    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception {
+
       EventPacket eventPacket = new EventPacket(p_channelRead0_2_, true);
       eventPacket.setType(EventType.PRE);
-      Event.dispatch(eventPacket);
+      eventPacket.callEvent();
       
       if(eventPacket.isCancelled())
     	  return;
@@ -154,7 +155,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
    public void sendPacket(Packet packetIn) {
 	   EventPacket eventPacket = new EventPacket(packetIn, false);
 	   eventPacket.setType(EventType.PRE);
-	   Event.dispatch(eventPacket);
+	   eventPacket.callEvent();
 	   
 	   if(eventPacket.isCancelled())
 		   return;
@@ -173,7 +174,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
       }
       
       eventPacket.setType(EventType.POST);
-      Event.dispatch(eventPacket);
+      eventPacket.callEvent();
    }
 
    public void sendPacket(Packet packetIn, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {

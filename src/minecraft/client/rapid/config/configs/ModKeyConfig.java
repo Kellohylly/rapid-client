@@ -1,13 +1,13 @@
-package client.rapid.file.files;
+package client.rapid.config.configs;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.Module;
-import client.rapid.file.File;
+import client.rapid.config.Config;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class ModKeyConfig extends File {
+public class ModKeyConfig extends Config {
 
     public ModKeyConfig() {
         super("keybinds.keyb");
@@ -17,7 +17,7 @@ public class ModKeyConfig extends File {
     public void save() {
         ArrayList<String> toSave = new ArrayList<>();
 
-        for (Module mod : Wrapper.getModuleManager().getModules())
+        for (Module mod : Client.getInstance().getModuleManager().getModules())
             toSave.add(mod.getName() + ":" + mod.getKey());
 
         try {
@@ -49,7 +49,7 @@ public class ModKeyConfig extends File {
 
         for (String s : lines) {
             String[] args = s.split(":");
-            Module m = Wrapper.getModuleManager().getModule(args[0]);
+            Module m = Client.getInstance().getModuleManager().getModuleByName(args[0]);
             if (m != null)
                 m.setKey(Integer.parseInt(args[1]));
         }

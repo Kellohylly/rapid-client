@@ -1,13 +1,12 @@
 package client.rapid.module;
 
 import client.rapid.*;
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.animation.Animation;
-import client.rapid.util.module.MoveUtil;
 import net.minecraft.client.Minecraft;
 
 import java.util.Arrays;
@@ -31,30 +30,30 @@ public class Module {
 	public void onEnable() {}
 	public void onDisable() {}
 	public void onEvent(Event e) {}
-	public void settingCheck() {}
+	public void updateSettings() {}
 	
 	public void toggle() {
 		setEnabled(!enabled);
 	}
 	
 	public void add(Setting... settings) {
-		Arrays.stream(settings).forEach(Wrapper.getSettingsManager()::rSetting);
+		Arrays.stream(settings).forEach(Client.getInstance().getSettingsManager()::rSetting);
 	}
 
-	public boolean isEnabled(String module) {
-		return Wrapper.getModuleManager().getModule(module).isEnabled();
+	public boolean isEnabled(Class<? extends Module> module) {
+		return Client.getInstance().getModuleManager().getModule(module).isEnabled();
 	}
 
-	public String getMode(String module, String name) {
-		return Wrapper.getSettingsManager().getSettingByName(module, name).getMode();
+	public String getMode(Class<? extends Module> module, String name) {
+		return Client.getInstance().getSettingsManager().getSetting(module, name).getMode();
 	}
 
-	public boolean getBoolean(String module, String name) {
-		return Wrapper.getSettingsManager().getSettingByName(module, name).isEnabled();
+	public boolean getBoolean(Class<? extends Module> module, String name) {
+		return Client.getInstance().getSettingsManager().getSetting(module, name).isEnabled();
 	}
 
-	public double getDouble(String module, String name) {
-		return Wrapper.getSettingsManager().getSettingByName(module, name).getValue();
+	public double getDouble(Class<? extends Module> module, String name) {
+		return Client.getInstance().getSettingsManager().getSetting(module, name).getValue();
 	}
 
 	public String getTag() {
@@ -76,8 +75,9 @@ public class Module {
 	public void setKey(int key) {
 		this.key = key;
 		
-		if(Client.getInstance() != null && mc.thePlayer != null)
-			Wrapper.getConfigManager().getModKeyConfig().save();
+		if(Client.getInstance() != null && mc.thePlayer != null) {
+			Client.getInstance().getConfigManager().getModKeyConfig().save();
+		}
 	}
 
 	public Animation getAnimY() {
@@ -102,8 +102,9 @@ public class Module {
 
 	protected void autoDisable(Event e) {
 		if(e instanceof EventUpdate && e.isPre()) {
-			if(mc.thePlayer.getHealth() <= 0)
+			if(mc.thePlayer.getHealth() <= 0) {
 				setEnabled(false);
+			}
 		}
 		if (e instanceof EventWorldLoad) {
 			setEnabled(false);
@@ -123,32 +124,8 @@ public class Module {
 	}
     
     protected static void save() {
-		if(Wrapper.getConfigManager() != null && Minecraft.getMinecraft().thePlayer != null)
-			Wrapper.getConfigManager().getModuleConfig().save();
+		if(Client.getInstance().getConfigManager() != null && Minecraft.getMinecraft().thePlayer != null)
+			Client.getInstance().getConfigManager().getModuleConfig().save();
     }
-
-	protected float getMoveSpeed() {
-		return MoveUtil.getMoveSpeed();
-	}
-
-	protected void strafe() {
-		MoveUtil.strafe();
-	}
-
-	protected void setMoveSpeed(double moveSpeed) {
-		MoveUtil.setMoveSpeed(moveSpeed);
-	}
-
-	protected float getBaseMoveSpeed() {
-		return (float) MoveUtil.getBaseMoveSpeed();
-	}
-
-	protected boolean isMoving() {
-		return MoveUtil.isMoving();
-	}
-
-	protected boolean isMovingOnGround() {
-		return MoveUtil.isMovingOnGround();
-	}
 	
 }

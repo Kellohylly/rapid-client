@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-import client.rapid.event.events.game.EventRender;
+import client.rapid.module.modules.visual.NoRender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Mouse;
@@ -23,10 +23,8 @@ import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
 
 import client.rapid.Client;
-import client.rapid.Wrapper;
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRenderWorld;
+import client.rapid.event.events.game.EventRender3D;
 import client.rapid.event.events.player.EventRotate;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.util.module.RotationUtil;
@@ -650,7 +648,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void hurtCameraEffect(float partialTicks)
     {
-        if(Wrapper.getModuleManager().getModule("No Render").isEnabled() && Wrapper.getSettingsManager().getSettingByName("No Render", "Hurt Cam").isEnabled())
+        if(Client.getInstance().getModuleManager().getModule(NoRender.class).isEnabled() && Client.getInstance().getSettingsManager().getSetting(NoRender.class, "Hurt Cam").isEnabled())
         	return;
         
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
@@ -1207,7 +1205,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
 
             final EventRotate rotateEvent = new EventRotate(this.mc.thePlayer.rotationYaw, this.mc.thePlayer.rotationPitch, this.mc.mouseHelper.deltaX, this.mc.mouseHelper.deltaY, false);
-            rotateEvent.dispatch(rotateEvent);
+            rotateEvent.callEvent();
             
             if (!rotateEvent.isStopRotate()) {
                 if (this.mc.gameSettings.invertMouse) {
@@ -1230,7 +1228,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             }
             
             final EventRotation rotationEvent = new EventRotation(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
-            rotationEvent.dispatch(rotationEvent);
+            rotationEvent.callEvent();
+
             RotationUtil.prevYaw = RotationUtil.yaw;
             RotationUtil.prevPitch = RotationUtil.pitch;
             RotationUtil.yaw = rotationEvent.getYaw();
@@ -1678,9 +1677,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
 
-        EventRenderWorld eventRenderWorld = new EventRenderWorld(partialTicks);
-        eventRenderWorld.setType(EventType.PRE);
-        Event.dispatch(eventRenderWorld);
+        EventRender3D eventRender3D = new EventRender3D(partialTicks);
+        eventRender3D.setType(EventType.PRE);
+        eventRender3D.callEvent();
 
         this.mc.mcProfiler.endStartSection("hand");
 

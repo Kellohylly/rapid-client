@@ -1,8 +1,8 @@
 package client.rapid.module.modules.hud;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.Client;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.gui.GuiPosition;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
@@ -32,7 +32,7 @@ public class PlayerPosition extends Draggable {
 
     @Override
     public void onEvent(Event e) {
-        if(e instanceof EventRender) {
+        if(e instanceof EventRender2D) {
             if(!(mc.currentScreen instanceof GuiPosition) && mc.thePlayer != null) {
                 String[] dimensions = {"X", "Y", "Z"};
                 int[] positions = {(int)mc.thePlayer.posX, (int)mc.thePlayer.posY, (int)mc.thePlayer.posZ};
@@ -61,9 +61,9 @@ public class PlayerPosition extends Draggable {
     }
 
     private void drawString(String string, float x, float y) {
-        boolean shadow = getBoolean("Hud Settings", "Shadow");
-        boolean mcFont = getBoolean("Hud Settings", "Minecraft Font");
-        int color = ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor((long) (y));
+        boolean shadow = getBoolean(HudSettings.class, "Shadow");
+        boolean mcFont = getBoolean(HudSettings.class, "Minecraft Font");
+        int color = ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor((long) (y));
         if(mcFont) {
             if(shadow) {
                 mc.fontRendererObj.drawStringWithShadow(string, x, y, color);

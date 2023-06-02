@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -10,6 +10,7 @@ import client.rapid.module.modules.movement.flights.FlightBase;
 import client.rapid.module.modules.movement.flights.FlightMode;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
+import client.rapid.util.module.MoveUtil;
 
 @ModuleInfo(getName = "Flight", getCategory = Category.MOVEMENT)
 public class Flight extends Module {
@@ -36,7 +37,7 @@ public class Flight extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		speed.setVisible((mode.getMode().equals("Vanilla") && vanillaMode.getMode().equals("Motion")) || mode.getMode().equals("Old NCP") || (mode.getMode().equals("Verus") && verusMode.getMode().equals("Verus Fast")));
 		fast.setVisible((mode.getMode().equals("Verus") && verusMode.getMode().equals("Verus Fast")) || mode.getMode().equals("Old NCP"));
 		bobbing.setVisible(mode.getMode().equals("Old NCP"));
@@ -56,7 +57,7 @@ public class Flight extends Module {
 	public void onDisable() {
 		mc.thePlayer.capabilities.isFlying = false;
 		mc.timer.timerSpeed = 1f;
-		setMoveSpeed(getMoveSpeed() / 5);
+		MoveUtil.setMoveSpeed(MoveUtil.getMoveSpeed() / 5);
 
 		damaged = false;
 		ticks = 0;
@@ -90,7 +91,7 @@ public class Flight extends Module {
 
 		if(!damaged && !damage.getMode().equals("None")) {
 			if(e instanceof EventUpdate && e.isPre()) {
-				setMoveSpeed(0);
+				MoveUtil.setMoveSpeed(0);
 				switch(damage.getMode()) {
 					case "Simple":
 						PlayerUtil.damagePlayer(3.001F);

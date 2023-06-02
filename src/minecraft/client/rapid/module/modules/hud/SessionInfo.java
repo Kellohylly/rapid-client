@@ -1,9 +1,9 @@
 package client.rapid.module.modules.hud;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
+import client.rapid.Client;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -50,9 +50,9 @@ public class SessionInfo extends Draggable {
                 }
             }
         }
-        if (e instanceof EventRender && e.isPre()) {
+        if (e instanceof EventRender2D && e.isPre()) {
             Gui.drawRect(x, y, x + width, y + height, 0x90000000);
-            Gui.drawRect(x, y, x + width, y + 1, ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(0));
+            Gui.drawRect(x, y, x + width, y + 1, ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(0));
 
             GlStateManager.pushMatrix();
             GlStateManager.scale(1.5, 1.5, 1.5);

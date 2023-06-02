@@ -1,10 +1,9 @@
 package client.rapid.command.commands;
 
 import client.rapid.Client;
-import client.rapid.Wrapper;
 import client.rapid.command.Command;
+import client.rapid.module.modules.hud.HudSettings;
 import client.rapid.module.modules.hud.Watermark;
-import client.rapid.util.PlayerUtil;
 import net.minecraft.util.EnumChatFormatting;
 
 public class WatermarkCommand extends Command {
@@ -23,15 +22,15 @@ public class WatermarkCommand extends Command {
 				i++;
 			}
 			
-			if(Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled()) {
+			if(Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Minecraft Font").isEnabled()) {
 				text = text.replace("&", "\u00a7");
 			}
 			
 			Watermark.setWatermark(text.replace("{version}", Client.getInstance().getVersion()));
-			PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Watermark changed!");
+			Client.getInstance().addChatMessage(EnumChatFormatting.GREEN + "Watermark changed!");
 
-			if(Wrapper.getConfigManager().getHudConfig() != null)
-				Wrapper.getConfigManager().getHudConfig().save();
+			if(Client.getInstance().getConfigManager().getHudConfig() != null)
+				Client.getInstance().getConfigManager().getHudConfig().save();
 		} else
 			sendSyntax();
 	}

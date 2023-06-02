@@ -1,17 +1,17 @@
 package client.rapid.gui.alt;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.gui.alt.components.ATextField;
 import client.rapid.gui.alt.components.PasswordField;
 import client.rapid.gui.mainmenu.components.MMButton;
+
 import org.lwjgl.input.Keyboard;
 
 import client.rapid.gui.mainmenu.ClientMainMenu;
 import fr.litarvan.openauth.microsoft.*;
+
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.*;
@@ -30,7 +30,7 @@ public class AltManager extends GuiScreen {
         this.username = new ATextField(var3, this.mc.fontRendererObj, width / 2 - 70, height / 2 + 16, 140, 20);
         this.password = new PasswordField(this.mc.fontRendererObj, width / 2 - 70, height / 2 + 40, 140, 20);
         username.setFocused(true);
-		Wrapper.getRichPresence().update("In Alt Manager", "");
+		Client.getInstance().getDiscordRP().updateRPC("In Alt Manager", "");
 		super.initGui();
 	}
 	
@@ -89,7 +89,7 @@ public class AltManager extends GuiScreen {
 			break;
 		case 2:
 	        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
-	        MicrosoftAuthResult result = null;
+	        MicrosoftAuthResult result;
 	        try {
 		    	result = authenticator.loginWithWebview();
 		        mc.session = new Session(result.getProfile().getName(), result.getProfile().getId(), result.getAccessToken(), "legacy");

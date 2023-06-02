@@ -1,6 +1,6 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.*;
 import client.rapid.event.events.player.*;
 import client.rapid.module.*;
@@ -76,7 +76,7 @@ public class Scaffold extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		towerMove.setVisible(!tower.getMode().equals("None"));
 		strict.setVisible(rayCast.isEnabled());
 	}
@@ -143,7 +143,7 @@ public class Scaffold extends Module {
 					case "Simple":
 						event.setYaw(mc.thePlayer.rotationYaw - 180);
 
-						if(isMoving()) {
+						if(MoveUtil.isMoving()) {
 							event.setPitch(82f);
 						} else {
 							event.setPitch(90);
@@ -205,10 +205,10 @@ public class Scaffold extends Module {
 				}
 
 				if(mc.thePlayer.onGround && boost.getValue() != 0)
-					setMoveSpeed(getMoveSpeed() + boost.getValue());
+					MoveUtil.setMoveSpeed(MoveUtil.getMoveSpeed() + boost.getValue());
 
 				if (keepY.isEnabled()) {
-					if ((!isMoving() && mc.gameSettings.keyBindJump.isKeyDown()) || (mc.thePlayer.isCollidedVertically || mc.thePlayer.onGround))
+					if ((!MoveUtil.isMoving() && mc.gameSettings.keyBindJump.isKeyDown()) || (mc.thePlayer.isCollidedVertically || mc.thePlayer.onGround))
 						funnyY = MathHelper.floor_double(mc.thePlayer.posY);
 				} else
 					funnyY = MathHelper.floor_double(mc.thePlayer.posY);
@@ -238,7 +238,7 @@ public class Scaffold extends Module {
 						}
 					}
 					if (PlayerUtil.hasBlockEquipped() && mc.gameSettings.keyBindJump.isKeyDown() && timer.reached((int)delay.getValue())) {
-						if(!towerMove.isEnabled() && isMoving())
+						if(!towerMove.isEnabled() && MoveUtil.isMoving())
 							return;
 
 						mc.thePlayer.motionX = 0;

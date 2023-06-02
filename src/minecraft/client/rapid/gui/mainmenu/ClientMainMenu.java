@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import client.rapid.Client;
-import client.rapid.Wrapper;
 import client.rapid.gui.alt.AltManager;
 import client.rapid.gui.mainmenu.components.MMButton;
 import client.rapid.util.ClientUtil;
@@ -38,7 +37,7 @@ public class ClientMainMenu extends GuiScreen {
 		buttonList.add(new MMButton(2, width / 2 - 70, height / 2 + 38, 140, 18, "Alt Manager"));
 		buttonList.add(new MMButton(3, width / 2 - 70, height / 2 + 57, 140, 18, "Settings"));
 		buttonList.add(new MMButton(4, width / 2 - 70, height / 2 + 76, 140, 18, "Quit"));
-		Wrapper.getRichPresence().update("In Menu", "");
+		Client.getInstance().getDiscordRP().updateRPC("In Menu", "");
 		backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background",  new DynamicTexture(256, 256));
 		outdated = !ClientUtil.isLatest();
 		super.initGui();

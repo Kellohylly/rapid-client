@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement.speeds.vulcan;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.movement.speeds.SpeedBase;

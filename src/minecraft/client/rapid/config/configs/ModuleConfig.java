@@ -1,28 +1,33 @@
-package client.rapid.file.files;
+package client.rapid.config.configs;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.Module;
 import client.rapid.module.settings.Setting;
-import client.rapid.file.File;
+import client.rapid.config.Config;
 import client.rapid.util.console.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class ModuleConfig extends File {
+public class ModuleConfig extends Config {
 
     public ModuleConfig() {
         super("config.conf");
     }
 
+    /*
+    * honestly I have no idea if spaces don't fuck it up, but I doubt it.
+    * last time it thought KillInsults was KillAura and didn't set KillAura's settings so i had to rename KillInsults.
+    */
+
     @Override
     public void save() {
         ArrayList<String> saves = new ArrayList<>();
 
-        for(Module m : Wrapper.getModuleManager().getModules()) {
+        for(Module m : Client.getInstance().getModuleManager().getModules()) {
             saves.add("Module:" + m.getName().replace(" ", "-") + ":" + m.isEnabled());
 
-            for(Setting s : Wrapper.getSettingsManager().getSettings()) {
+            for(Setting s : Client.getInstance().getSettingsManager().getSettings()) {
                 if(s.getParentMod().getName().replace(" ", "-").equals(m.getName().replace(" ", "-"))) {
 
                     if (s.isCheck())
@@ -77,17 +82,17 @@ public class ModuleConfig extends File {
             String[] args = line.split(":");
 
             if(line.startsWith("Module")) {
-                Module m = Wrapper.getModuleManager().getModule(args[1].replace("-", " "));
+                Module m = Client.getInstance().getModuleManager().getModuleByName(args[1].replace("-", " "));
 
                 if(m != null)
                     m.setEnabled(Boolean.parseBoolean(args[2]));
             }
 
             if(line.startsWith("Setting")) {
-                Module m = Wrapper.getModuleManager().getModule(args[1].replace("-", " "));
+                Module m = Client.getInstance().getModuleManager().getModuleByName(args[1].replace("-", " "));
 
                 if(m != null) {
-                    Setting s = Wrapper.getSettingsManager().getSettingByName(m.getName().replace("-", " "), args[2].replace("-", " "));
+                    Setting s = Client.getInstance().getSettingsManager().getSettingByName(m.getName().replace("-", " "), args[2].replace("-", " "));
 
                     if(s != null) {
                         if(s.isCheck())

@@ -1,6 +1,6 @@
 package client.rapid.module.modules.combat;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;

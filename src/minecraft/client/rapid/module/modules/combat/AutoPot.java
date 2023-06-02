@@ -1,6 +1,6 @@
 package client.rapid.module.modules.combat;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -8,7 +8,6 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.TimerUtil;
-import net.minecraft.item.ItemAppleGold;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;

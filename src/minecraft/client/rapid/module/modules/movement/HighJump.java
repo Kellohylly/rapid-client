@@ -1,12 +1,12 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.Client;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.PlayerUtil;
 import client.rapid.util.module.MoveUtil;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -23,7 +23,7 @@ public class HighJump extends Module {
     @Override
     public void onEnable() {
         if(!mc.thePlayer.isRiding() && mode.getMode().equals("Boat")) {
-            PlayerUtil.addChatMessage(EnumChatFormatting.RED + "You must be in a boat to do this!");
+            Client.getInstance().addChatMessage(EnumChatFormatting.RED + "You must be in a boat to do this!");
             setEnabled(false);
         }
     }
@@ -35,14 +35,14 @@ public class HighJump extends Module {
                 case "Boat":
                     if(!mc.thePlayer.isRiding()) {
                         mc.thePlayer.motionY = height.getValue();
-                        setMoveSpeed(speed.getValue());
+                        MoveUtil.setMoveSpeed(speed.getValue());
                         setEnabled(false);
                     }
                     break;
                 case "Water":
                     if(mc.thePlayer.isInWater()) {
                         mc.thePlayer.motionY = height.getValue();
-                        setMoveSpeed(speed.getValue());
+                        MoveUtil.setMoveSpeed(speed.getValue());
                         setEnabled(false);
                     }
                     break;

@@ -1,13 +1,13 @@
-package client.rapid.file;
+package client.rapid.config;
 
 import net.minecraft.client.Minecraft;
 
-public class File {
+public class Config {
     private final String name;
     private final java.io.File data;
 
     // TODO: Fix path not being correct
-    public File(String name) {
+    public Config(String name) {
         this.name = name;
         this.data = new java.io.File(Minecraft.getMinecraft().mcDataDir + java.io.File.separator + "Rapid" + java.io.File.separator + name);
     }

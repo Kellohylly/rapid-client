@@ -1,6 +1,6 @@
 package client.rapid.gui.panelgui.component.components;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.gui.panelgui.component.Comp;
 import client.rapid.module.Module;
@@ -29,8 +29,8 @@ public class PanelSlider extends Comp {
         super.drawScreen(mouseX, mouseY);
 
         Gui.drawRect((int)(parent.posX + x - 20), (int)(parent.posY + y + 17) + scrollY, (int)(parent.posX + x + 122), (int)(parent.posY + y + 18) + scrollY, PanelGui.backgroundDark);
-        Gui.drawRect((int)(parent.posX + x - 20), (int)(parent.posY + y + 17) + scrollY, (int)(parent.posX + x - 20) + renderWidth, (int)(parent.posY + y + 18) + scrollY, ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor((long)y));
-        Gui.drawRect((int)(parent.posX + x - 17) + renderWidth, (int)(parent.posY + y + 15) + scrollY, (int)(parent.posX + x - 22) + renderWidth, (int)(parent.posY + y + 20) + scrollY, ((HudSettings) Wrapper.getModuleManager().getModule("Hud Settings")).getColor((long)y));
+        Gui.drawRect((int)(parent.posX + x - 20), (int)(parent.posY + y + 17) + scrollY, (int)(parent.posX + x - 20) + renderWidth, (int)(parent.posY + y + 18) + scrollY, ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor((long)y));
+        Gui.drawRect((int)(parent.posX + x - 17) + renderWidth, (int)(parent.posY + y + 15) + scrollY, (int)(parent.posX + x - 22) + renderWidth, (int)(parent.posY + y + 20) + scrollY, ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor((long)y));
         parent.font.drawString(setting.getName(), (int)(parent.posX + x) - 18, (int)(parent.posY + y + 4) + (float)scrollY, -1);
         parent.font.drawString(String.valueOf(setting.getValue()), (int)(parent.posX + x + 120) - parent.font.getStringWidth(String.valueOf(setting.getValue())), (int)(parent.posY + y + 6) + (float)scrollY, -1);
 

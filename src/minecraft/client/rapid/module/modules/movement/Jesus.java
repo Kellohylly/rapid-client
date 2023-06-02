@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -36,7 +36,7 @@ public class Jesus extends Module {
     }
 
     @Override
-    public void settingCheck() {
+    public void updateSettings() {
         jumpMode.setVisible(mode.getMode().equals("Jump"));
     }
 

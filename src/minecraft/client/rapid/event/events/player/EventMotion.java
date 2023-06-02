@@ -1,11 +1,18 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.util.module.RotationUtil;
 
+// Hooked in EntityPlayerSP.java
 public class EventMotion extends Event {
-	public float yaw, pitch;
-	private double x, y, z;
+
+	public float yaw;
+	public float pitch;
+
+	private double x;
+	private double y;
+	private double z;
+
 	private boolean ground;
 	
 	public EventMotion(float yaw, float pitch, double x, double y, double z, boolean ground) {

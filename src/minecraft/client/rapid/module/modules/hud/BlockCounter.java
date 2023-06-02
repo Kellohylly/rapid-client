@@ -1,8 +1,8 @@
 package client.rapid.module.modules.hud;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.Client;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.gui.GuiPosition;
 import client.rapid.module.Draggable;
 import client.rapid.module.ModuleInfo;
@@ -15,7 +15,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
@@ -44,8 +43,8 @@ public class BlockCounter extends Draggable {
 
     @Override
     public void onEvent(Event e) {
-        if(e instanceof EventRender) {
-            if(scaffoldOnOnly.isEnabled() && !isEnabled("Scaffold"))
+        if(e instanceof EventRender2D) {
+            if(scaffoldOnOnly.isEnabled() && !isEnabled(Scaffold.class))
                 return;
 
             int blockCount = 0;
@@ -71,14 +70,14 @@ public class BlockCounter extends Draggable {
             }
 
             if (!(mc.currentScreen instanceof GuiPosition)) {
-                HudSettings hud = (HudSettings) Wrapper.getModuleManager().getModule("Hud Settings");
+                HudSettings hud = (HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class);
 
                 if (background.isEnabled()) {
                     Gui.drawRect(x - 1, y - 1, x + width + 1, y + height + 1, hud.getColor(0));
                     Gui.drawRect(x, y, x + width, y + height, new Color(0xFF0F0F13).brighter().getRGB());
                 }
 
-                if (getBoolean("Hud Settings", "Minecraft Font")) {
+                if (getBoolean(HudSettings.class, "Minecraft Font")) {
                     mc.fontRendererObj.drawString(blockCount + " Blocks", x + (float) width / 2 - (float) mc.fontRendererObj.getStringWidth(blockCount + " Blocks") / 2, y + (float) height / 2 - (float) mc.fontRendererObj.FONT_HEIGHT / 2, -1);
                 } else {
                     font.drawString(blockCount + " Blocks", x + (float) width / 2 - (float) font.getStringWidth(blockCount + " Blocks") / 2, y + (float) height / 2 - (float) mc.fontRendererObj.FONT_HEIGHT / 2, -1);

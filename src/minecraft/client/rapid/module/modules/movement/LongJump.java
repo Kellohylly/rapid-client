@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventMove;
 import client.rapid.event.events.player.EventUpdate;
@@ -9,10 +9,8 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.movement.longjumps.LongJumpBase;
 import client.rapid.module.modules.movement.longjumps.LongJumpMode;
-import client.rapid.module.modules.movement.speeds.SpeedMode;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
-import client.rapid.util.TimerUtil;
 import client.rapid.util.module.MoveUtil;
 import net.minecraft.util.BlockPos;
 
@@ -39,7 +37,7 @@ public class LongJump extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		height.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Vanilla"));
 		slowdown.setVisible(mode.getMode().equals("NCP") && ncpMode.getMode().equals("Old NCP"));
 		speed.setVisible(mode.getMode().equals("Vanilla") || (mode.getMode().equals("NCP") && ncpMode.getMode().equals("Old NCP")));
@@ -97,7 +95,7 @@ public class LongJump extends Module {
 
 		if(!damaged && !damage.getMode().equals("None")) {
 			if(e instanceof EventUpdate && e.isPre()) {
-				setMoveSpeed(0);
+				MoveUtil.setMoveSpeed(0);
 				switch(damage.getMode()) {
 					case "Simple":
 						PlayerUtil.damagePlayer(3.001F);
@@ -121,7 +119,7 @@ public class LongJump extends Module {
 			if(jumped) {
 				BlockPos below = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1D, mc.thePlayer.posZ);
 				if(!mc.theWorld.isAirBlock(below) && mc.theWorld.getBlockState(below).getBlock().isFullBlock() && mc.thePlayer.onGround) {
-					setMoveSpeed(0);
+					MoveUtil.setMoveSpeed(0);
 					this.setEnabled(false);
 				}
 			} else {

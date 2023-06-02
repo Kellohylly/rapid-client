@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.modules.visual.NameTags;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -258,7 +258,7 @@ public abstract class Render<T extends Entity> {
    }
 
    protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance) {
-      if(Wrapper.getModuleManager().getModule("Name Tags").isEnabled()) {
+      if(Client.getInstance().getModuleManager().getModule(NameTags.class).isEnabled()) {
          return;
       }
 

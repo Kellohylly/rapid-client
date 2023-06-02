@@ -1,25 +1,26 @@
-package client.rapid.file.files;
+package client.rapid.config.configs;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.Draggable;
 import client.rapid.module.modules.hud.Watermark;
-import client.rapid.file.File;
+import client.rapid.config.Config;
 import client.rapid.util.console.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class HudConfig extends File {
+public class HudConfig extends Config {
 
     public HudConfig() {
         super("draggables.conf");
     }
 
+
     @Override
     public void save() {
         ArrayList<String> saves = new ArrayList<>();
 
-        for(Draggable d : Wrapper.getModuleManager().getDraggables())
+        for(Draggable d : Client.getInstance().getModuleManager().getDraggables())
             saves.add("ModuleDrag:" + d.getName().replace(" ", "-") + ":" + d.getX() + ":" + d.getY());
 
         saves.add("WatermarkText:" + Watermark.text.replace(" ", "_"));
@@ -58,7 +59,7 @@ public class HudConfig extends File {
             String[] args = line.split(":");
 
             if(line.startsWith("ModuleDrag")) {
-                Draggable d = (Draggable) Wrapper.getModuleManager().getModule(args[1].replace("-", " "));
+                Draggable d = (Draggable) Client.getInstance().getModuleManager().getModuleByName(args[1].replace("-", " "));
 
                 if(d != null) {
                     d.setX(Integer.parseInt(args[2]));

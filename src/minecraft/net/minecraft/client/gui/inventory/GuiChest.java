@@ -1,6 +1,6 @@
 package net.minecraft.client.gui.inventory;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.modules.player.ChestStealer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -28,7 +28,7 @@ public class GuiChest extends GuiContainer {
    @Override
    public void updateScreen() {
       if(stealing && ChestStealer.isEmpty(mc.thePlayer.openContainer)) {
-         Wrapper.getModuleManager().getModule("Chest Stealer").setEnabled(false);
+         Client.getInstance().getModuleManager().getModule(ChestStealer.class).setEnabled(false);
          stealing = false;
       }
    }
@@ -36,7 +36,7 @@ public class GuiChest extends GuiContainer {
    @Override
    public void onGuiClosed() {
       if(stealing) {
-         Wrapper.getModuleManager().getModule("Chest Stealer").setEnabled(false);
+         Client.getInstance().getModuleManager().getModule(ChestStealer.class).setEnabled(false);
       }
       stealing = false;
       super.onGuiClosed();
@@ -70,7 +70,7 @@ public class GuiChest extends GuiContainer {
    @Override
    protected void actionPerformed(GuiButton button) throws IOException {
       if(button.id == 69420) {
-         Wrapper.getModuleManager().getModule("Chest Stealer").setEnabled(true);
+         Client.getInstance().getModuleManager().getModule(ChestStealer.class).setEnabled(true);
          stealing = true;
       }
       super.actionPerformed(button);

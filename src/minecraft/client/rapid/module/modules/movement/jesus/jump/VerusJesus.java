@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement.jesus.jump;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventCollide;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.movement.jesus.JesusBase;
@@ -26,7 +26,7 @@ public class VerusJesus extends JesusBase {
             if(!(event.getBlock() instanceof BlockLiquid) || mc.thePlayer.isInWater() || mc.thePlayer.isSneaking())
                 return;
 
-            event.setBoundingBox(new AxisAlignedBB(0, 0, 0, 1, 1, 1).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
+            event.setAxisAlignedBB(new AxisAlignedBB(0, 0, 0, 1, 1, 1).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
         }
     }
 

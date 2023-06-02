@@ -1,8 +1,9 @@
 package client.rapid.module.modules.movement.speeds.verus;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
+import client.rapid.Client;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
+import client.rapid.module.modules.movement.Flight;
 import client.rapid.module.modules.movement.speeds.SpeedBase;
 import client.rapid.util.module.MoveUtil;
 
@@ -33,7 +34,7 @@ public class VerusGroundSpeed extends SpeedBase {
 
             mc.thePlayer.capabilities.isFlying = false;
 
-            if(Wrapper.getModuleManager().getModule("Flight").isEnabled()) {
+            if(Client.getInstance().getModuleManager().getModule(Flight.class).isEnabled()) {
                 return;
             }
 

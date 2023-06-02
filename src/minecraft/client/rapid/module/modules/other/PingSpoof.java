@@ -1,8 +1,7 @@
 package client.rapid.module.modules.other;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
-import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -12,7 +11,6 @@ import client.rapid.util.TimerUtil;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 
 import java.util.ArrayList;
 import java.util.List;

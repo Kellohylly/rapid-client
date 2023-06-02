@@ -9,7 +9,7 @@ import client.rapid.module.ModuleInfo;
 import client.rapid.util.console.Logger;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;

@@ -5,12 +5,13 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventSafewalk;
 import client.rapid.event.events.player.EventStep;
 import client.rapid.event.events.player.EventStrafe;
+import client.rapid.module.modules.player.NoWeb;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -391,7 +392,7 @@ public abstract class Entity implements ICommandSender {
          
          EventSafewalk eventSafewalk = new EventSafewalk();
          eventSafewalk.setType(EventType.PRE);
-         Event.dispatch(eventSafewalk);
+         eventSafewalk.callEvent();
          
          boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
          if(flag || (eventSafewalk.isCancelled() && this instanceof EntityPlayer)) {
@@ -460,7 +461,7 @@ public abstract class Entity implements ICommandSender {
          if(this.stepHeight > 0.0F && flag1 && (d3 != x || d5 != z)) {
             EventStep eventStep = new EventStep(this);
             eventStep.setType(EventType.PRE);
-            Event.dispatch(eventStep);
+            eventStep.callEvent();
 
             if(eventStep.isCancelled())
                return;
@@ -544,7 +545,7 @@ public abstract class Entity implements ICommandSender {
             } else {
                EventStep eventStep1 = new EventStep(this);
                eventStep1.setType(EventType.POST);
-               Event.dispatch(eventStep1);
+               eventStep1.callEvent();
             }
          }
 
@@ -828,13 +829,15 @@ public abstract class Entity implements ICommandSender {
 
    public void moveFlying(float strafe, float forward, float friction) {
       float yaw = this.rotationYaw;
-      EventStrafe eventsrafe = new EventStrafe(strafe, forward, friction, yaw);
-      eventsrafe.setType(EventType.PRE);
-      Event.dispatch(eventsrafe);
-      strafe = eventsrafe.getStrafe();
-      forward = eventsrafe.getForward();
-      friction = eventsrafe.getFriction();
-      yaw = eventsrafe.getYaw();
+
+      EventStrafe eventStrafe = new EventStrafe(strafe, forward, friction, yaw);
+      eventStrafe.setType(EventType.PRE);
+      eventStrafe.callEvent();
+
+      strafe = eventStrafe.getStrafe();
+      forward = eventStrafe.getForward();
+      friction = eventStrafe.getFriction();
+      yaw = eventStrafe.getYaw();
       float f = strafe * strafe + forward * forward;
       if(f >= 1.0E-4F) {
          f = MathHelper.sqrt_float(f);
@@ -850,8 +853,8 @@ public abstract class Entity implements ICommandSender {
          this.motionX += (double)(strafe * f2 - forward * f1);
          this.motionZ += (double)(forward * f2 + strafe * f1);
       }
-      eventsrafe.setType(EventType.POST);
-      Event.dispatch(eventsrafe);
+      eventStrafe.setType(EventType.POST);
+      eventStrafe.callEvent();
    }
 
    public int getBrightnessForRender(float partialTicks) {
@@ -1569,7 +1572,7 @@ public abstract class Entity implements ICommandSender {
    }
 
    public void setInWeb() {
-      if(!Wrapper.getModuleManager().getModule("No Web").isEnabled() && this == Minecraft.getMinecraft().thePlayer) {
+      if(!Client.getInstance().getModuleManager().getModule(NoWeb.class).isEnabled() && this == Minecraft.getMinecraft().thePlayer) {
          this.isInWeb = true;
          this.fallDistance = 0.0F;
       }

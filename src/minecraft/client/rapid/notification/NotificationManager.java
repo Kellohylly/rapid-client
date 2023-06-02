@@ -1,6 +1,7 @@
 package client.rapid.notification;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
+import client.rapid.module.modules.hud.Notifications;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,7 +18,7 @@ public class NotificationManager {
     }
 
     public static void update() {
-        for(int i = 0; i < Wrapper.getSettingsManager().getSettingByName("Notifications", "Amount").getValue(); i++) {
+        for(int i = 0; i < Client.getInstance().getSettingsManager().getSetting(Notifications.class, "Amount").getValue(); i++) {
             if(nots[i] != null && !nots[i].isShown()) {
                 nots[i].timer.reset();
                 nots[i] = null;

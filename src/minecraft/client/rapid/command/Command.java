@@ -1,5 +1,6 @@
 package client.rapid.command;
 
+import client.rapid.Client;
 import client.rapid.util.PlayerUtil;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -17,7 +18,7 @@ public abstract class Command {
 	}
 
 	public void sendSyntax() {
-		PlayerUtil.addChatMessage(EnumChatFormatting.RED + "Usage: ." + syntax + "!");
+		Client.getInstance().addChatMessage(EnumChatFormatting.RED + "Usage: ." + syntax + "!");
 	}
 	
 	public abstract void onCommand(String[] args, String command);

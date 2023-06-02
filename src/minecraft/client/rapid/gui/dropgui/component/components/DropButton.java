@@ -3,13 +3,14 @@ package client.rapid.gui.dropgui.component.components;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import client.rapid.Client;
 import client.rapid.gui.dropgui.DropFrame;
 import client.rapid.gui.dropgui.DropdownGui;
 import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.gui.panelgui.PanelGui;
+import client.rapid.module.modules.visual.ClickGuiToggle;
 import net.minecraft.util.ResourceLocation;
 
-import client.rapid.Wrapper;
 import client.rapid.module.Module;
 import client.rapid.module.settings.Setting;
 import net.minecraft.client.Minecraft;
@@ -32,8 +33,8 @@ public class DropButton extends DropComponent {
 		this.open = false;
 		int opY = offset + 12;
 
-		if(Wrapper.getSettingsManager().getSettingsByMod(mod) != null) {
-			for(Setting s : Wrapper.getSettingsManager().getSettingsByMod(mod)) {
+		if(Client.getInstance().getSettingsManager().getSettingsByMod(mod) != null) {
+			for(Setting s : Client.getInstance().getSettingsManager().getSettingsByMod(mod)) {
 				if(s.isCombo()) {
 					this.subcomponents.add(new DropCombo(s, this, opY));
 				}
@@ -64,7 +65,7 @@ public class DropButton extends DropComponent {
 	}
 	
 	public void renderComponent() {
-		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled()) {
+		if(Client.getInstance().getSettingsManager().getSetting(ClickGuiToggle.class, "Outline").isEnabled()) {
 			Gui.drawRect(parent.getX() - 1.5, this.parent.getY() + this.offset, parent.getX() + parent.getWidth() + 1.5, this.parent.getY() + 13.5 + this.offset, DropdownGui.hud.getColor(offset));
 		}
 
@@ -78,7 +79,7 @@ public class DropButton extends DropComponent {
 		}
 
 		if(this.open && !this.subcomponents.isEmpty()) {
-			if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled()) {
+			if(Client.getInstance().getSettingsManager().getSetting(ClickGuiToggle.class, "Outline").isEnabled()) {
 				Gui.drawRect(parent.getX() - 1.5, parent.getY() + this.offset + 12, parent.getX() + 106.5, parent.getY() + this.offset + ((this.subcomponents.size() + 1) * 12) + 0.5, DropdownGui.hud.getColor(offset / 2));
 			}
 
@@ -128,8 +129,8 @@ public class DropButton extends DropComponent {
 			this.open = !this.open;
 			subcomponents.clear();
 
-			if(Wrapper.getSettingsManager().getSettingsByMod(mod) != null) {
-				for(Setting s : Wrapper.getSettingsManager().getSettingsByMod(mod)) {
+			if(Client.getInstance().getSettingsManager().getSettingsByMod(mod) != null) {
+				for(Setting s : Client.getInstance().getSettingsManager().getSettingsByMod(mod)) {
 					if(s.isCombo()) {
 						this.subcomponents.add(new DropCombo(s, this, opY));
 					}

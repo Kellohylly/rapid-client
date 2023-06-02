@@ -1,6 +1,6 @@
 package client.rapid.module.modules.other;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -27,7 +27,7 @@ public class Blink extends Module {
     }
 
     @Override
-    public void settingCheck() {
+    public void updateSettings() {
         delay.setVisible(lag.isEnabled());
     }
 

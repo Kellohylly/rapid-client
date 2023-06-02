@@ -3,9 +3,8 @@ package net.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
 import client.rapid.event.events.player.EventCollide;
 import client.rapid.module.modules.visual.XRay;
 import net.minecraft.block.material.MapColor;
@@ -474,8 +473,9 @@ public class Block
     	if(this instanceof BlockOre)
     		return true;
     	
-    	if(Wrapper.getModuleManager().getModule("X Ray").isEnabled())
-    		return false;
+    	if(Client.getInstance().getModuleManager().getModule(XRay.class).isEnabled()) {
+            return false;
+        }
 
     	return side == EnumFacing.DOWN && this.minY > 0.0D ? true : (side == EnumFacing.UP && this.maxY < 1.0D ? true : (side == EnumFacing.NORTH && this.minZ > 0.0D ? true : (side == EnumFacing.SOUTH && this.maxZ < 1.0D ? true : (side == EnumFacing.WEST && this.minX > 0.0D ? true : (side == EnumFacing.EAST && this.maxX < 1.0D ? true : !worldIn.getBlockState(pos).getBlock().isOpaqueCube())))));
     }
@@ -502,9 +502,9 @@ public class Block
 
         EventCollide eventCollide = new EventCollide(collidingEntity, pos.getX(), pos.getY(), pos.getZ(), axisalignedbb, this, pos);
         eventCollide.setType(EventType.PRE);
-        Event.dispatch(eventCollide);
+        eventCollide.callEvent();
         
-        axisalignedbb = eventCollide.getBoundingBox();
+        axisalignedbb = eventCollide.getAxisAlignedBB();
 
         
         if(eventCollide.isCancelled())

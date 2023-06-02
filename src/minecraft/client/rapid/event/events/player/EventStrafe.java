@@ -1,9 +1,14 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 
+// Hooked in Entity.java
 public class EventStrafe extends Event {
-    float strafe, forward, friction, yaw;
+
+    private final float strafe;
+    private final float forward;
+    private final float friction;
+    private float yaw;
 
     public EventStrafe(float strafe, float forward, float friction, float yaw) {
         this.strafe = strafe;
@@ -31,4 +36,5 @@ public class EventStrafe extends Event {
     public void setYaw(float yaw) {
         this.yaw = yaw;
     }
+
 }

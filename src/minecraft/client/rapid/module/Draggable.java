@@ -1,6 +1,6 @@
 package client.rapid.module;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import org.lwjgl.input.Mouse;
 
 public class Draggable extends Module {
@@ -78,7 +78,9 @@ public class Draggable extends Module {
 	}
 
 	protected static void savePositions() {
-		if (Wrapper.getConfigManager() != null)
-			Wrapper.getConfigManager().getHudConfig().save();
+		if (Client.getInstance().getConfigManager() != null) {
+			Client.getInstance().getConfigManager().getHudConfig().save();
+		}
 	}
+
 }

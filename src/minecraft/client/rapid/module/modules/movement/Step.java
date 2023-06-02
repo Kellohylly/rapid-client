@@ -1,18 +1,13 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
-import client.rapid.event.events.player.EventStep;
-import client.rapid.event.events.player.EventUpdate;
+import client.rapid.event.Event;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
-import client.rapid.module.modules.movement.flights.FlightMode;
 import client.rapid.module.modules.movement.steps.StepBase;
 import client.rapid.module.modules.movement.steps.StepMode;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
-import net.minecraft.network.play.client.C03PacketPlayer;
 
 @ModuleInfo(getName = "Step", getCategory = Category.MOVEMENT)
 public class Step extends Module {
@@ -34,7 +29,7 @@ public class Step extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		height.setVisible(mode.getMode().equals("Vanilla") || mode.getMode().equals("Packet"));
 		motionMode.setVisible(mode.getMode().equals("Motion"));
 	}

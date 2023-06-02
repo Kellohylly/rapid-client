@@ -1,13 +1,18 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 
+// Hooked in EntityRenderer.java
 public class EventRotate extends Event {
-	private float curYaw, curPitch, deltaX, deltaY;
+
+	private float curYaw;
+	private float curPitch;
+	private float deltaX;
+	private float deltaY;
+
     private boolean stopRotate;
     
 	public EventRotate(float curYaw, float curPitch, float deltaX, float deltaY, boolean stopRotate) {
-		super();
 		this.curYaw = curYaw;
 		this.curPitch = curPitch;
 		this.deltaX = deltaX;
@@ -54,6 +59,5 @@ public class EventRotate extends Event {
 	public void setStopRotate(boolean stopRotate) {
 		this.stopRotate = stopRotate;
 	}
-    
-	
+
 }

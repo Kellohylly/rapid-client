@@ -1,18 +1,24 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
-import net.minecraft.block.Block;
+import client.rapid.event.Event;
+
 import net.minecraft.entity.Entity;
+
+import net.minecraft.block.Block;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 
+// Hooked in Block.java
 public class EventCollide extends Event {
+
     private AxisAlignedBB axisalignedbb;
     private final Block block;
     private final Entity collidingEntity;
+
     private final int x;
     private final int y;
     private final int z;
+
     private final BlockPos blockPos;
 
     public EventCollide(Entity collidingEntity, int x, int y, int z, AxisAlignedBB axisalignedbb, Block block, BlockPos pos) {
@@ -25,7 +31,7 @@ public class EventCollide extends Event {
         this.blockPos = pos;
     }
 
-    public AxisAlignedBB getBoundingBox() {
+    public AxisAlignedBB getAxisAlignedBB() {
         return this.axisalignedbb;
     }
 
@@ -53,7 +59,7 @@ public class EventCollide extends Event {
         return blockPos;
     }
 
-    public void setBoundingBox(AxisAlignedBB object) {
+    public void setAxisAlignedBB(AxisAlignedBB object) {
         this.axisalignedbb = object;
     }
 

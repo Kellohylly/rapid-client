@@ -1,9 +1,8 @@
 package client.rapid.module.modules.hud;
 
 import client.rapid.Client;
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender2D;
 import client.rapid.module.Draggable;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -29,9 +28,9 @@ public class EnabledModules extends Draggable {
     private final Setting flipHorizontally = new Setting("Flip Horizontally", this, false);
     private final Setting hideVisual = new Setting("Hide Visuals", this, false);
 
-    private final Setting mcFont = Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font");
-    private final Setting fontMode = Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Font");
-    private final Setting shadow = Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Shadow");
+    private final Setting mcFont = Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Minecraft Font");
+    private final Setting fontMode = Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Font");
+    private final Setting shadow = Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Shadow");
 
     public static String text = Client.getInstance().getName();
 
@@ -66,10 +65,10 @@ public class EnabledModules extends Draggable {
 
     @Override
     public void onEvent(Event e) {
-        if(e instanceof EventRender && e.isPre()) {
+        if(e instanceof EventRender2D && e.isPre()) {
 
             if(modules == null) {
-                modules = new CopyOnWriteArrayList<>(Wrapper.getModuleManager().getModules());
+                modules = new CopyOnWriteArrayList<>(Client.getInstance().getModuleManager().getModules());
             }
 
             this.sortModules();
@@ -137,7 +136,7 @@ public class EnabledModules extends Draggable {
     }
 
     public int getColor(long index) {
-        return ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings")).getColor(index);
+        return ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class)).getColor(index);
     }
 
     private void drawString(String text, float x, float y, boolean shadow, int color) {

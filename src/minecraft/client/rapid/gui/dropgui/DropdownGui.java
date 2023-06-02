@@ -4,11 +4,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.gui.GuiPosition;
 import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.module.modules.Category;
 import client.rapid.module.modules.hud.HudSettings;
+import client.rapid.module.modules.visual.ClickGuiToggle;
 import net.minecraft.client.gui.*;
 
 public class DropdownGui extends GuiScreen {
@@ -20,7 +21,7 @@ public class DropdownGui extends GuiScreen {
 
 	private GuiPosition position;
 	
-	public static HudSettings hud = ((HudSettings)Wrapper.getModuleManager().getModule("Hud Settings"));
+	public static HudSettings hud = ((HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class));
 
 	public DropdownGui() {
 		frames = new ArrayList<>();
@@ -35,7 +36,7 @@ public class DropdownGui extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Background").isEnabled())
+		if(Client.getInstance().getSettingsManager().getSetting(ClickGuiToggle.class, "Background").isEnabled())
 			Gui.drawRect(0, 0, width, height, 0xCC200000);
 
 		for(DropFrame frame : frames) {

@@ -1,11 +1,12 @@
 package client.rapid.module.modules.movement;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
+import client.rapid.util.module.MoveUtil;
 
 @ModuleInfo(getName = "Custom Speed", getCategory = Category.MOVEMENT)
 public class CustomSpeed extends Module {
@@ -27,7 +28,7 @@ public class CustomSpeed extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		fallTicks.setVisible(fallMode.getMode().equals("Ticks"));
 	}
 
@@ -39,7 +40,7 @@ public class CustomSpeed extends Module {
 	@Override
 	public void onEvent(Event e) {
 		if(e instanceof EventUpdate && e.isPre()) {
-			if(isMoving()) {
+			if(MoveUtil.isMoving()) {
 				ticks++;
 
 				if(mc.thePlayer.onGround) {
@@ -65,11 +66,11 @@ public class CustomSpeed extends Module {
 						moveSpeed -= slowdown.getValue();
 
 					if(changeSpeed) {
-						moveSpeed = airSpeed.getValue() == 0 ? getMoveSpeed() : airSpeed.getValue();
+						moveSpeed = airSpeed.getValue() == 0 ? MoveUtil.getMoveSpeed() : airSpeed.getValue();
 						changeSpeed = false;
 					}
 				}
-				setMoveSpeed(moveSpeed);
+				MoveUtil.setMoveSpeed(moveSpeed);
 			}
 			mc.timer.timerSpeed = (float)timer.getValue();
 		}

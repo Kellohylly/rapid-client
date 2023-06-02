@@ -1,6 +1,6 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -25,7 +25,7 @@ public class SpinBot extends Module {
         if(e instanceof EventMotion && e.isPre()) {
             EventMotion event = (EventMotion)e;
 
-            if((killAuraCheck.isEnabled() && KillAura.target != null) || (scaffoldCheck.isEnabled() && isEnabled("Scaffold")))
+            if((killAuraCheck.isEnabled() && KillAura.target != null) || (scaffoldCheck.isEnabled() && isEnabled(Scaffold.class)))
                 return;
 
             float spinYaw = RotationUtil.updateRotation(mc.thePlayer.rotationYaw, (System.currentTimeMillis() / (int)speed.getValue()) % 360);

@@ -1,12 +1,14 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 
+// Hooked in EntityRenderer.java
 public class EventRotation extends Event {
-    private float yaw, pitch;
+
+    private float yaw;
+	private float pitch;
 
 	public EventRotation(float yaw, float pitch) {
-		super();
 		this.yaw = yaw;
 		this.pitch = pitch;
 	}

@@ -1,13 +1,13 @@
 package client.rapid.gui;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.Draggable;
 import net.minecraft.client.gui.*;
 
 public class GuiPosition extends GuiScreen {
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		for(Draggable d : Wrapper.getModuleManager().getDraggables()) {
+		for(Draggable d : Client.getInstance().getModuleManager().getDraggables()) {
 			if(d.isEnabled()) {
 				d.drawDummy(mouseX, mouseY);
 

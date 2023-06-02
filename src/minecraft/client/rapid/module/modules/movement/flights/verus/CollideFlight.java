@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement.flights.verus;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventCollide;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.movement.flights.FlightBase;
@@ -28,13 +28,13 @@ public class CollideFlight extends FlightBase {
             EventCollide event = (EventCollide) e;
 
             if(jump.isEnabled()) {
-                event.setBoundingBox(new AxisAlignedBB(-2, 0, -2, 2, 0, 2).offset(event.getX(), startY, event.getZ()));
+                event.setAxisAlignedBB(new AxisAlignedBB(-2, 0, -2, 2, 0, 2).offset(event.getX(), startY, event.getZ()));
 
                 if(mc.gameSettings.keyBindJump.isKeyDown()) {
-                    event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getX(), event.getY(), event.getZ()));
+                    event.setAxisAlignedBB(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getX(), event.getY(), event.getZ()));
                 }
             } else {
-                event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getX(), event.getY(), event.getZ()));
+                event.setAxisAlignedBB(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getX(), event.getY(), event.getZ()));
             }
         }
     }

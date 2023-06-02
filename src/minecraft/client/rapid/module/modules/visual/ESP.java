@@ -2,9 +2,9 @@ package client.rapid.module.modules.visual;
 
 import java.awt.Color;
 
-import client.rapid.Wrapper;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRenderWorld;
+import client.rapid.Client;
+import client.rapid.event.Event;
+import client.rapid.event.events.game.EventRender3D;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -36,8 +36,8 @@ public class ESP extends Module {
 
 	@Override
 	public void onEvent(Event e) {
-		if(e instanceof EventRenderWorld && e.isPre()) {
-            HudSettings hud = (HudSettings)Wrapper.getModuleManager().getModule("Hud Settings");
+		if(e instanceof EventRender3D && e.isPre()) {
+            HudSettings hud = (HudSettings) Client.getInstance().getModuleManager().getModule(HudSettings.class);
 
             for (Entity entity : mc.theWorld.loadedEntityList) {
 				if(canESP(entity))

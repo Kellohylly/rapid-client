@@ -1,5 +1,6 @@
 package client.rapid.command.commands;
 
+import client.rapid.Client;
 import client.rapid.command.Command;
 import client.rapid.util.PlayerUtil;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,8 +18,8 @@ public class NameCommand extends Command {
 			for(String arg : args) text += arg + " ";
 			
 			name = text.replace(" ", "").replace("&", "§");
-			
-			PlayerUtil.addChatMessage(EnumChatFormatting.GREEN + "Username changed!");
+
+			Client.getInstance().addChatMessage(EnumChatFormatting.GREEN + "Username changed!");
 		} else
 			sendSyntax();
 	}

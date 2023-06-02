@@ -1,6 +1,6 @@
 package client.rapid.module.modules.other;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventChat;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;

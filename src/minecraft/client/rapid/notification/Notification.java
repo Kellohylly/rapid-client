@@ -1,13 +1,14 @@
 package client.rapid.notification;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
+import client.rapid.module.modules.hud.HudSettings;
 import client.rapid.util.MinecraftUtil;
-import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
 import client.rapid.util.animation.Animation;
-import client.rapid.util.font.*;
+import client.rapid.util.font.Fonts;
+import client.rapid.util.font.MCFontRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -17,7 +18,7 @@ public class Notification {
     private final NotificationType type;
     private final String title, message;
     private final MCFontRenderer font = Fonts.normal;
-    private Animation animationY = new Animation(0, 0.6f);
+    private final Animation animationY = new Animation(0, 0.6f);
 
     public final TimerUtil timer = new TimerUtil();
 
@@ -53,7 +54,7 @@ public class Notification {
     public void render(int x, int y) {
         Minecraft mc = MinecraftUtil.mc;
 
-        boolean mcFont = Wrapper.getSettingsManager().getSettingByName("Hud Settings", "Minecraft Font").isEnabled();
+        boolean mcFont = Client.getInstance().getSettingsManager().getSetting(HudSettings.class, "Minecraft Font").isEnabled();
         int width = mcFont ? mc.fontRendererObj.getStringWidth(message) + 35 : font.getStringWidth(message) + 35;
 
         Gui.drawRect(x - animation.getValue(), y - 30, x, y - 4, 0x90000000);

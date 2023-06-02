@@ -1,15 +1,13 @@
 package client.rapid.module.modules.combat;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
 import client.rapid.module.settings.Setting;
-import client.rapid.util.PacketUtil;
 import client.rapid.util.TimerUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.BlockPos;
 
 @ModuleInfo(getName = "TP Aura", getCategory = Category.COMBAT)

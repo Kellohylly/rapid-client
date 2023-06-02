@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement.steps.motion;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.modules.movement.steps.StepBase;
 import client.rapid.util.module.MoveUtil;

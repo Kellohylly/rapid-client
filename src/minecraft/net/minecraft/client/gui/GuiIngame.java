@@ -1,13 +1,14 @@
 package net.minecraft.client.gui;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
+import client.rapid.module.modules.visual.Crosshair;
+import client.rapid.module.modules.visual.NoRender;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import client.rapid.event.EventType;
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventRender;
+import client.rapid.event.events.game.EventRender2D;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -139,8 +140,8 @@ public class GuiIngame extends Gui
 
         if (this.mc.gameSettings.thirdPersonView == 0 && itemstack != null && itemstack.getItem() == Item.getItemFromBlock(Blocks.pumpkin))
         {
-            if(Wrapper.getModuleManager().getModule("No Render").isEnabled()) {
-                if(!Wrapper.getSettingsManager().getSettingByName("No Render", "Pumpkin Overlay").isEnabled())
+            if(Client.getInstance().getModuleManager().getModule(NoRender.class).isEnabled()) {
+                if(!Client.getInstance().getSettingsManager().getSetting(NoRender.class, "Pumpkin Overlay").isEnabled())
                     this.renderPumpkinOverlay(scaledresolution);
             } else
                 this.renderPumpkinOverlay(scaledresolution);
@@ -169,7 +170,7 @@ public class GuiIngame extends Gui
         this.mc.getTextureManager().bindTexture(icons);
         GlStateManager.enableBlend();
 
-        if (this.showCrosshair() && !Wrapper.getModuleManager().getModule("Crosshair").isEnabled())
+        if (this.showCrosshair() && !Client.getInstance().getModuleManager().getModule(Crosshair.class).isEnabled())
         {
             GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
             GlStateManager.enableAlpha();
@@ -336,8 +337,8 @@ public class GuiIngame extends Gui
             } else
         		this.renderScoreboard(scoreobjective1, scaledresolution);*/
 
-            if(Wrapper.getModuleManager().getModule("Scoreboard").isEnabled()) {
-                ((client.rapid.module.modules.hud.Scoreboard)Wrapper.getModuleManager().getModule("Scoreboard")).renderScoreboard(scoreobjective1, scaledresolution);
+            if(Client.getInstance().getModuleManager().getModule(client.rapid.module.modules.hud.Scoreboard.class).isEnabled()) {
+                ((client.rapid.module.modules.hud.Scoreboard)Client.getInstance().getModuleManager().getModule(client.rapid.module.modules.hud.Scoreboard.class)).renderScoreboard(scoreobjective1, scaledresolution);
             }
         }
 
@@ -362,13 +363,13 @@ public class GuiIngame extends Gui
             this.overlayPlayerList.renderPlayerlist(i, scoreboard, scoreobjective1);
         }
         
-        EventRender eventRender = new EventRender(scaledresolution);
+        EventRender2D eventRender = new EventRender2D(scaledresolution);
         eventRender.setType(EventType.PRE);
         GlStateManager.pushMatrix();
         int scaleFactor = new ScaledResolution(mc).getScaleFactor();
         double scale = 2.0/scaledresolution.getScaleFactor();
         GlStateManager.scale(scale, scale, scale);
-        Event.dispatch(eventRender);
+        eventRender.callEvent();
         GlStateManager.popMatrix();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

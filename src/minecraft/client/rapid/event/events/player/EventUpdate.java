@@ -1,9 +1,12 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 
+// Hooked in EntityPlayerSP.java
 public class EventUpdate extends Event {
-    private float yaw, pitch;
+
+    private final float yaw;
+    private final float pitch;
 
     public EventUpdate(float yaw, float pitch) {
         this.yaw = yaw;
@@ -17,4 +20,5 @@ public class EventUpdate extends Event {
     public float getPitch() {
         return pitch;
     }
+
 }

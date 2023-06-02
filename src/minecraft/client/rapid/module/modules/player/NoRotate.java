@@ -1,6 +1,6 @@
 package client.rapid.module.modules.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -17,7 +17,7 @@ public class NoRotate extends Module {
 			
 			boolean illegalRotateCheck = mc.thePlayer.rotationYaw != -180 && mc.thePlayer.rotationPitch != 0;
 
-	        if (!event.isIncoming() && event.getPacket() instanceof S08PacketPlayerPosLook && illegalRotateCheck) {
+	        if (event.isIncoming() && event.getPacket() instanceof S08PacketPlayerPosLook && illegalRotateCheck) {
 				S08PacketPlayerPosLook packet = event.getPacket();
 
             	packet.setYaw(mc.thePlayer.rotationYaw);

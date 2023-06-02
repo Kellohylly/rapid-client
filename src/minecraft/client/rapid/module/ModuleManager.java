@@ -30,6 +30,8 @@ public class ModuleManager {
 	private final CopyOnWriteArrayList<Draggable> draggables = new CopyOnWriteArrayList<>();
 	
 	public ModuleManager() {
+
+		// Add Modules
 		addAll(modules,
 			// COMBAT
 			new AntiFireball(),
@@ -115,6 +117,7 @@ public class ModuleManager {
 			new ESP()
 		);
 
+		// Add Draggables
 		addAll(draggables,
 			new HudSettings(),
 			new TargetHud(),
@@ -127,16 +130,19 @@ public class ModuleManager {
 			new EnabledModules(),
 			new PlayerPosition()
 			);
-		
+
+		// Add Draggables to Modules
 		for(Draggable d : draggables)
 			addAll(modules, d);
 
 		Watermark.setWatermark(Watermark.text);
 
+		// Sort them for beauty kinda
 		modules.sort(Comparator.comparingInt(mod -> Fonts.normal2.getStringWidth(((Module)mod).getName())).reversed());
 
 	}
 
+	// Add all modules to an array
 	public void addAll(CopyOnWriteArrayList list, Module... modules) {
 		list.addAll(Arrays.asList(modules));
 	}
@@ -148,22 +154,36 @@ public class ModuleManager {
 	public CopyOnWriteArrayList<Draggable> getDraggables() {
 		return draggables;
 	}
-	
+
+	// Get all modules that are set to the specified category
 	public ArrayList<Module> getModulesInCategory(Category category) {
 		ArrayList<Module> mods = new ArrayList<>();
 		modules.stream().filter(m -> m.getCategory() == category).forEach(mods::add);
 		return mods;
 	}
 
-	public Module getModule(String name) {
+	// Gets a module
+	public Module getModule(Class<? extends Module> module) {
 		for(Module m : getModules()) {
-			if(m.getName().equalsIgnoreCase(name))
+			if(m.getClass() == module) {
 				return m;
+			}
 		}
 		return null;
 	}
 
-	public Module getModule2(String name) {
+	// Gets a module by name
+	public Module getModuleByName(String name) {
+		for(Module m : getModules()) {
+			if(m.getName().equals(name)) {
+				return m;
+			}
+		}
+		return null;
+	}
+
+	// Gets a module without spaces
+	public Module getModuleWithoutSpaces(String name) {
 		for(Module m : getModules()) {
 			if(m.getName2().equalsIgnoreCase(name))
 				return m;

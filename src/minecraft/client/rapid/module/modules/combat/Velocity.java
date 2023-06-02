@@ -1,6 +1,6 @@
 package client.rapid.module.modules.combat;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -25,7 +25,7 @@ public class Velocity extends Module {
 	private int tickss;
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		ticks.setVisible(mode.getMode().equals("Ticks"));
 	}
 

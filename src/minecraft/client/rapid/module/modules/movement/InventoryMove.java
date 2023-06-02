@@ -4,7 +4,7 @@ import client.rapid.event.events.player.EventUpdate;
 import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;

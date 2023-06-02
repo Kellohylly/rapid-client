@@ -1,10 +1,10 @@
 package net.minecraft.entity.player;
 
+import client.rapid.Client;
+import client.rapid.module.modules.combat.KeepSprint;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
-
-import client.rapid.Wrapper;
 
 import java.util.Collection;
 import java.util.List;
@@ -926,7 +926,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
                if(flag2) {
                   if(i > 0) {
                      targetEntity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F));
-                     if((!Wrapper.getModuleManager().getModule("Keep Sprint").isEnabled())) {
+                     if((!Client.getInstance().getModuleManager().getModule(KeepSprint.class).isEnabled())) {
 	                     this.motionX *= 0.6D;
 	                     this.motionZ *= 0.6D;
 	                     this.setSprinting(false);

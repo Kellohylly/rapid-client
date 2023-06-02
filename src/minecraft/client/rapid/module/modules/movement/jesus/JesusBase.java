@@ -1,6 +1,6 @@
 package client.rapid.module.modules.movement.jesus;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import net.minecraft.client.Minecraft;
 
 public class JesusBase {

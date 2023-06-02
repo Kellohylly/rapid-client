@@ -1,6 +1,6 @@
 package client.rapid.module.modules.combat;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
@@ -25,7 +25,7 @@ public class Criticals extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		delay.setVisible(!mode.getMode().equals("No Ground"));
 	}
 
@@ -50,7 +50,7 @@ public class Criticals extends Module {
 			if(mode.getMode().equals("No Ground") && mc.thePlayer.onGround)
 				((EventMotion)e).setGround(false);
 		}
-		if(e instanceof EventPacket && e.isPre() && !((EventPacket)e).isIncoming()) {
+		if(e instanceof EventPacket && e.isPre() && ((EventPacket) e).isIncoming()) {
 			EventPacket event = (EventPacket)e;
 
 			if(!mode.getMode().equals("No Ground")) {

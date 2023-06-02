@@ -1,6 +1,6 @@
 package client.rapid.module.modules.other;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
 import client.rapid.module.modules.Category;
@@ -18,7 +18,7 @@ public class Panic extends Module {
 
 	@Override
 	public void onEnable() {
-		for(Module m : Wrapper.getModuleManager().getModules()) {
+		for(Module m : Client.getInstance().getModuleManager().getModules()) {
 			if(m.isEnabled() && !Objects.equals(m.getName(), name))
 				m.toggle();
 			

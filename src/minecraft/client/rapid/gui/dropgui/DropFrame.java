@@ -2,14 +2,13 @@ package client.rapid.gui.dropgui;
 
 import java.util.ArrayList;
 
-import client.rapid.Wrapper;
-import client.rapid.gui.dropgui.DropdownGui;
+import client.rapid.Client;
 import client.rapid.gui.dropgui.component.DropComponent;
 import client.rapid.gui.dropgui.component.components.DropButton;
 import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.module.Module;
 import client.rapid.module.modules.Category;
-import client.rapid.util.animation.Animation;
+import client.rapid.module.modules.visual.ClickGuiToggle;
 import client.rapid.util.font.*;
 import net.minecraft.client.gui.*;
 
@@ -37,7 +36,7 @@ public class DropFrame {
 		this.dragging = false;
 		int tY = this.barHeight;
 		
-		for(Module mod : Wrapper.getModuleManager().getModulesInCategory(category)) {
+		for(Module mod : Client.getInstance().getModuleManager().getModulesInCategory(category)) {
 			DropButton modButton = new DropButton(mod, this, tY);
 			this.components.add(modButton);
 			tY += 12;
@@ -45,13 +44,13 @@ public class DropFrame {
 	}
 	
 	public void renderFrame() {
-		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Outline").isEnabled())
+		if(Client.getInstance().getSettingsManager().getSetting(ClickGuiToggle.class, "Outline").isEnabled())
 			Gui.drawRect(this.x - 1.5, this.y - 0.5, this.x + this.width + 1.5, this.y + this.barHeight + 0.5, DropdownGui.hud.getColor(barHeight));
 
 		Gui.drawRect(this.x - 1, this.y, this.x + this.width + 1, this.y + this.barHeight, PanelGui.backgroundDark);
 		font.drawString(this.category.getName(), (this.x + 2) + 5, (this.y + 2.5f) + 2.5f, -1);
 
-		if(Wrapper.getSettingsManager().getSettingByName("Click Gui", "Category Icons").isEnabled()) {
+		if(Client.getInstance().getSettingsManager().getSetting(ClickGuiToggle.class, "Category Icons").isEnabled()) {
 			icons.drawString(String.valueOf(category.getIcon()), x + width - 15, y + icons.getStringHeight(String.valueOf(category.getIcon())) / 1.5f - 0.5f, -1);
 		}
 

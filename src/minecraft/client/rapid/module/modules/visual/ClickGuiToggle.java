@@ -26,7 +26,7 @@ public class ClickGuiToggle extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		categoryIcons.setVisible(mode.getMode().equals("Dropdown"));
 	}
 

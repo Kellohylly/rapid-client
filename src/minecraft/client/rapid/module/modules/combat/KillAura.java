@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.event.events.player.EventRotation;
 import client.rapid.event.events.player.EventUpdate;
@@ -76,7 +76,7 @@ public class KillAura extends Module {
     }
 
     @Override
-    public void settingCheck() {
+    public void updateSettings() {
         viewLock.setVisible(!rotate.getMode().equals("None"));
         autoblockperc.setVisible(!autoBlock.getMode().equals("None"));
         useGcd.setVisible(!rotate.getMode().equals("None"));
@@ -214,7 +214,7 @@ public class KillAura extends Module {
         if (!isInFieldOfView(entity, fov.getValue()))
             return false;
 
-        if (isEnabled("Anti Bot") && AntiBot.getBots().contains(entity))
+        if (isEnabled(AntiBot.class) && AntiBot.getBots().contains(entity))
             return false;
 
         if (entity.isOnSameTeam(mc.thePlayer) && teams.isEnabled())

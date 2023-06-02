@@ -1,7 +1,6 @@
 package client.rapid.module.modules.combat;
 
-import client.rapid.event.events.Event;
-import client.rapid.event.events.game.EventPacket;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventUpdate;
 import client.rapid.module.Module;
@@ -15,9 +14,6 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S02PacketChat;
-import net.minecraft.network.play.server.S0CPacketSpawnPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +37,7 @@ public class AntiBot extends Module {
 	}
 
 	@Override
-	public void settingCheck() {
+	public void updateSettings() {
 		maxDistance.setVisible(!mode.getMode().equals("Tab"));
 		clearTime.setVisible(clear.isEnabled());
 		hasArmor.setVisible(mode.getMode().equals("Basic"));

@@ -1,8 +1,7 @@
 package client.rapid.command.commands;
 
-import client.rapid.Wrapper;
+import client.rapid.Client;
 import client.rapid.command.Command;
-import client.rapid.util.PlayerUtil;
 
 public class ListCommand extends Command {
 
@@ -11,8 +10,8 @@ public class ListCommand extends Command {
 	}
 
 	public void onCommand(String[] args, String command) {
-		for(Command c : Wrapper.getCommandManager().getCommands()) {
-			PlayerUtil.addChatMessage("§a" + c.getSyntax() + " §7- " + c.getDescription());
+		for(Command c : Client.getInstance().getCommandManager().getCommands()) {
+			Client.getInstance().addChatMessage("§a" + c.getSyntax() + " §7- " + c.getDescription());
 		}
 	}
 

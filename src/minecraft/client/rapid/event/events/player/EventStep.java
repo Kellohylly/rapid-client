@@ -1,10 +1,14 @@
 package client.rapid.event.events.player;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
+
 import net.minecraft.entity.Entity;
 
+// Hooked in Entity.java
 public class EventStep extends Event {
-	private Entity entity;
+
+	private final Entity entity;
+
 	private float height;
 
 	public EventStep(final Entity entity) {

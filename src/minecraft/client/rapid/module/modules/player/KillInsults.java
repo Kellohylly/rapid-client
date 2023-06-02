@@ -3,7 +3,7 @@ package client.rapid.module.modules.player;
 import java.io.File;
 import java.util.Scanner;
 
-import client.rapid.event.events.Event;
+import client.rapid.event.Event;
 import client.rapid.event.events.game.EventPacket;
 import client.rapid.event.events.player.EventAttackedPlayer;
 import client.rapid.module.Module;
