@@ -15,6 +15,7 @@ public class Fonts {
 	greycliff = getFont("greycliff.ttf", 19),
 	sfui = getFont("sfui.ttf", 19),
 	clickgui = getFont("font.ttf", 17),
+	small = getFont("font.ttf", 15),
 	newIcons = getFont("category.ttf", 22),
 	newIconsBig = getFont("category.ttf", 40);
 

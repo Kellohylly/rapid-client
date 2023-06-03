@@ -52,6 +52,9 @@ public class Jesus extends Module {
 
 
         if(isWaterBelow() && !mc.thePlayer.capabilities.isFlying && !mc.thePlayer.isSneaking()) {
+            if(isEnabled(Flight.class)) {
+                return;
+            }
             if(!mode.getMode().equals("Matrix") && mc.thePlayer.isInWater()) {
                 return;
             }

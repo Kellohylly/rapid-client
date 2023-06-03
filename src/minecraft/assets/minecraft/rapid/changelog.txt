@@ -2,45 +2,41 @@
 + Amount to Notifications.
 + Speed to Phase.
 + No Clip Phase.
-+ NCP Low Speed.
-+ Move Tower to Scaffold.
-+ Normal2 Rotations to Scaffold.
 + Ticks Velocity.
 + Matrix Tower to Scaffold.
++ Normal2 Rotations to Scaffold.
++ Move Tower to Scaffold.
 + Vulcan Criticals.
 + Jump to Collide Flight.
-+ Omni Sprint Disabler.
++ Incognito Flight.
 + Health to Auto Pot.
 + Has Armor to Anti Bot.
-+ Incognito Flight.
 + Greycliff font to Hud Settings.
-+ cooler spin in Animations.
++ Cooler spin in Animations.
 + Matrix Jesus.
 + Ignore Bad Items to Chest Stealer.
-+ Binds Command.
-+ Vulcan Ground Speed.
 + Vulcan Eagle to Scaffold.
-+ Vulcan C08 to Disabler.
 + Added Delay to Anti Fall.
++ NCP Low Speed.
++ Vulcan Ground Speed.
++ Omni Sprint Disabler.
++ Vulcan C08 Disabler.
++ Binds Command.
 
-/ Made Config System a bit better.
 / Improved Notification System.
 / Fixed modules moving random places in Click Gui.
 / Changed ClickGui Category Icons.
 / Fixed a few Main Menu and Alt Manager visuals.
-/ Separated Auto Pot from Auto Heal.
 / Mostly fixed Inventory Manager.
-/ Un-patched and improved Vulcan Long Jump.
-/ Made settings hide if not used for Panel Gui.
+/ Made settings hide if not used.
 / Improved Auto Pot for Instant Health potions.
 / Animations to Target Hud.
 / Improved Block Counter Module.
 / Recoded Enabled Modules.
 / Renamed Spin animations to Astolfo.
 / Renamed Geuxy animations to Flat.
-/ Improved Kill Aura.
-/ Improved Dropdown Gui.
-/ Made No Fall mostly flagless.
+/ Improved Kill Aura rotations.
+/ Made Vulcan No Fall mostly flagless.
 / Made Vulcan Jesus flagless.
 
 - Position Flight.

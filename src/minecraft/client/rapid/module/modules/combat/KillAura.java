@@ -40,7 +40,7 @@ public class KillAura extends Module {
     private final Setting sortMode = new Setting("Sort", this, "Distance", "Health");
     private final Setting click = new Setting("Click", this, "Normal", "Legit", "Sync");
 
-    private final Setting rotate = new Setting("Rotate", this, "None", "Normal");
+    private final Setting rotate = new Setting("Rotate", this, "None", "Normal", "Basic");
     private final Setting viewLock = new Setting("View Lock", this, false);
     private final Setting rayCast = new Setting("Ray Cast", this, true);
     private final Setting useGcd = new Setting("Use GCD", this, false);
@@ -50,8 +50,8 @@ public class KillAura extends Module {
     private final Setting legitRandom = new Setting("Legit Random", this, false);
     private final Setting shakeX = new Setting("Random X", this, 0, 0, 5, false);
     private final Setting shakeY = new Setting("Random Y", this, 0, 0, 5, false);
-    private final Setting minTurn = new Setting("Min Turn Speed", this, 120, 0, 180, true);
-    private final Setting maxTurn = new Setting("Max Turn Speed", this, 120, 0, 180, true);
+    private final Setting minTurn = new Setting("Min Turn Speed", this, 1, 2, 30, false);
+    private final Setting maxTurn = new Setting("Max Turn Speed", this, 4, 2, 30, false);
     private final Setting fov = new Setting("Field of View", this, 360, 0, 360, true);
 
     private final Setting autoBlock = new Setting("AutoBlock", this, "None", "Vanilla", "Packet", "Fake", "NCP");
@@ -86,6 +86,10 @@ public class KillAura extends Module {
         minTurn.setVisible(!rotate.getMode().equals("None"));
         maxTurn.setVisible(!rotate.getMode().equals("None"));
         switchDelay.setVisible(mode.getMode().equals("Switch"));
+        heuristics.setVisible(rotate.getMode().equals("Normal"));
+        resolver.setVisible(rotate.getMode().equals("Normal"));
+        legitRandom.setVisible(rotate.getMode().equals("Normal"));
+        prediction.setVisible(rotate.getMode().equals("Normal"));
 
     }
 
@@ -141,7 +145,7 @@ public class KillAura extends Module {
 							legitShakeDelay = ThreadLocalRandom.current().nextDouble(100, 600);
 						}
 					}
-					doRotations(event, rotations);
+					doRotations(event, rotate.getMode().equals("Normal") ? rotations : RotationUtil.getRotations(target, shakeX.getValue(), shakeY.getValue()));
 				}
 			}
 		}

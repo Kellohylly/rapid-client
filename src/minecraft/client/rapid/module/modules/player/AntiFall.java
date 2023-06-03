@@ -1,6 +1,7 @@
 package client.rapid.module.modules.player;
 
 import client.rapid.event.Event;
+import client.rapid.event.events.game.EventWorldLoad;
 import client.rapid.event.events.player.EventMotion;
 import client.rapid.module.Module;
 import client.rapid.module.ModuleInfo;
@@ -31,17 +32,28 @@ public class AntiFall extends Module {
     }
 
     @Override
+    public void onEnable() {
+        timer.setTime((int)delay.getValue() * 1000L);
+    }
+
+    @Override
     public void onEvent(Event e) {
         setTag(mode.getMode());
+
+        if(e instanceof EventWorldLoad) {
+            timer.setTime((int)delay.getValue() * 1000L);
+        }
 
         if(e instanceof EventMotion && e.isPre()) {
             EventMotion event = (EventMotion) e;
 
-            if (mc.thePlayer.onGround && !mc.theWorld.isAirBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ))) {
+            BlockPos under = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ);
+
+            if (mc.thePlayer.onGround && !mc.theWorld.isAirBlock(under) && mode.getMode().equals("Teleport")) {
                 groundPos = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
             }
 
-            if (mc.thePlayer.fallDistance >= fallDistance.getValue() && !PlayerUtil.isBlockUnder() && timer.reached((int) delay.getValue() * 100L)) {
+            if (mc.thePlayer.fallDistance >= fallDistance.getValue() && !PlayerUtil.isBlockUnder() && timer.reached((int) delay.getValue() * 1000L) && !mc.thePlayer.capabilities.isFlying) {
                 switch (mode.getMode()) {
                     case "Normal":
                         event.setY(event.getY() + height.getValue());
@@ -49,15 +61,15 @@ public class AntiFall extends Module {
                     case "Jump":
                         event.setGround(!event.isGround());
                         mc.thePlayer.motionY = height.getValue();
-                        mc.thePlayer.fallDistance = 0;
                         break;
                     case "Teleport":
                         if(groundPos != null && mc.thePlayer.getDistance(groundPos.getX(), groundPos.getY(), groundPos.getZ()) <= 10) {
                             mc.thePlayer.setPosition(groundPos.getX(), groundPos.getY(), groundPos.getZ());
-                            mc.thePlayer.fallDistance = 0;
                         }
                         break;
                 }
+                System.out.println("voided");
+                mc.thePlayer.fallDistance = 0;
                 timer.reset();
             }
         }

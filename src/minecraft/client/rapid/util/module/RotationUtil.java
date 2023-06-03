@@ -107,4 +107,18 @@ public class RotationUtil extends MinecraftUtil {
         return old + f;
     }
 
+    // Thanks to white_cola for this
+    public static float[] getRotations(final Entity entity, double shakeX, double shakeY) {
+        final double xSize = entity.posX - mc.thePlayer.posX + MathUtil.randomNumber(shakeX / 50, -shakeX / 50),
+                ySize = entity.posY + entity.getEyeHeight() / 2 - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight()) + MathUtil.randomNumber(shakeY / 50, -shakeY / 50),
+                zSize = entity.posZ - mc.thePlayer.posZ + MathUtil.randomNumber(shakeX / 50, -shakeX / 50),
+                theta = MathHelper.sqrt_double(xSize * xSize + zSize * zSize);
+
+        final float
+                yaw = (float) (Math.atan2(zSize, xSize) * 180 / Math.PI) - 90,
+                pitch = (float) (-(Math.atan2(ySize, theta) * 180 / Math.PI));
+
+        return new float[] {yaw, pitch};
+    }
+
 }

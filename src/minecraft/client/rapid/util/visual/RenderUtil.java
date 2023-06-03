@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Objects;
 
 import client.rapid.util.MinecraftUtil;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import org.lwjgl.opengl.GL11;
@@ -13,6 +14,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 public class RenderUtil extends MinecraftUtil {
+
+    public static void drawBorder(double x, double y, double width, double height, double thickness, int color) {
+        Gui.drawRect(x, y, x + thickness, height, color);
+        Gui.drawRect(width, y, width - thickness, height, color);
+        Gui.drawRect(x, y, width, y + thickness, color);
+        Gui.drawRect(x, height, width, height - thickness, color);
+    }
 	
     public static void chestESPBox(TileEntity entity, Color color) {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

@@ -7,6 +7,7 @@ import client.rapid.gui.alt.components.ATextField;
 import client.rapid.gui.alt.components.PasswordField;
 import client.rapid.gui.mainmenu.components.MMButton;
 
+import client.rapid.util.visual.RenderUtil;
 import org.lwjgl.input.Keyboard;
 
 import client.rapid.gui.mainmenu.ClientMainMenu;
@@ -24,11 +25,11 @@ public class AltManager extends GuiScreen {
 	@Override
 	public void initGui() {
         int var3 = height / 4 + 24;
-		buttonList.add(new MMButton(0, width / 2 - 70, height / 2 + 64, 69, 20, "Login"));
-		buttonList.add(new MMButton(2, width / 2 + 1, height / 2 + 64, 69, 20, "Web view"));
-		buttonList.add(new MMButton(1, width / 2 - 70, height / 2 + 86, 140, 20, "Back"));
-        this.username = new ATextField(var3, this.mc.fontRendererObj, width / 2 - 70, height / 2 + 16, 140, 20);
-        this.password = new PasswordField(this.mc.fontRendererObj, width / 2 - 70, height / 2 + 40, 140, 20);
+		buttonList.add(new MMButton(0, width / 2 - 70, height / 2 + 57, 69, 17, "Login"));
+		buttonList.add(new MMButton(2, width / 2 + 1, height / 2 + 57, 69, 17, "Web view"));
+		buttonList.add(new MMButton(1, width / 2 - 70, height / 2 + 77, 140, 17, "Back"));
+        this.username = new ATextField(var3, this.mc.fontRendererObj, width / 2 - 70, height / 2 + 13, 140, 17);
+        this.password = new PasswordField(this.mc.fontRendererObj, width / 2 - 70, height / 2 + 34, 140, 17);
         username.setFocused(true);
 		Client.getInstance().getDiscordRP().updateRPC("In Alt Manager", "");
 		super.initGui();
@@ -40,8 +41,8 @@ public class AltManager extends GuiScreen {
 		ClientMainMenu.renderSkybox(partialTicks);
 		GlStateManager.enableAlpha();
 
-		Gui.drawRect(width / 2 - 76, height / 2 - 8, width / 2 + 76, height / 2 + 112, 0x40000000);
-		Gui.drawRect(width / 2 - 74, height / 2 - 6, width / 2 + 74, height / 2 + 110, 0x40000000);
+		Gui.drawRect(width / 2 - 75.5, height / 2 - 6.5, width / 2 + 75.5, height / 2 + 100.5, 0x4F000000);
+		RenderUtil.drawBorder(width / 2 - 75.5, height / 2 - 6.5, width / 2 + 75.5, height / 2 + 100.5, 0.5, 0xFF000000);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		
 		GlStateManager.pushMatrix();
@@ -54,10 +55,10 @@ public class AltManager extends GuiScreen {
 		password.drawTextBox();
 		
 		if(username.getText().isEmpty())
-			mc.fontRendererObj.drawString("Username", width / 2 - 66, height / 2 + 22, 0xFF999999);
+			mc.fontRendererObj.drawString("Username", width / 2 - 66, height / 2 + 18, 0xFF999999);
 	
 		if(password.getText().isEmpty())
-			mc.fontRendererObj.drawString("Password", width / 2 - 66, height / 2 + 46, 0xFF999999);
+			mc.fontRendererObj.drawString("Password", width / 2 - 66, height / 2 + 38, 0xFF999999);
 	
 		mc.fontRendererObj.drawString(EnumChatFormatting.GREEN + "Logged into: " + mc.getSession().getUsername(), width / 2 - 70, height / 2, 0xFF999999);
 

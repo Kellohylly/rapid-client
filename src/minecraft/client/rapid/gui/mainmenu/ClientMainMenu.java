@@ -1,14 +1,17 @@
 package client.rapid.gui.mainmenu;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Scanner;
 
 import client.rapid.Client;
 import client.rapid.gui.alt.AltManager;
 import client.rapid.gui.mainmenu.components.MMButton;
+import client.rapid.gui.panelgui.PanelGui;
 import client.rapid.util.ClientUtil;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
+import client.rapid.util.visual.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.*;
@@ -19,79 +22,111 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Project;
 
 public class ClientMainMenu extends GuiScreen {
-	private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[]{new ResourceLocation("rapid/images/panorama/one.png"), new ResourceLocation("rapid/images/panorama/two.png"), new ResourceLocation("rapid/images/panorama/three.png"), new ResourceLocation("rapid/images/panorama/four.png"), new ResourceLocation("rapid/images/panorama/four.png"), new ResourceLocation("rapid/images/panorama/four.png")};
-	public static int panoramaTimer;
-	private static ResourceLocation backgroundTexture;
-	private boolean outdated;
+	private static final String path = "rapid/images/panorama/test/";
 
+	private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[] {
+		new ResourceLocation(path + "4.jpg"),
+		new ResourceLocation(path + "3.jpg"),
+		new ResourceLocation(path + "2.jpg"),
+		new ResourceLocation(path + "1.jpg"),
+
+		new ResourceLocation(path + "4.jpg"),
+		new ResourceLocation(path + "4.jpg")
+	};
+
+	private static ResourceLocation backgroundTexture;
+
+	public static int panoramaTimer;
+	private final boolean outdated;
+
+	// Fonts
 	private final MCFontRenderer font = Fonts.normal;
+	private final MCFontRenderer small = Fonts.small;
+
+	// Changelog list
+	private final String[] changelog = new String[255];
 
 	public void updateScreen() {
 		panoramaTimer++;
 	}
 
+	public ClientMainMenu() {
+		outdated = !ClientUtil.isLatest();
+	}
+
 	@Override
 	public void initGui() {
-		buttonList.add(new MMButton(0, width / 2 - 70, height / 2, 140, 18, "Singleplayer"));
-		buttonList.add(new MMButton(1, width / 2 - 70, height / 2 + 19, 140, 18, "Multiplayer"));
-		buttonList.add(new MMButton(2, width / 2 - 70, height / 2 + 38, 140, 18, "Alt Manager"));
-		buttonList.add(new MMButton(3, width / 2 - 70, height / 2 + 57, 140, 18, "Settings"));
-		buttonList.add(new MMButton(4, width / 2 - 70, height / 2 + 76, 140, 18, "Quit"));
+		buttonList.add(new MMButton(0, width / 2 - 70, height / 2 + 1, 140, 17, "Singleplayer"));
+		buttonList.add(new MMButton(1, width / 2 - 70, height / 2 + 20, 140, 17, "Multiplayer"));
+		buttonList.add(new MMButton(2, width / 2 - 70, height / 2 + 39, 140, 17, "Alt Manager"));
+		buttonList.add(new MMButton(3, width / 2 - 70, height / 2 + 58, 140, 17, "Settings"));
+		buttonList.add(new MMButton(4, width / 2 - 70, height / 2 + 77, 140, 17, "Quit"));
 		Client.getInstance().getDiscordRP().updateRPC("In Menu", "");
 		backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background",  new DynamicTexture(256, 256));
-		outdated = !ClientUtil.isLatest();
 		super.initGui();
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
+		// Render background
 		GlStateManager.pushMatrix();
 		renderSkybox(partialTicks);
 		GlStateManager.popMatrix();
 
-		Gui.drawRect(width / 2 - 76, height / 2 - 8, width / 2 + 76, height / 2 + 101, 0x40000000);
-		Gui.drawRect(width / 2 - 74, height / 2 - 6, width / 2 + 74, height / 2 + 99, 0x40000000);
+		// Render background for buttons
+		Gui.drawRect(width / 2 - 75.5, height / 2 - 6.5, width / 2 + 75.5, height / 2 + 100.5, 0x4F000000);
+		RenderUtil.drawBorder(width / 2 - 75.5, height / 2 - 6.5, width / 2 + 75.5, height / 2 + 100.5, 0.5, 0xFF000000);
 
+		// Render logo
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
 		GlStateManager.color(1, 1, 1);
 		mc.getTextureManager().bindTexture(new ResourceLocation("rapid/images/rapidlogo.png"));
 		Gui.drawModalRectWithCustomSizedTexture(width / 2 - 70, height / 2 - 134, 0, 0, 140, 140, 140, 140);
 		GlStateManager.popMatrix();
+
+		String mojangab = "Copyright Mojang AB. Do not distribute!";
+
+		font.drawString(mojangab, width - mc.fontRendererObj.getStringWidth(mojangab) - 7, height - 14, -1);
+
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		String[] changelog = new String[255];
+		mc.fontRendererObj.drawStringWithShadow("Changelog - " + Client.getInstance().getVersion() + EnumChatFormatting.RED + (outdated ? " [Outdated]" : ""), 3, 1, -1);
+
 		try {
-			Scanner scanner = new Scanner(ClassLoader.getSystemResource("assets/minecraft/rapid/changelog.txt").openStream());
+			URL changelogFile = ClassLoader.getSystemResource("assets/minecraft/rapid/changelog.txt");
+
+			Scanner scanner = new Scanner(changelogFile.openStream());
 
 			int i = 0;
-			while(scanner.hasNextLine()) {
+			while (scanner.hasNextLine()) {
 				changelog[i] = scanner.nextLine();
 
 				int color = 0xFFFF3030;
-				if(changelog[i].contains("+"))
-					color = 0xFF30C530;
-				else if(changelog[i].contains("/"))
-					color = 0xFFFFC530;
-				else if(!changelog[i].contains("-"))
-					color = 0xFF4040C0;
 
-				mc.fontRendererObj.drawStringWithShadow(changelog[i].replace("+", "").replace("-", "").replace("/", ""), 10, 12 + i * 10, -1);
+				if (changelog[i].contains("+")) {
+					color = 0xFF30C530;
+
+				} else if (changelog[i].contains("/")) {
+					color = 0xFFFFC530;
+
+				} else if (!changelog[i].contains("-")) {
+					color = 0xFF4040C0;
+				}
+
+				small.drawString(changelog[i].replace("+", "").replace("-", "").replace("/", ""), 10, 12 + i * 8, -1);
 
 				if (!changelog[i].isEmpty()) {
-					Gui.drawRect(3.5, 13 + i * 10, 8.5, 18 + i * 10, 0xFF000000);
-					Gui.drawRect(4, 13.5 + i * 10, 8, 17.5 + i * 10, color);
+					Gui.drawRect(3.5, 11.5 + i * 8, 8.5, 16.5 + i * 8, 0xFF000000);
+					Gui.drawRect(4, 12 + i * 8, 8, 16 + i * 8, color);
 				}
 				i++;
 			}
 			scanner.close();
 		} catch (Exception e) {
-			changelog[0] = "Failed to get changelog";
+			changelog[1] = "Failed to get changelog";
 		}
-		String mojangab = "Copyright Mojang AB. Do not distribute!";
-
-		mc.fontRendererObj.drawStringWithShadow("Changelog - " + Client.getInstance().getVersion() + EnumChatFormatting.RED + (outdated ? " [Outdated]" : ""), 3, 1, -1);
-		font.drawString(mojangab, width - mc.fontRendererObj.getStringWidth(mojangab) - 7, height - 14, -1);
 	}
 	
 	@Override
@@ -239,4 +274,5 @@ public class ClientMainMenu extends GuiScreen {
 		worldrenderer.pos(0.0D, 0.0D, (double)zLevel).tex((double)(0.5F + f1), (double)(0.5F + f2)).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
 		tessellator.draw();
 	}
+
 }

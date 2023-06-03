@@ -30,4 +30,9 @@ public final class TimerUtil {
 	public boolean reached(double time) {
         return time() >= time;
 	}
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
 }

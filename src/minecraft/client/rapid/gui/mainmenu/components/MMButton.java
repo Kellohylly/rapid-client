@@ -5,6 +5,7 @@ import client.rapid.gui.mainmenu.ClientMainMenu;
 import client.rapid.util.animation.Animation;
 import client.rapid.util.font.Fonts;
 import client.rapid.util.font.MCFontRenderer;
+import client.rapid.util.visual.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -31,18 +32,18 @@ public class MMButton extends GuiButton {
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GlStateManager.blendFunc(770, 771);
 
-            Gui.drawRect(xPosition, yPosition, xPosition + width, yPosition + height, 0x30000000);
-            Gui.drawRect(xPosition + 1, yPosition + 1, xPosition + width - 1, yPosition + height - 1, 0x40000000);
+            Gui.drawRect(xPosition, yPosition, xPosition + width, yPosition + height, 0x50000000);
+            RenderUtil.drawBorder(xPosition, yPosition, xPosition + width, yPosition + height, 0.5, 0xFF000000);
 
             if(hovered) {
                 animation.interpolate(width / 2);
 
-                Gui.drawRect(xPosition + width / 2, yPosition + height - 1, xPosition + width / 2 + animation.getValue(), yPosition + height, 0xFFFF2020);
-                Gui.drawRect(xPosition + width / 2, yPosition + height - 1, xPosition + width / 2 - animation.getValue(), yPosition + height, 0xFFFF2020);
+                Gui.drawRect(xPosition + width / 2, yPosition + height - 0.5, xPosition + width / 2 + animation.getValue(), yPosition + height, 0xFFFF2020);
+                Gui.drawRect(xPosition + width / 2, yPosition + height - 0.5, xPosition + width / 2 - animation.getValue(), yPosition + height, 0xFFFF2020);
             } else {
                 if(animation.getValueF() > 0) {
-                    Gui.drawRect(xPosition + width / 2, yPosition + height - 1, (xPosition + width / 2) + animation.getValue(), yPosition + height, 0xFFFF2020);
-                    Gui.drawRect(xPosition + width / 2, yPosition + height - 1, (xPosition + width / 2) - animation.getValue(), yPosition + height, 0xFFFF2020);
+                    Gui.drawRect(xPosition + width / 2, yPosition + height - 0.5, (xPosition + width / 2) + animation.getValue(), yPosition + height, 0xFFFF2020);
+                    Gui.drawRect(xPosition + width / 2, yPosition + height - 0.5, (xPosition + width / 2) - animation.getValue(), yPosition + height, 0xFFFF2020);
                 }
                 animation.interpolate(0);
             }

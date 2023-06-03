@@ -2,6 +2,7 @@ package client.rapid.gui.alt.components;
 
 import client.rapid.gui.alt.AltManager;
 import client.rapid.util.animation.Animation;
+import client.rapid.util.visual.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -24,19 +25,18 @@ public class ATextField extends GuiTextField {
         if(this.getVisible()) {
             if (this.getEnableBackgroundDrawing()) {
                 if (Minecraft.getMinecraft().currentScreen instanceof AltManager) {
-                    Gui.drawRect(this.xPosition - 1, this.yPosition - 1, this.xPosition + this.width + 1, this.yPosition + this.height + 1, 0x30000000);
-                    Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, 0x40000000);
-                    Gui.drawRect(this.xPosition, this.yPosition + height + 1, this.xPosition + this.width, this.yPosition + this.height, -1);
+                    RenderUtil.drawBorder(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, 0.5, 0xFF000000);
+                    Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, 0x50000000);
 
                     if (isFocused()) {
                         animation.interpolate(width / 2);
 
-                        Gui.drawRect(xPosition + width / 2, yPosition + height + 1, xPosition + width / 2 + animation.getValue(), yPosition + height, 0xFFFF2020);
-                        Gui.drawRect(xPosition + width / 2, yPosition + height + 1, xPosition + width / 2 - animation.getValue(), yPosition + height, 0xFFFF2020);
+                        Gui.drawRect(xPosition + width / 2, yPosition + height + 0.5, xPosition + width / 2 + animation.getValue(), yPosition + height, 0xFFFF2020);
+                        Gui.drawRect(xPosition + width / 2, yPosition + height + 0.5, xPosition + width / 2 - animation.getValue(), yPosition + height, 0xFFFF2020);
                     } else {
                         if (animation.getValueF() > 0) {
-                            Gui.drawRect(xPosition + width / 2, yPosition + height + 1, (xPosition + width / 2) + animation.getValue(), yPosition + height, 0xFFFF2020);
-                            Gui.drawRect(xPosition + width / 2, yPosition + height + 1, (xPosition + width / 2) - animation.getValue(), yPosition + height, 0xFFFF2020);
+                            Gui.drawRect(xPosition + width / 2, yPosition + height + 0.5, (xPosition + width / 2) + animation.getValue(), yPosition + height, 0xFFFF2020);
+                            Gui.drawRect(xPosition + width / 2, yPosition + height + 0.5, (xPosition + width / 2) - animation.getValue(), yPosition + height, 0xFFFF2020);
                         }
                         animation.interpolate(0);
                     }
