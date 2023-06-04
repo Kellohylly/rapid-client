@@ -30,7 +30,7 @@ public class NameTags extends Module {
     public void onEvent(Event e) {
         if(e instanceof EventRender3D) {
             EventRender3D event = (EventRender3D) e;
-            mc.theWorld.loadedEntityList.forEach(p -> {
+            mc.theWorld.playerEntities.forEach(p -> {
                 if(p instanceof EntityPlayer && p != mc.thePlayer) {
                     double tickX = p.lastTickPosX + (p.posX - p.lastTickPosX) * event.getPartialTicks();
                     double tickY = p.lastTickPosY + (p.posY - p.lastTickPosY) * event.getPartialTicks();

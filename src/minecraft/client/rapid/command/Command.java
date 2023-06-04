@@ -2,8 +2,6 @@ package client.rapid.command;
 
 import client.rapid.Client;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,11 +20,11 @@ public abstract class Command {
 		this.aliases = Arrays.asList(aliases);
 	}
 
-	public void sendSyntax() {
-		Client.getInstance().addChatMessage(EnumChatFormatting.RED + "Usage: ." + syntax + "!");
-	}
-	
 	public abstract void onCommand(String[] args, String command);
+
+	public void sendSyntax() {
+		Client.getInstance().addChatMessage("§cUsage: ." + syntax + "!");
+	}
 
 	public String getName() {
 		return name;

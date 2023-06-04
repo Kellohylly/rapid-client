@@ -55,8 +55,10 @@ public class ClickGuiToggle extends Module {
 				PanelGui.setBackgroundDark(PanelGui.rapidadaptaDark);
 				break;
 			case "Nord":
-				PanelGui.setBackgroundDark(new Color(PanelGui.nordDark).darker().darker().getRGB());
-				PanelGui.setBackground(new Color(PanelGui.nordDark).darker().getRGB());
+				Color darkNord = new Color(PanelGui.nordDark).darker();
+
+				PanelGui.setBackgroundDark(darkNord.darker().getRGB());
+				PanelGui.setBackground(darkNord.getRGB());
 				break;
 			case "Idk":
 				PanelGui.setBackgroundDark(0xFF0d0e13);

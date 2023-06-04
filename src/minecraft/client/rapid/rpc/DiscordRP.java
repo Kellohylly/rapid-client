@@ -12,9 +12,10 @@ public class DiscordRP {
     public void startRPC() {
         created = System.currentTimeMillis();
 
-        DiscordEventHandlers.Builder builder = new DiscordEventHandlers.Builder();
-
         String applicationId = "1095699324480004206";
+
+        // Initialize RPC
+        DiscordEventHandlers.Builder builder = new DiscordEventHandlers.Builder();
 
         DiscordRPC.discordInitialize(applicationId, builder.build(), true);
         DiscordRPC.discordRunCallbacks();

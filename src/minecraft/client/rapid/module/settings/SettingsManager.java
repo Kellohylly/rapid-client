@@ -20,7 +20,7 @@ public class SettingsManager {
 		ArrayList<Setting> out = new ArrayList<>();
 
 		settings.stream()
-			.filter(s -> s.getParentMod().equals(mod))
+			.filter(s -> s.getParentMod() == mod)
 			.forEach(out::add);
 
 		if (out.isEmpty()) {

@@ -26,10 +26,10 @@ public class Client {
 	// Managers
 	private SettingsManager settingsManager;
 	private ModuleManager moduleManager;
-	private ConfigManager fileManager;
+	private ConfigManager configManager;
 	private CommandManager commandManager;
 
-	// Execute before game
+	// Executes before game
 	public void onPreStartup() {
 		this.discordRP = new DiscordRP();
 
@@ -42,13 +42,13 @@ public class Client {
 
 	}
 
-	// Execute after main menu
+	// Execute after main menus
 	public void onStartup() {
 
-		// Initialize managers.
+		// Initialize managers
 		this.settingsManager = new SettingsManager();
 		this.moduleManager = new ModuleManager();
-		this.fileManager = new ConfigManager();
+		this.configManager = new ConfigManager();
 		this.commandManager = new CommandManager();
 
 		// Initialize VIA Version slider
@@ -101,7 +101,7 @@ public class Client {
 	}
 
 	public ConfigManager getConfigManager() {
-		return fileManager;
+		return configManager;
 	}
 
 	public CommandManager getCommandManager() {

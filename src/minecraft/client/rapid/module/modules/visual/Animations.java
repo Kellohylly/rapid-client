@@ -15,4 +15,5 @@ public class Animations extends Module {
 	public Animations() {
 		add(mode, swingSpeed, itemSize, betterSwing);
 	}
+
 }

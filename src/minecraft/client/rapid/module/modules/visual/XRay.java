@@ -16,4 +16,5 @@ public class XRay extends Module {
 	public void onDisable() {
 		mc.renderGlobal.loadRenderers();
 	}
+
 }

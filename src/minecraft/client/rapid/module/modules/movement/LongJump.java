@@ -12,13 +12,13 @@ import client.rapid.module.modules.movement.longjumps.LongJumpMode;
 import client.rapid.module.settings.Setting;
 import client.rapid.util.PlayerUtil;
 import client.rapid.util.module.MoveUtil;
-import net.minecraft.util.BlockPos;
 
 @ModuleInfo(getName = "Long Jump", getCategory = Category.MOVEMENT)
 public class LongJump extends Module {
 	private final Setting mode = new Setting("Mode", this, "Vanilla", "NCP", "Vulcan");
 
 	private final Setting ncpMode = new Setting("NCP", this, "Old NCP", "NCP Dev");
+	private final Setting vulcanMode = new Setting("Vulcan", this, "Vulcan High", "Vulcan Clip");
 
 	private final Setting damage = new Setting("Damage", this, "None", "Simple", "Jump", "Wait");
 	private final Setting speed = new Setting("Speed", this, 1.6, 0.2, 10, false);
@@ -33,15 +33,16 @@ public class LongJump extends Module {
 	private int ticks;
 
 	public LongJump() {
-		add(mode, ncpMode, damage, speed, height, slowdown, autoDisable);
+		add(mode, ncpMode, vulcanMode, damage, speed, height, slowdown, autoDisable);
 	}
 
 	@Override
 	public void updateSettings() {
-		height.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Vanilla"));
+		height.setVisible(mode.getMode().equals("Vulcan") || mode.getMode().equals("Vanilla") || mode.getMode().equals("Vulcan2"));
 		slowdown.setVisible(mode.getMode().equals("NCP") && ncpMode.getMode().equals("Old NCP"));
 		speed.setVisible(mode.getMode().equals("Vanilla") || (mode.getMode().equals("NCP") && ncpMode.getMode().equals("Old NCP")));
 		ncpMode.setVisible(mode.getMode().equals("NCP"));
+		vulcanMode.setVisible(mode.getMode().equals("Vulcan"));
 	}
 
 	@Override
@@ -115,10 +116,15 @@ public class LongJump extends Module {
 			return;
 		}
 
+		// holy fuck this is disgusting
 		if(autoDisable.isEnabled()) {
 			if(jumped) {
-				BlockPos below = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1D, mc.thePlayer.posZ);
-				if(!mc.theWorld.isAirBlock(below) && mc.theWorld.getBlockState(below).getBlock().isFullBlock() && mc.thePlayer.onGround) {
+
+				if(e instanceof EventUpdate && e.isPre()) {
+					ticks++;
+				}
+
+				if(mc.thePlayer.onGround && !currentMode.isSpoofing()) {
 					MoveUtil.setMoveSpeed(0);
 					this.setEnabled(false);
 				}
@@ -139,13 +145,17 @@ public class LongJump extends Module {
 			if(currentMode != lm.getBase()) {
 				switch(mode.getMode()) {
 					case "Vanilla":
-					case "Vulcan":
 						if (mode.getMode().equals(lm.getName())) {
 							currentMode = lm.getBase();
 						}
 						break;
 					case "NCP":
 						if (ncpMode.getMode().equals(lm.getName())) {
+							currentMode = lm.getBase();
+						}
+						break;
+					case "Vulcan":
+						if (vulcanMode.getMode().equals(lm.getName())) {
 							currentMode = lm.getBase();
 						}
 						break;

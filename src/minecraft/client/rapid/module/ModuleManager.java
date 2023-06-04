@@ -119,7 +119,7 @@ public class ModuleManager {
 			new Scoreboard(),
 			new EnabledModules(),
 			new PlayerPosition()
-			);
+		);
 
 		// Add Draggables to Modules
 		for(Draggable d : draggables) {

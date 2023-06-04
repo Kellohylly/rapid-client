@@ -4,6 +4,7 @@ import client.rapid.config.configs.HudConfig;
 import client.rapid.config.configs.ModKeyConfig;
 import client.rapid.config.configs.ModuleConfig;
 import client.rapid.util.console.Logger;
+
 import net.minecraft.client.Minecraft;
 
 import java.io.File;

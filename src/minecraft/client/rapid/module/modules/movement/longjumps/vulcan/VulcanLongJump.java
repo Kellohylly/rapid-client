@@ -1,7 +1,8 @@
-package client.rapid.module.modules.movement.longjumps;
+package client.rapid.module.modules.movement.longjumps.vulcan;
 
 import client.rapid.event.Event;
 import client.rapid.event.events.player.EventUpdate;
+import client.rapid.module.modules.movement.longjumps.LongJumpBase;
 import client.rapid.module.modules.player.NoFall;
 import client.rapid.util.TimerUtil;
 import client.rapid.util.module.MoveUtil;
@@ -52,6 +53,8 @@ public class VulcanLongJump extends LongJumpBase {
                     // Speed boost / No fall damage
                     if(mc.thePlayer.ticksExisted % 11 == 0) {
                         if(mc.thePlayer.ticksExisted % 5.5 == 0) {
+                            spoofing = true;
+
                             mc.thePlayer.onGround = true;
                         }
 

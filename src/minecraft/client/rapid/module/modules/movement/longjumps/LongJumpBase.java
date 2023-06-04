@@ -9,6 +9,9 @@ import net.minecraft.client.Minecraft;
 public class LongJumpBase {
     protected final Setting speed = Client.getInstance().getSettingsManager().getSetting(LongJump.class, "Speed");
     protected final Setting damage = Client.getInstance().getSettingsManager().getSetting(LongJump.class, "Damage");
+
+    protected boolean spoofing;
+
     protected final Setting height = Client.getInstance().getSettingsManager().getSetting(LongJump.class, "Height");
 
     protected Minecraft mc = Minecraft.getMinecraft();
@@ -17,5 +20,10 @@ public class LongJumpBase {
     public void onDisable() {}
     public void onEvent(Event e) {}
     public void updateValues() {}
+
+    public boolean isSpoofing() {
+        return spoofing;
+    }
+
 }
 

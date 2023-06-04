@@ -1,10 +1,17 @@
 package client.rapid.module;
 
 import client.rapid.Client;
+
 import org.lwjgl.input.Mouse;
 
 public class Draggable extends Module {
-	protected int x, y, lastX, lastY, width, height;
+	protected int x;
+	protected int y;
+	protected int lastX;
+	protected int lastY;
+	protected int width;
+	protected int height;
+
 	protected boolean dragging;
 	
 	public Draggable(int x, int y, int width, int height) {
@@ -15,10 +22,10 @@ public class Draggable extends Module {
 	}
 	
 	public void drawDummy(int mouseX, int mouseY) {
-		draw(mouseX, mouseY);
+		this.draw(mouseX, mouseY);
 
 		if(dragging) {
-			savePositions();
+			Draggable.savePositions();
 		}
 	}
 

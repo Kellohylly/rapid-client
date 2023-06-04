@@ -17,13 +17,15 @@ public class ModuleConfig extends Config {
 
     /*
     * honestly I have no idea if spaces don't fuck it up, but I doubt it.
-    * last time it thought KillInsults was KillAura and didn't set KillAura's settings so i had to rename KillInsults.
+    * last time it thought KillInsults was KillAura and didn't set KillAura's settings so i had to rename KillInsults
+    * but it works for KeyConfig for some reason xd.
     */
 
     @Override
     public void save() {
         ArrayList<String> saves = new ArrayList<>();
 
+        // Save module state
         for(Module m : Client.getInstance().getModuleManager().getModules()) {
             String modName = m.getName().replace(" ", "-");
 
@@ -47,8 +49,12 @@ public class ModuleConfig extends Config {
                     }
                 }
             }
+
+            // Empty line to make the config file more readable
+            saves.add("");
         }
 
+        // Write file
         try {
             PrintWriter pw = new PrintWriter(this.getData());
 
@@ -69,9 +75,11 @@ public class ModuleConfig extends Config {
         super.load();
     }
 
+    // Load a specific file
     public void load(File file) {
         ArrayList<String> lines = new ArrayList<>();
 
+        // Read file
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
@@ -85,6 +93,7 @@ public class ModuleConfig extends Config {
             Logger.error("Cant load config:" + e.getCause());
         }
 
+        // Load module state
         for(String line : lines) {
             String[] args = line.split(":");
 
@@ -96,6 +105,7 @@ public class ModuleConfig extends Config {
                 }
             }
 
+            // Load settings
             if(line.startsWith("Setting")) {
                 Module m = Client.getInstance().getModuleManager().getModuleByName(args[1].replace("-", " "));
 

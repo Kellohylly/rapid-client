@@ -17,10 +17,12 @@ public class ModKeyConfig extends Config {
     public void save() {
         ArrayList<String> toSave = new ArrayList<>();
 
+        // Save module key
         for (Module mod : Client.getInstance().getModuleManager().getModules()) {
             toSave.add(mod.getName() + ":" + mod.getKey());
         }
 
+        // Write file
         try {
             PrintWriter pw = new PrintWriter(this.getData());
             for (String str : toSave) {
@@ -37,6 +39,7 @@ public class ModKeyConfig extends Config {
     public void load() {
         ArrayList<String> lines = new ArrayList<>();
 
+        // Read file
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this.getData()));
             String line = reader.readLine();
@@ -52,6 +55,7 @@ public class ModKeyConfig extends Config {
             e.printStackTrace();
         }
 
+        // Set module key
         for (String s : lines) {
             String[] args = s.split(":");
 

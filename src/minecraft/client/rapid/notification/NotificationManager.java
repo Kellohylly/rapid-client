@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class NotificationManager {
     private static final LinkedBlockingQueue<Notification> queue = new LinkedBlockingQueue<>();
-    private static final Notification[] nots = new Notification[100];
+    private static final Notification[] notifications = new Notification[100];
 
     public static void add(String title, String message, NotificationType type, int time) {
         addToQueue(new Notification(title, message, type, time));
@@ -18,16 +18,18 @@ public class NotificationManager {
     }
 
     public static void update() {
-        for(int i = 0; i < Client.getInstance().getSettingsManager().getSetting(Notifications.class, "Amount").getValue(); i++) {
-            if(nots[i] != null && !nots[i].isShown()) {
-                nots[i].timer.reset();
-                nots[i] = null;
+        int amount = (int) Client.getInstance().getSettingsManager().getSetting(Notifications.class, "Amount").getValue();
+
+        for(int i = 0; i < amount; i++) {
+            if(notifications[i] != null && !notifications[i].isVisible()) {
+                notifications[i].getTimer().reset();
+                notifications[i] = null;
             }
 
-            if(nots[i] == null && !queue.isEmpty()) {
-                nots[i] = queue.poll();
-                nots[i].start();
-                nots[i].timer.reset();
+            if(notifications[i] == null && !queue.isEmpty()) {
+                notifications[i] = queue.poll();
+                notifications[i].getTimer().reset();
+                notifications[i].start();
             }
         }
     }
@@ -36,11 +38,11 @@ public class NotificationManager {
         update();
 
         int i = 0;
-        for(Notification notification : nots) {
+        for(Notification notification : notifications) {
             if(notification != null) {
                 notification.render(x, (y + 26) - (int)notification.getAnimationY().getValue());
 
-                if(!notification.timer.reached(notification.getMaxTime() + 150)) {
+                if(!notification.getTimer().reached(notification.getMaxTime() + 150)) {
                     i += 26;
                     notification.getAnimationY().interpolate(i);
                 }

@@ -1,8 +1,13 @@
 package client.rapid.module.modules;
 
 public enum Category {
-	COMBAT("Combat", 'a'), MOVEMENT("Movement", 'b'), OTHER("Other", 'd'), PLAYER("Player", 'f'), VISUAL("Visual", 'c'), HUD("Hud", 'e');
-	
+	COMBAT("Combat", 'a'),
+	MOVEMENT("Movement", 'b'),
+	OTHER("Other", 'd'),
+	PLAYER("Player", 'f'),
+	VISUAL("Visual", 'c'),
+	HUD("Hud", 'e');
+
 	private final String name;
 	private final char icon;
 	

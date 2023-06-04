@@ -10,7 +10,8 @@ public class Event {
 
 	private EventType type;
 	private boolean cancelled;
-	
+
+	// Register event
 	public void callEvent() {
 		if(this instanceof EventChat && this.isPre()) {
 			Client.getInstance().getCommandManager().handleChat((EventChat) this);
